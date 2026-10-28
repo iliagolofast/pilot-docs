@@ -1,0 +1,1873 @@
+<title>Документация PILOT</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap">
+<style>
+/* Макет: шапка с поиском, слева дерево разделов, по центру статья, справа «На странице».
+   Шрифт Inter — как в текущей справке PILOT; акцент — фирменный голубой из логотипа. */
+:root{
+  --bg:#ffffff; --bg-soft:#f4f7fa; --card:#ffffff; --line:#e2e8ef; --text:#17202b; --muted:#5c6b7c;
+  --ink:#0b1420; --accent:#0284c7; --accent-strong:#0369a1; --accent-soft:#e6f3fb; --on-accent:#ffffff; --mark:#fff1a8;
+  --focus:0 0 0 3px rgba(2,132,199,.35); --shadow:0 10px 30px rgba(15,35,60,.10); --bw:1px; --link-deco:none;
+  --font:"Inter","Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  --top:60px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0e141b; --bg-soft:#141c25; --card:#17212c; --line:#26323f; --text:#e4ebf2; --muted:#94a3b4;
+  --ink:#ffffff; --accent:#38bdf8; --accent-strong:#7dd3fc; --accent-soft:rgba(56,189,248,.13); --on-accent:#06202e; --mark:#5b4b00;
+  --focus:0 0 0 3px rgba(56,189,248,.45); --shadow:0 10px 30px rgba(0,0,0,.45); color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0e141b; --bg-soft:#141c25; --card:#17212c; --line:#26323f; --text:#e4ebf2; --muted:#94a3b4;
+  --ink:#ffffff; --accent:#38bdf8; --accent-strong:#7dd3fc; --accent-soft:rgba(56,189,248,.13); --on-accent:#06202e; --mark:#5b4b00;
+  --focus:0 0 0 3px rgba(56,189,248,.45); --shadow:0 10px 30px rgba(0,0,0,.45); color-scheme:dark;
+}
+/* Выбор в настройках документации важнее темы приложения */
+:root[data-skin="light"]{
+  --bg:#ffffff; --bg-soft:#f4f7fa; --card:#ffffff; --line:#e2e8ef; --text:#17202b; --muted:#5c6b7c;
+  --ink:#0b1420; --accent:#0284c7; --accent-strong:#0369a1; --accent-soft:#e6f3fb; --on-accent:#ffffff; --mark:#fff1a8;
+  --focus:0 0 0 3px rgba(2,132,199,.35); --shadow:0 10px 30px rgba(15,35,60,.10); color-scheme:light;
+}
+:root[data-skin="dark"]{
+  --bg:#0e141b; --bg-soft:#141c25; --card:#17212c; --line:#26323f; --text:#e4ebf2; --muted:#94a3b4;
+  --ink:#ffffff; --accent:#38bdf8; --accent-strong:#7dd3fc; --accent-soft:rgba(56,189,248,.13); --on-accent:#06202e; --mark:#5b4b00;
+  --focus:0 0 0 3px rgba(56,189,248,.45); --shadow:0 10px 30px rgba(0,0,0,.45); color-scheme:dark;
+}
+/* Контраст — отдельная настройка поверх любой темы: смешиваем цвет текста темы (--ink) с фоном */
+:root[data-contrast="low"]{
+  --text:color-mix(in srgb,var(--ink) 74%,var(--bg)); --muted:color-mix(in srgb,var(--ink) 50%,var(--bg));
+  --line:color-mix(in srgb,var(--ink) 7%,var(--bg));
+}
+:root[data-contrast="high"]{
+  --text:var(--ink); --muted:color-mix(in srgb,var(--ink) 88%,var(--bg)); --line:color-mix(in srgb,var(--ink) 75%,var(--bg));
+  --accent:var(--accent-strong); --bw:2px; --link-deco:underline; --shadow:none;
+}
+:root[data-font="m"]{font-size:112.5%}
+:root[data-font="l"]{font-size:125%}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--text);font:1rem/1.65 var(--font);-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+a{color:var(--accent);text-decoration:var(--link-deco)}
+a:hover{text-decoration:underline}
+:focus-visible{outline:none;box-shadow:var(--focus);border-radius:6px}
+button{font:inherit;color:inherit}
+kbd{font:500 .72rem var(--font);border:var(--bw) solid var(--line);border-radius:5px;padding:1px 6px;color:var(--muted)}
+h1,h2,h3{text-wrap:balance;line-height:1.25}
+
+/* шапка */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;height:var(--top);display:flex;align-items:center;gap:12px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  background:var(--bg);border-bottom:var(--bw) solid var(--line)}
+.logo{display:flex;align-items:center;gap:8px;color:var(--text);text-decoration:none;font-weight:700;letter-spacing:.01em;white-space:nowrap}
+.logo:hover{text-decoration:none}
+.logo svg{height:22px;width:auto;flex:none}
+.logo span{color:var(--accent);font-weight:600}
+.ver{font-size:.78rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.search-btn{flex:0 1 380px;margin-left:12px;display:flex;align-items:center;justify-content:space-between;gap:8px;
+  background:var(--bg-soft);border:var(--bw) solid var(--line);border-radius:10px;padding:7px 12px;color:var(--muted);cursor:pointer;font-size:.9rem;min-width:0}
+.search-btn span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.is-home .search-btn{visibility:hidden}
+.spacer{flex:1}
+.top-link{color:var(--muted);font-size:.9rem;white-space:nowrap}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.lang{position:relative;flex:none;display:flex;align-items:center;color:var(--muted)}
+.lang svg{position:absolute;pointer-events:none;width:16px;height:16px}
+.lang .globe{inset-inline-start:11px}.lang .chev{inset-inline-end:10px;width:12px;height:12px}
+.lang select{appearance:none;-webkit-appearance:none;height:38px;border-radius:9px;background:none;border:var(--bw) solid var(--line);color:var(--text);font:inherit;font-size:.88rem;padding-block:0;padding-inline:34px 30px;cursor:pointer}
+.lang select:hover{border-color:var(--accent)}
+.lang select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.fallback{margin:0 0 20px;padding:10px 14px;border-radius:8px;background:var(--bg-soft);color:var(--muted);font-size:.9rem}
+.fallback:empty{display:none}
+.icon-btn{flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:9px;background:none;border:var(--bw) solid var(--line);color:var(--text);cursor:pointer}
+.icon-btn svg{width:18px;height:18px}
+.menu-btn{display:none}
+
+/* главная */
+.home{max-width:880px;margin:0 auto;padding-block:56px 72px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.home h1{font-size:2.3rem;margin:0 0 6px;text-align:center;letter-spacing:-.01em}
+.lead{color:var(--muted);margin:0 0 28px;text-align:center}
+.home-search{display:flex;gap:8px;background:var(--card);border:var(--bw) solid var(--line);border-radius:14px;padding:8px;box-shadow:var(--shadow)}
+.home-search input{flex:1;min-width:0;border:0;background:none;color:var(--text);font:inherit;font-size:1.05rem;padding:8px 10px;outline:none}
+.btn{background:var(--accent);color:var(--on-accent);border:0;border-radius:10px;padding:9px 18px;font-weight:600;cursor:pointer}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:18px 0 36px}
+.chip{background:var(--bg-soft);border:var(--bw) solid var(--line);border-radius:999px;padding:6px 14px;font-size:.85rem;cursor:pointer}
+.chip:hover{border-color:var(--accent)}
+.tags-box{margin:-12px 0 32px}
+.tags-head{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.tags-head button{border:0;background:none;color:var(--accent);font:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer;padding:0}
+.tags{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.tag{display:inline-flex;align-items:center;gap:6px;border:var(--bw) solid var(--line);background:var(--card);border-radius:8px;padding:4px 10px;font-size:.84rem;cursor:pointer;color:var(--text);text-decoration:none}
+.tag small{color:var(--muted);font-variant-numeric:tabular-nums;font-size:.74rem}
+.tag:hover{border-color:var(--accent);text-decoration:none}
+.tag[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.tag[aria-pressed="true"] small{color:var(--on-accent);opacity:.8}
+.has-tags .grid{display:none}
+.art-tags{display:flex;flex-wrap:wrap;gap:6px;margin:-8px 0 20px}
+.art-tags:empty{display:none}
+.art-tags .tag{font-size:.78rem;padding:2px 9px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.tile{display:flex;flex-direction:column;gap:2px;background:var(--card);border:var(--bw) solid var(--line);border-radius:12px;padding:16px;color:var(--text);text-decoration:none}
+.tile:hover{border-color:var(--accent);text-decoration:none}
+.tile b{font-weight:600}
+.tile small{color:var(--muted);font-variant-numeric:tabular-nums}
+.has-query .grid{display:none}
+
+/* результаты */
+.results{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.results:empty{display:none}
+.home .results{margin-bottom:32px}
+.results a{display:block;padding:12px 14px;border:var(--bw) solid var(--line);border-radius:10px;background:var(--card);color:var(--text);text-decoration:none}
+.results a:hover,.results a.sel{border-color:var(--accent);background:var(--accent-soft)}
+.results .c{font-size:.76rem;color:var(--muted)}
+.results .t{font-weight:600;color:var(--accent)}
+.results .x{font-size:.87rem;color:var(--muted);margin-top:2px;overflow-wrap:anywhere}
+.results mark{background:var(--mark);color:inherit;border-radius:2px}
+.results .empty{color:var(--muted);padding:10px 4px}
+
+/* статья */
+.doc{display:grid;grid-template-columns:290px minmax(0,1fr) 230px;min-height:calc(100vh - var(--top))}
+.sidebar{position:sticky;top:calc(var(--top) + env(safe-area-inset-top,0px));height:calc(100vh - var(--top) - env(safe-area-inset-top,0px));overflow:auto;
+  background:var(--bg-soft);border-right:var(--bw) solid var(--line);padding:14px 10px 40px;font-size:.89rem}
+.nav,.nav ul{list-style:none;margin:0;padding:0}
+.nav ul{padding-left:12px;border-left:var(--bw) solid var(--line);margin-left:11px}
+.nav .row{display:flex;align-items:flex-start}
+.nav .tw{flex:none;width:22px;height:28px;display:grid;place-items:center;background:none;border:0;color:var(--muted);cursor:pointer;border-radius:5px}
+.nav .tw svg{width:12px;height:12px;transition:transform .15s}
+.nav li.open>.row .tw svg{transform:rotate(90deg)}
+.nav .tw.none{visibility:hidden}
+.nav a{flex:1;min-width:0;display:block;padding:4px 8px;border-radius:6px;color:var(--text);text-decoration:none}
+.nav a:hover{background:var(--accent-soft)}
+.nav a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+:root[data-contrast="high"] .nav a.active{outline:2px solid var(--accent)}
+.nav li>ul{display:none}
+.nav li.open>ul{display:block}
+.article{min-width:0;padding-block:28px 80px;padding-left:max(16px,min(56px,4vw));padding-right:max(16px,min(56px,4vw))}
+.article-inner{max-width:820px;margin-inline:auto}
+.crumbs{font-size:.8rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 6px}
+.crumbs a{color:var(--muted)}
+.article h1{font-size:2rem;margin:6px 0 20px;letter-spacing:-.01em}
+.body h2{margin-top:2em;scroll-margin-top:calc(var(--top) + 20px)}
+.body h3{margin-top:1.6em;scroll-margin-top:calc(var(--top) + 20px)}
+.body img{display:block;max-width:min(100%,520px);max-height:320px;width:auto;height:auto;object-fit:contain;transition:border-color .15s,box-shadow .15s;margin:12px 0;border:var(--bw) solid var(--line);border-radius:8px;cursor:zoom-in;background:var(--bg-soft)}
+.body img[data-missing]{display:none}
+.body img:hover{border-color:var(--accent);box-shadow:var(--shadow)}
+.body .tbl{overflow-x:auto;margin:16px 0}
+.body table{border-collapse:collapse;min-width:100%;font-size:.92rem}
+.body th,.body td{border:var(--bw) solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.body th{background:var(--bg-soft)}
+.body td img{margin:4px 0}
+.body blockquote{margin:16px 0;padding:10px 16px;border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:6px}
+.body code{font-family:var(--mono);font-size:.86em;background:var(--bg-soft);border:var(--bw) solid var(--line);border-radius:4px;padding:1px 5px;overflow-wrap:anywhere}
+.body pre{background:var(--bg-soft);border:var(--bw) solid var(--line);border-radius:8px;padding:12px;overflow-x:auto}
+.body pre code{border:0;padding:0;background:none}
+.body a.dead{color:var(--muted);text-decoration:line-through}
+.body p,.body li{overflow-wrap:break-word}
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:48px}
+.pager a{border:var(--bw) solid var(--line);border-radius:10px;padding:10px 14px;color:var(--text);text-decoration:none;min-width:0}
+.pager a:hover{border-color:var(--accent)}
+.pager .next{text-align:right;grid-column:2}
+.pager small{display:block;color:var(--muted);font-size:.78rem}
+.toc{position:sticky;top:calc(var(--top) + env(safe-area-inset-top,0px));align-self:start;max-height:calc(100vh - var(--top));overflow:auto;padding:28px 16px;font-size:.84rem}
+.toc b{display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px}
+.toc a{display:block;color:var(--muted);padding:3px 0}
+.toc a.h3{padding-left:12px}
+.loading{color:var(--muted);padding:40px 0}
+
+/* диалоги */
+.dialog{position:fixed;inset:0;z-index:40;background:rgba(8,14,22,.5);display:flex;align-items:flex-start;justify-content:center;
+  padding-top:max(8vh,calc(env(safe-area-inset-top,0px) + 16px));padding-bottom:16px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.box{background:var(--card);color:var(--text);border:var(--bw) solid var(--line);border-radius:14px;box-shadow:var(--shadow);width:min(460px,100%);max-height:84vh;overflow:auto;padding:20px 22px}
+.search-box{width:min(680px,100%);padding:12px}
+.search-input{width:100%;border:var(--bw) solid var(--line);border-radius:10px;padding:12px 14px;font:inherit;font-size:1.05rem;background:var(--bg-soft);color:var(--text);margin-bottom:10px}
+.box h2{margin:0 0 14px;font-size:1.2rem}
+fieldset{border:0;padding:0;margin:0 0 16px;display:grid;gap:6px}
+legend{font-weight:600;margin-bottom:6px;padding:0}
+fieldset label{display:flex;align-items:center;gap:10px;padding:8px 12px;border:var(--bw) solid var(--line);border-radius:9px;cursor:pointer}
+fieldset label:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+fieldset small{color:var(--muted);margin-left:auto;font-size:.8rem}
+.actions{display:flex;justify-content:flex-end}
+.lightbox{align-items:center;padding:16px;cursor:zoom-out}
+.lightbox img{max-width:100%;max-height:92vh;border-radius:8px;background:#fff}
+
+@media (max-width:1180px){.doc{grid-template-columns:270px minmax(0,1fr)}.toc{display:none}}
+@media (max-width:820px){
+  .menu-btn{display:grid}
+  .top-link,.ver,.search-btn kbd{display:none}
+  .lang select{padding-inline:30px 24px}
+  .search-btn{min-width:0;overflow:hidden}.search-btn span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .logo span{display:none}
+  .search-btn{margin-left:4px}
+  .doc{grid-template-columns:minmax(0,1fr)}
+  .sidebar{position:fixed;z-index:25;left:0;top:calc(var(--top) + env(safe-area-inset-top,0px));bottom:0;height:auto;width:min(320px,88vw);transform:translateX(-102%);transition:transform .2s;box-shadow:var(--shadow);padding-left:max(10px,env(safe-area-inset-left,0px))}
+  .nav-open .sidebar{transform:none}
+  .grid{grid-template-columns:minmax(0,1fr)}
+  .home{padding-block:32px 56px}.home h1{font-size:1.8rem}
+  .article h1{font-size:1.6rem}
+  .pager{grid-template-columns:1fr}.pager .next{grid-column:1}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* ---------- интерактивные экраны PILOT (раздел «С чего начать») ---------- */
+.demo-fig{margin:20px 0 24px;container-type:inline-size;container-name:demo}
+.app{
+  --a-page:#eef0f2; --a-bg:#ffffff; --a-soft:#f4f5f6; --a-field:#f3f4f5; --a-line:#e7e9eb; --a-text:#2a2e33; --a-muted:#7b828a; --a-blue:#0f7cc4; --a-blue-soft:#e4f1fb; --a-sel:#e9f4fc; --a-sel-line:#62ade3;
+  --a-green:#1e9e4a; --a-red:#e53935;
+  --m-land:#f5f3f0; --m-bld:#e9e6e1; --m-bld-s:#dcd8d1; --m-park:#cdeac4; --m-park2:#d9efd2; --m-water:#9fd0f3; --m-road:#ffffff; --m-case:#dcdcdc; --m-hw:#fcd773; --m-hw-case:#ebb740; --m-text:#5f6368; --m-halo:#ffffff;
+  position:relative;overflow:hidden;border:var(--bw) solid var(--line);border-radius:12px;background:var(--a-page);color:var(--a-text);
+  font:11.5px/1.35 Roboto,var(--font);user-select:none;-webkit-user-select:none;height:430px;display:flex;flex-direction:column;
+}
+.app.tall{height:500px}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]):not([data-skin="light"]) .app{
+  --a-page:#11181f; --a-bg:#1a232c; --a-soft:#212c37; --a-field:#24303b; --a-line:#2e3b48; --a-text:#e2e8ee; --a-muted:#98a5b3; --a-blue:#3aa7ea; --a-blue-soft:rgba(58,167,234,.16); --a-sel:rgba(58,167,234,.14); --a-sel-line:#3a8fc9;
+  --m-land:#242f3e; --m-bld:#2c394a; --m-bld-s:#34445a; --m-park:#26412f; --m-park2:#2a3d33; --m-water:#17263c; --m-road:#3a4656; --m-case:#2a3442; --m-hw:#7d6835; --m-hw-case:#5e4d27; --m-text:#b3bdc8; --m-halo:#1b2430; --a-veh:#9aa6b2;
+}}
+:root[data-theme="dark"]:not([data-skin="light"]) .app, :root[data-skin="dark"] .app{
+  --a-page:#11181f; --a-bg:#1a232c; --a-soft:#212c37; --a-field:#24303b; --a-line:#2e3b48; --a-text:#e2e8ee; --a-muted:#98a5b3; --a-blue:#3aa7ea; --a-blue-soft:rgba(58,167,234,.16); --a-sel:rgba(58,167,234,.14); --a-sel-line:#3a8fc9;
+  --m-land:#242f3e; --m-bld:#2c394a; --m-bld-s:#34445a; --m-park:#26412f; --m-park2:#2a3d33; --m-water:#17263c; --m-road:#3a4656; --m-case:#2a3442; --m-hw:#7d6835; --m-hw-case:#5e4d27; --m-text:#b3bdc8; --m-halo:#1b2430; --a-veh:#9aa6b2;
+}
+.app button{font:inherit;color:inherit;cursor:pointer}
+.app svg{flex:none}
+/* верхняя панель */
+.a-top{display:flex;align-items:center;gap:4px;height:40px;padding:0 10px;flex:none;background:var(--a-bg);border-bottom:1px solid var(--a-line)}
+.a-logo{display:flex;align-items:center;gap:5px;margin-inline-end:10px}
+.a-logo svg{width:20px;height:20px}
+.a-logo b{font:900 15px/1 'Arial Black',Roboto,var(--font);letter-spacing:.01em}
+.a-tabs{display:flex;gap:2px;min-width:0}
+.a-tab{display:flex;align-items:center;gap:5px;border:0;background:none;padding:5px 7px;border-radius:4px;color:var(--a-text);white-space:nowrap;font-size:11px}
+.a-tab svg{width:13px;height:13px;color:var(--a-muted)}
+.a-tab.on{background:var(--a-blue-soft);color:var(--a-blue)}
+.a-tab.on svg{color:var(--a-blue)}
+.a-tab:hover{background:var(--a-soft)}
+.a-sp{flex:1}
+.a-stat{display:flex;gap:3px}
+.a-stat span{min-width:19px;height:19px;padding:0 3px;border-radius:3px;display:grid;place-items:center;color:#fff;font-size:10px;font-weight:600;font-variant-numeric:tabular-nums}
+.a-user{display:flex;align-items:center;gap:5px;margin:0 6px 0 8px;font-size:10.5px;white-space:nowrap}
+.a-user svg{width:16px;height:16px;color:var(--a-muted)}
+.a-user span{display:flex;flex-direction:column;line-height:1.2}
+.a-user small{color:var(--a-muted)}
+.a-ico{border:0;background:none;width:24px;height:24px;display:grid;place-items:center;border-radius:4px;color:var(--a-muted);flex:none;position:relative}
+.a-ico svg{width:14px;height:14px}
+.a-ico:hover{background:var(--a-soft);color:var(--a-text)}
+.a-ico.dim{opacity:.45}
+.a-bell i{position:absolute;top:0;inset-inline-end:0;min-width:12px;height:12px;border-radius:6px;background:var(--a-red);color:#fff;font:600 8px/12px Roboto,var(--font);font-style:normal}
+/* тело: полоса слева, панель, карта */
+.a-body{flex:1;display:flex;min-height:0;position:relative;gap:6px;padding:6px 6px 6px 0}
+.a-rail{width:32px;flex:none;display:flex;flex-direction:column;align-items:center;gap:6px;padding-top:4px}
+.a-rail span{width:24px;height:24px;display:grid;place-items:center;border-radius:5px;color:var(--a-muted)}
+.a-rail span.on{background:var(--a-blue-soft);color:var(--a-blue)}
+.a-rail span.dn{margin-top:auto}
+.a-rail svg{width:14px;height:14px}
+.a-panel{width:56%;min-width:0;display:flex;flex-direction:column;background:var(--a-bg);border-radius:6px;overflow:hidden}
+.a-ph{display:flex;align-items:center;gap:2px;padding:8px 10px 6px;flex:none}
+.a-ph h4{margin:0;font-size:15px;font-weight:500;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.a-tb{display:flex}
+.a-lnk{display:flex;align-items:center;gap:4px;color:var(--a-muted);font-size:10.5px;margin-inline-end:4px;white-space:nowrap}
+.a-lnk svg{width:12px;height:12px}
+.a-flt{display:flex;gap:5px;padding:0 10px 6px;flex:none}
+.a-dd,.a-sr{display:flex;align-items:center;gap:3px;background:var(--a-field);border-radius:4px;height:24px;padding:0 6px;color:var(--a-muted);min-width:0}
+.a-dd svg{width:12px;height:12px}
+.a-dd svg+svg{width:10px;height:10px}
+.a-all{flex:1 1 70px;justify-content:space-between;color:var(--a-text)}
+.a-sr{flex:1 1 90px}
+.a-sr i{flex:1}
+.a-sr svg{width:11px;height:11px}
+/* таблица объектов */
+.a-th,.a-row{display:grid;grid-template-columns:16px 26px minmax(0,1fr) minmax(0,1.3fr) 84px 26px 28px;align-items:center;gap:0 5px;padding:0 10px}
+.a-th{height:22px;border-bottom:1px solid var(--a-line);color:var(--a-muted);font-size:10px;flex:none}
+.a-th span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.a-th .c3{grid-column:1/4}
+.a-th .nb{display:flex;gap:4px;justify-content:flex-end}
+.a-th .nb svg{width:11px;height:11px}
+.a-th.short,.a-row.short{grid-template-columns:16px 26px minmax(0,1fr) 60px}
+.a-list{flex:1;overflow:auto;position:relative;min-height:0}
+.a-grp{display:flex;align-items:center;gap:6px;height:24px;padding:0 10px;font-size:11px}
+.a-grp svg{width:11px;height:11px;color:var(--a-muted)}
+.a-row{height:25px;cursor:pointer;border-top:1px solid transparent;border-bottom:1px solid transparent;padding-inline-start:22px}
+.a-row.short{padding-inline-start:22px}
+.a-row:hover{background:var(--a-soft)}
+.a-row.sel{background:var(--a-sel);border-color:var(--a-sel-line)}
+.a-row.new{animation:a-flash 1.6s ease}
+@keyframes a-flash{0%,40%{background:#fff3b0}100%{background:transparent}}
+.a-row .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.a-row .st{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:10px}
+.a-row .st.off{color:var(--a-muted)}
+.a-row .tm{font-size:10px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.a-row .tg{display:flex;gap:1px}
+.a-row .tg i{width:9px;height:9px;border-radius:2px}
+.a-row .nb{display:flex;align-items:center;justify-content:flex-end;gap:3px;font-size:10.5px}
+.a-row .nb svg{width:11px;height:11px;color:var(--a-muted)}
+.a-row .a-kebab{position:absolute;inset-inline-end:2px;width:20px;height:20px;background:var(--a-bg)}
+.a-row{position:relative}
+.a-cb{width:12px;height:12px;border:1.3px solid #a3a9b0;border-radius:2px;display:inline-grid;place-items:center;background:var(--a-bg);flex:none}
+.a-cb.on{border-color:var(--a-blue)}
+.a-cb.on::after{content:"";width:6px;height:3px;border:1.6px solid var(--a-blue);border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
+.a-car{width:22px;height:12px;color:var(--a-veh,#55606b)}
+/* карта */
+.a-map{flex:1;position:relative;background:var(--m-land);min-width:0;overflow:hidden;border-radius:6px;cursor:grab}
+.a-map.drag{cursor:grabbing}
+.a-map svg.m{position:absolute;inset:0;width:100%;height:100%;touch-action:pan-y}
+.a-map .ml{fill:var(--m-land)}
+.a-map .mp{fill:var(--m-park)}
+.a-map .mpk{stroke:var(--m-park2)}
+.a-map .mw{stroke:var(--m-water)}
+.a-map .mwf{fill:var(--m-water)}
+.a-map .mb{fill:var(--m-bld);stroke:var(--m-bld-s);stroke-width:.8}
+.a-map .mc{stroke:var(--m-case)}
+.a-map .mr{stroke:var(--m-road)}
+.a-map .mh{stroke:var(--m-hw)}
+.a-map .mhc{stroke:var(--m-hw-case)}
+.a-map .mtraffic{display:none;fill:none;stroke-width:6;stroke-linecap:round}
+.a-map .tr-on .mtraffic{display:inline}
+.a-map .mstreet{display:none;fill:none;stroke:#4a9df0;stroke-width:4;opacity:.75}
+.a-map .sv-on .mstreet{display:inline}
+.a-map text{font-family:Roboto,Arial,var(--font);paint-order:stroke;stroke:var(--m-halo);stroke-linejoin:round;text-anchor:middle;pointer-events:none}
+.a-map .mt{font-size:10px;fill:var(--m-text);stroke-width:3px}
+.a-map .mtb{font-weight:600;fill:#7a5a13;font-size:10.5px}
+.a-map .mtw{font-size:12px;font-style:italic;fill:#3f7ab3;stroke-width:3px;letter-spacing:.06em}
+.a-map .mtp{font-size:10.5px;fill:#2e7d32;stroke-width:3px;font-weight:500}
+.a-map .mtd{font-size:12px;fill:#9aa0a6;stroke-width:3px;letter-spacing:.18em;font-weight:500}
+.a-map .mtl{font-size:9.5px;text-anchor:start;stroke-width:2.5px;font-weight:500}
+.a-map .mpi{font-size:8.5px;fill:#fff;stroke:none;font-weight:700}
+.a-mk{position:absolute;inset:0;pointer-events:none}
+.a-veh{position:absolute;transform:translate(-50%,-50%);border:0;background:none;padding:0;pointer-events:auto;display:grid;place-items:center;transition:left 1s linear,top 1s linear;z-index:1}
+.drag .a-veh{transition:none}
+.a-veh .dot{width:22px;height:22px;border-radius:50%;background:var(--c);display:grid;place-items:center;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.35);position:relative;z-index:1}
+.a-veh .dot svg{width:15px;height:9px}
+.a-veh .dot svg circle:nth-child(odd){fill:var(--c)}
+.a-veh .dir{position:absolute;width:30px;height:30px;display:none}
+.a-veh.mv .dir{display:block}
+.a-veh .dir::before{content:"";position:absolute;left:50%;top:-5px;transform:translateX(-50%);border:5px solid transparent;border-bottom:7px solid var(--c);border-top:0}
+.a-veh .lb{position:absolute;top:24px;left:50%;transform:translateX(-50%);background:var(--a-bg);color:var(--a-text);border-radius:3px;padding:0 4px;font-size:9.5px;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.a-veh.sel{z-index:3}
+.a-veh.sel .dot{box-shadow:0 0 0 4px rgba(15,124,196,.35),0 1px 4px rgba(0,0,0,.35)}
+.a-tip{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);background:var(--a-bg);color:var(--a-text);border-radius:6px;padding:6px 9px;white-space:nowrap;box-shadow:0 4px 14px rgba(0,0,0,.22);font-size:10.5px;display:flex;flex-direction:column;align-items:flex-start;gap:1px;text-align:start}
+.a-tip b{font-size:11.5px}
+.a-tip small{color:var(--a-muted)}
+.a-mtop{position:absolute;top:6px;right:6px;display:flex;gap:4px;font-size:10px;z-index:2}
+.a-mtop>*{background:var(--a-bg);border-radius:3px;padding:2px 6px;box-shadow:0 1px 3px rgba(0,0,0,.2);display:flex;align-items:center;gap:3px;white-space:nowrap;cursor:pointer}
+.a-mtop input{margin:0;width:11px;height:11px}
+.a-mtools{position:absolute;right:5px;bottom:26px;display:flex;flex-direction:column;gap:1px;z-index:2}
+.a-mtools>*{width:22px;height:22px;border:0;border-radius:3px;background:var(--a-bg);display:grid;place-items:center;color:#666;box-shadow:0 1px 2px rgba(0,0,0,.18)}
+.a-mtools svg{width:13px;height:13px}
+.a-mcoord{position:absolute;right:5px;bottom:4px;background:var(--a-bg);border-radius:3px;padding:1px 5px;font-size:9.5px;font-variant-numeric:tabular-nums;box-shadow:0 1px 2px rgba(0,0,0,.18);z-index:2}
+/* кнопки и поля */
+.a-btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;border:0;border-radius:4px;padding:0 12px;height:28px;background:var(--a-blue);color:#fff !important;font-weight:500;white-space:nowrap;flex:none}
+.a-btn svg{width:13px;height:13px}
+.a-btn:disabled{background:none;color:var(--a-muted) !important;opacity:.6;cursor:not-allowed}
+.a-btn.soft{background:var(--a-soft);color:var(--a-text) !important}
+.a-btn.sq{width:32px;padding:0}
+.a-field{display:flex;flex-direction:column;gap:2px;min-width:0;position:relative}
+.a-field label{font-size:9.5px;color:var(--a-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.a-field input,.a-field select{font:inherit;color:var(--a-text);background:var(--a-field);border:1px solid transparent;border-radius:4px;padding:0 7px;height:28px;min-width:0;width:100%;outline:none}
+.a-field select:disabled{opacity:.7}
+.a-field input::placeholder{color:var(--a-muted)}
+.a-field input:focus,.a-field select:focus{border-color:var(--a-blue);background:var(--a-bg)}
+.a-field.err input,.a-field.err select{border-color:#e57373}
+.a-field .em{color:var(--a-red);font-size:10px;min-height:13px}
+.a-dd2 svg{position:absolute;inset-inline-end:7px;bottom:8px;width:12px;height:12px;color:var(--a-muted);pointer-events:none}
+.a-plain select{background:none;border:0;width:130px}
+.a-chk{display:flex;gap:6px;align-items:center;font-size:11px;white-space:nowrap}
+.a-chk input{margin:0;width:13px;height:13px;accent-color:var(--a-blue)}
+.a-row2{display:flex;gap:6px;align-items:flex-end;min-width:0}
+.a-col{flex:none}
+.a-colr{display:flex;align-items:center;gap:2px;height:28px}
+.a-colr svg:last-child{width:11px;height:11px;color:var(--a-muted)}
+.a-colr .a-car{width:26px;height:14px}
+.a-chips{display:flex;gap:4px;align-items:center;height:28px;background:var(--a-field);border-radius:4px;padding:0 5px;overflow:hidden}
+.a-chips b{color:#fff;font-weight:500;font-size:10px;border-radius:3px;padding:2px 5px;white-space:nowrap}
+.a-checks{display:grid;grid-template-columns:1fr 1fr;gap:7px 16px;margin-top:10px}
+.a-checks.row{display:flex;gap:18px;margin:0;padding:0 10px 8px}
+/* модальные окна */
+.a-modal-bg{position:absolute;inset:0;background:rgba(10,20,30,.32);display:flex;align-items:center;justify-content:center;z-index:5;padding:10px}
+.a-modal{background:var(--a-bg);border-radius:6px;box-shadow:0 12px 40px rgba(0,0,0,.3);width:100%;max-width:520px;max-height:100%;display:flex;flex-direction:column;overflow:hidden;animation:a-pop .18s ease}
+.a-modal.mid{max-width:620px}
+.a-modal.wide{max-width:780px;height:100%}
+@keyframes a-pop{from{transform:scale(.97);opacity:0}}
+.a-mh{display:flex;align-items:center;gap:4px;padding:9px 12px 7px;font-size:13px;flex:none}
+.a-mh>span:first-child{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.a-agent{font-size:10.5px;margin-inline-end:6px;white-space:nowrap}
+.a-mb{padding:4px 14px 10px;overflow:auto;flex:1;min-height:0}
+.a-mb.flush{padding:0;display:flex;flex-direction:column}
+.a-mb h5{margin:4px 0 12px;font-size:13.5px;font-weight:500}
+.a-mf{display:flex;align-items:center;gap:8px;padding:8px 12px;border-top:1px solid var(--a-line);flex:none}
+.a-mf .warn{flex:1;color:var(--a-red);font-size:10.5px;display:flex;align-items:center;gap:5px;min-width:0}
+.a-mf .warn span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.a-mf .warn i{font-weight:400}
+.a-mf .warn.ok{color:var(--a-green)}
+.app .warn svg{width:14px;height:14px;flex:none}
+.a-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 8px;align-items:end}
+.a-grid.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.a-grid.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.a-more .a-grid.g2{margin-top:10px}
+.a-side{display:flex;flex:1;min-height:0}
+.a-side nav{width:128px;flex:none;padding:4px 0;display:flex;flex-direction:column;gap:1px;background:var(--a-soft)}
+.a-side nav span{padding:6px 10px;color:var(--a-text);display:flex;gap:8px;align-items:center;font-size:11px;border-inline-end:2px solid transparent}
+.a-side nav span svg{width:13px;height:13px;color:var(--a-muted)}
+.a-side nav span.on{background:var(--a-bg);font-weight:500;border-inline-end-color:var(--a-blue)}
+.a-side nav span.on svg{color:var(--a-blue)}
+.a-sh{display:flex;align-items:center;gap:4px;padding:8px 10px;flex:none}
+.a-sh h5{margin:0 10px 0 0;font-size:14px;font-weight:500}
+.a-sel{display:flex;align-items:center;justify-content:space-between;gap:6px;width:150px;height:24px;background:var(--a-field);border-radius:4px;padding:0 7px;color:var(--a-muted)}
+.a-sel svg{width:11px;height:11px}
+.a-menu{position:absolute;z-index:4;background:var(--a-bg);border-radius:4px;box-shadow:0 4px 18px rgba(0,0,0,.22);padding:4px 0;min-width:180px;animation:a-pop .12s ease}
+.a-menu button{display:flex;align-items:center;gap:10px;width:100%;border:0;background:none;padding:5px 12px;text-align:start;font-size:11px}
+.a-menu button:hover{background:var(--a-soft)}
+.a-menu svg{width:13px;height:13px;color:#555}
+.app .a-tbl{width:100%;min-width:0;border-collapse:collapse;font-size:10.5px}
+.app .a-tbl th{font-weight:400;color:var(--a-muted);text-align:start;vertical-align:middle;padding:4px 7px;border:0;border-bottom:1px solid var(--a-line);border-inline-end:1px solid var(--a-line);white-space:nowrap;position:sticky;top:0;background:var(--a-bg);z-index:1}
+.app .a-tbl td{padding:0 7px;height:24px;text-align:start;vertical-align:middle;border-inline:0;white-space:nowrap;font-variant-numeric:tabular-nums;max-width:160px;overflow:hidden;text-overflow:ellipsis;border-top:1px solid transparent;border-bottom:1px solid transparent}
+.app .a-tbl .r{text-align:end}
+.a-tbl td.tr{width:24px;color:var(--a-muted)}
+.a-tbl td.tr svg{width:13px;height:13px;vertical-align:middle}
+.a-tbl td.mut{color:var(--a-muted);white-space:normal}
+.a-tbl tr.sel td{background:var(--a-sel);border-color:var(--a-sel-line)}
+.a-tbl tr.click{cursor:pointer}
+.a-tbl tr.click:hover td{background:var(--a-soft)}
+.a-tbl tr.g td{font-size:10.5px}
+.a-tbl tr.g svg{width:10px;height:10px;vertical-align:middle;color:var(--a-muted)}
+.a-tbl .a-cb{vertical-align:middle}
+/* история */
+.a-dates{display:flex;align-items:flex-end;gap:8px;padding:0 10px 8px;flex:none}
+.a-dt{display:flex;gap:8px;flex:1;min-width:0}
+.a-dt .a-field{flex:1}
+.a-date{position:relative;display:block}
+.a-date svg{position:absolute;inset-inline-end:6px;top:8px;width:12px;height:12px;color:var(--a-muted);pointer-events:none}
+.a-hp{width:52%}
+.a-trips{flex:1.3}
+.a-player{display:flex;align-items:center;gap:2px;padding:4px 8px;border-top:1px solid var(--a-line);flex:none}
+.a-player input[type=range]{flex:1;accent-color:var(--a-blue);min-width:0;margin:0 4px}
+.a-rate{border:0;background:none;font-size:10.5px;min-width:24px;color:var(--a-text)}
+.a-etabs{display:flex;gap:2px;padding:4px 8px 0;border-top:1px solid var(--a-line);flex:none}
+.a-etabs span{padding:4px 10px;font-size:10.5px;color:var(--a-muted);border-bottom:2px solid transparent}
+.a-etabs span.on{color:var(--a-text);border-color:var(--a-blue)}
+.a-evs{flex:1}
+.a-hright{flex:1;display:flex;flex-direction:column;gap:6px;min-width:0}
+.a-chart{height:76px;background:var(--a-bg);border-radius:6px;position:relative;flex:none;padding:16px 6px 4px}
+.a-chart svg{position:absolute;inset:18px 6px 4px;width:calc(100% - 12px);height:calc(100% - 22px)}
+.a-leg{position:absolute;top:3px;inset-inline-start:8px;font-size:9.5px;display:flex;align-items:center;gap:5px;color:var(--a-muted)}
+.a-leg i{width:14px;height:2px;background:#1a73e8}
+/* отчёты */
+.a-rp{width:46%}
+.a-rpf{padding:0 10px 6px}
+.a-bline{display:flex;align-items:center;gap:8px;padding:0 10px 8px;flex:none}
+.a-bline .warn{flex:1;color:var(--a-muted);font-size:10px}
+.a-rright{flex:1;display:flex;flex-direction:column;gap:6px;min-width:0}
+.a-mapcard{flex:1;display:flex;flex-direction:column;background:var(--a-bg);border-radius:6px;overflow:hidden;min-height:0}
+.a-ct{padding:5px 10px;font-size:12px;flex:none}
+.a-mapcard .a-map{border-radius:0}
+.a-mapcard .a-mtools span,.a-mapcard .a-mtop label{display:none}
+.a-mapcard .a-mtools{bottom:24px}
+.a-res{display:none;flex:1.35;flex-direction:column;background:var(--a-bg);border-radius:6px;overflow:hidden;min-height:0}
+.has-res .a-res{display:flex}
+.a-rtab{display:flex;padding:4px 8px 0;border-bottom:1px solid var(--a-line);flex:none}
+.a-rtab span{display:flex;align-items:center;gap:6px;padding:3px 4px 4px 10px;font-size:10.5px;border-bottom:2px solid var(--a-blue)}
+.a-x{border:0;background:none;width:16px;height:16px;display:grid;place-items:center;color:var(--a-muted)}
+.a-x svg{width:10px;height:10px}
+.a-rhead{display:flex;flex-direction:column;gap:5px;padding:6px 10px;font-size:10.5px;flex:none}
+.a-pillo{background:var(--a-soft);border-radius:3px;padding:1px 6px}
+.a-rfoot{display:flex;gap:4px;padding:6px 8px;border-top:1px solid var(--a-line);flex:none}
+.a-rfoot .a-btn{height:24px;font-size:10.5px}
+.a-toast{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);background:#1f2733;color:#fff;border-radius:6px;padding:7px 12px;font-size:11.5px;z-index:9;white-space:nowrap;animation:a-pop .15s ease}
+.a-center{flex:1;display:flex;align-items:center;justify-content:center;padding:12px}
+.a-soon{color:var(--a-muted);background:var(--a-soft);margin:0 10px 10px;border-radius:6px}
+/* вход */
+.a-lpage{background:var(--a-page)}
+.a-login{width:100%;max-width:340px;background:var(--a-bg);border-radius:6px;box-shadow:0 2px 14px rgba(0,0,0,.07);padding:14px 18px 0;display:flex;flex-direction:column;gap:8px}
+.a-login .lt{display:flex;justify-content:space-between;align-items:center}
+.a-login .big{display:flex;align-items:center;justify-content:center;gap:10px;margin:6px 0 4px}
+.a-login .big svg{width:46px;height:46px}
+.a-login .big b{font:900 34px/1 'Arial Black',Roboto,var(--font);letter-spacing:.01em}
+.a-login .lb{display:flex;justify-content:space-between;gap:8px;margin:4px -18px 0;padding:10px 18px;border-top:1px solid var(--a-line)}
+.a-login .a-btn.wide{min-width:120px}
+.a-spin{width:13px;height:13px;border:2px solid rgba(255,255,255,.5);border-top-color:#fff;border-radius:50%;animation:a-rot .7s linear infinite}
+@keyframes a-rot{to{transform:rotate(360deg)}}
+/* номера-выноски и подсветка */
+[data-n]{position:relative}
+.app:has(>.a-modal-bg) .a-num{display:none}.app .a-modal-bg .a-num{display:block}
+.a-num{position:absolute;top:-7px;inset-inline-start:-7px;width:17px;height:17px;border-radius:50%;background:#16a06a;color:#fff;font:700 10px/17px var(--font);text-align:center;z-index:6;pointer-events:none;box-shadow:0 0 0 2px var(--a-bg)}
+.app .a-num.in{top:2px;inset-inline-end:2px;inset-inline-start:auto}
+.app .a-player>.a-num.in{inset-inline-end:auto;inset-inline-start:50%}
+.app .a-map>.a-num.in{top:32px}
+.hl{outline:2px solid #16a06a !important;outline-offset:2px;border-radius:6px;animation:a-pulse 1.2s ease infinite}
+@keyframes a-pulse{50%{outline-color:rgba(22,160,106,.35)}}
+.demo-cap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 12px;align-items:baseline;margin-top:8px;font-size:.86rem;color:var(--muted)}
+.demo-cap>span:first-child{flex:1 1 260px}
+.a-cursor{position:absolute;left:0;top:0;width:18px;height:22px;z-index:20;pointer-events:none;transition:transform .6s cubic-bezier(.4,.1,.2,1);filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))}
+.a-cursor svg{width:18px;height:22px;display:block}
+.a-cursor i{position:absolute;left:-9px;top:-9px;width:20px;height:20px;border-radius:50%;background:rgba(15,124,196,.45);opacity:0;transform:scale(.3)}
+.a-cursor.tap i{animation:a-tap .45s ease-out}
+@keyframes a-tap{0%{opacity:1;transform:scale(.3)}100%{opacity:0;transform:scale(1.6)}}
+.demo-cap .a-auto{border:var(--bw) solid var(--line);background:var(--bg-soft);color:var(--text);border-radius:999px;padding:2px 10px;font-size:.74rem;cursor:pointer;white-space:nowrap;margin-inline-start:auto}
+.demo-cap .hint{font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;color:var(--muted)}
+.demo-steps{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.demo-steps button{display:flex;align-items:center;gap:6px;border:var(--bw) solid var(--line);background:var(--bg-soft);border-radius:999px;padding:3px 10px 3px 4px;font-size:.82rem;cursor:pointer;color:var(--text)}
+.demo-steps button:hover,.demo-steps button.on{border-color:#16a06a}
+.demo-steps b{width:18px;height:18px;border-radius:50%;background:#16a06a;color:#fff;font-size:.68rem;display:grid;place-items:center}
+@container demo (max-width:880px){
+  .a-user{display:none}
+}
+@container demo (max-width:780px){
+  .a-stat{display:none}
+  .a-th,.a-row{grid-template-columns:16px 26px minmax(0,1fr) minmax(0,1fr) 30px}
+  .a-th>span:nth-child(3),.a-th>span:nth-child(4),.a-row .tm,.a-row .tg{display:none}
+  .a-th.short,.a-row.short{grid-template-columns:16px 26px minmax(0,1fr) 50px}
+  .a-row.short .tg,.a-th.short>span:nth-child(2){display:flex}
+}
+@container demo (max-width:600px){
+  .app{height:460px}.app.tall{height:560px}
+  .a-rail{display:none}
+  .a-body{padding:6px}
+  .a-panel,.a-rp,.a-hp{width:100%}
+  .a-body>.a-map{display:none}
+  .a-tab span{display:none}
+  .a-th,.a-row{grid-template-columns:16px 26px minmax(0,1fr) 28px}
+  .a-th>span:nth-child(2),.a-row .st{display:none}
+  .a-flt .a-dd:not(.a-all){display:none}
+  .a-grid,.a-grid.g3{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .a-grid.g4{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .a-side nav{display:none}
+  .a-checks{grid-template-columns:1fr}
+  .a-hist .a-body{flex-direction:column}
+  .a-hist .a-body>.a-map{display:block;flex:none;height:170px}
+  .a-hist .a-hright{flex:none;height:220px}
+  .a-hist .a-hp{flex:1;min-height:0}
+  .a-hist .a-etabs,.a-hist .a-evs{display:none}
+  .a-rright{display:none}
+  .has-res .a-rp{display:none}
+  .has-res .a-rright{display:flex}
+  .has-res .a-mapcard{display:none}
+  .a-mtop label{display:none}
+  .a-dates{flex-wrap:wrap}
+  .a-checks.row{gap:10px;flex-wrap:wrap}
+  .a-mh .a-agent{display:none}
+}
+@media (prefers-reduced-motion:reduce){.app *{animation:none !important;transition:none !important}}
+
+</style>
+
+<header class="top">
+  <button class="icon-btn menu-btn" id="menuBtn" type="button" aria-label="Разделы" data-i-al="sections">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+  </button>
+  <a class="logo" href="#" id="logo" aria-label="PILOT, на главную" data-i-al="home">
+    <svg viewBox="0 0 33 33" aria-hidden="true"><path fill="#0284C7" d="M27.36 27.77c-4.39 4.42-10.7 5.74-16.25 3.97a3 3 0 0 1-1.94-3.45c.59-2.43 2-5.79 5.28-9.13a7.84 7.84 0 0 1 5.32-2.29c2.43-.03 4.87.78 6.77 2.43a10.4 10.4 0 0 1-2.42-6.68c0-2.52.85-4.74 2.46-6.68a10.37 10.37 0 0 1-6.68 2.45c-2.52.01-4.75-.83-6.7-2.42a10.4 10.4 0 0 1 2.43 6.69 7.9 7.9 0 0 1-2.17 5.26c-1.88 1.92-5.3 4.97-8.94 5.99a3 3 0 0 1-3.48-1.77C-1.12 16.48.09 9.78 4.69 5.19c6.21-6.22 16.27-6.25 22.53-.1 6.32 6.2 6.39 16.41.15 22.69Z"/></svg>
+    PILOT <span>Docs</span>
+  </a>
+  <span class="ver" data-i="ver">версия 7.10</span>
+  <button class="search-btn" id="searchBtn" type="button"><span data-i="searchDocs">Поиск по документации</span><kbd>Ctrl K</kbd></button>
+  <div class="spacer"></div>
+  <label class="lang"><span class="sr" data-i="language">Язык</span><svg class="globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3Z"/></svg><select id="langSel"></select><svg class="chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg></label>
+  <a class="top-link" href="#chto-novogo-v-pilot-7-10" data-i="whatsNew">Что нового</a>
+  <button class="icon-btn" id="settingsBtn" type="button" aria-label="Настройки отображения" title="Настройки" data-i-al="settingsAria" data-i-ti="settings">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>
+  </button>
+</header>
+
+<main id="home" class="home">
+  <h1 data-i="h1">Что нужно найти?</h1>
+  <p class="lead" id="lead">Руководство пользователя PILOT 7.10</p>
+  <form class="home-search" id="homeForm" role="search">
+    <input id="homeInput" type="search" placeholder="Например: как добавить датчик" aria-label="Поиск по документации" data-i-ph="homePh" data-i-al="searchDocs" autocomplete="off">
+    <button class="btn" type="submit" data-i="find">Найти</button>
+  </form>
+  <div class="chips" id="chips"></div>
+  <div class="tags-box"><div class="tags-head"><span data-i="topics">Темы</span><button type="button" id="tagsClear" hidden data-i="reset">Сбросить</button></div><div class="tags" id="tags" role="group" aria-label="Темы" data-i-al="topics"></div></div>
+  <ol class="results" id="homeResults" aria-live="polite"></ol>
+  <div class="grid" id="tiles"></div>
+</main>
+
+<div class="doc" id="doc" hidden>
+  <aside class="sidebar" id="sidebar" aria-label="Разделы" data-i-al="sections"><ul class="nav" id="nav"></ul></aside>
+  <main class="article" id="article">
+    <div class="article-inner">
+      <nav class="crumbs" id="crumbs" aria-label="Путь" data-i-al="path"></nav>
+      <h1 id="title"></h1>
+      <div class="art-tags" id="artTags"></div>
+      <p class="fallback" id="fallback"></p>
+      <div class="body" id="body"></div>
+      <nav class="pager" id="pager" aria-label="Соседние статьи" data-i-al="pager"></nav>
+    </div>
+  </main>
+  <aside class="toc" id="toc" aria-label="На странице" data-i-al="onPage"></aside>
+</div>
+
+<div class="dialog" id="settings" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" hidden>
+  <div class="box">
+    <h2 id="settingsTitle" data-i="settings">Настройки</h2>
+    <fieldset><legend data-i="theme">Тема оформления</legend>
+      <label><input type="radio" name="skin" id="skin-auto" value="auto"> <span data-i="skinAuto">Как в приложении</span></label>
+      <label><input type="radio" name="skin" id="skin-light" value="light"> <span data-i="skinLight">Светлая</span></label>
+      <label><input type="radio" name="skin" id="skin-dark" value="dark"> <span data-i="skinDark">Тёмная</span></label>
+    </fieldset>
+    <fieldset><legend data-i="contrast">Контраст</legend>
+      <label><input type="radio" name="contrast" id="contrast-low" value="low"> <span data-i="cLow">Слабый</span></label>
+      <label><input type="radio" name="contrast" id="contrast-normal" value="normal"> <span data-i="cNormal">Обычный</span></label>
+      <label><input type="radio" name="contrast" id="contrast-high" value="high"> <span data-i="cHigh">Сильный</span></label>
+    </fieldset>
+    <fieldset><legend data-i="fontSize">Размер текста</legend>
+      <label><input type="radio" name="font" id="font-s" value="s"> <span data-i="fS">Обычный</span> <small>100%</small></label>
+      <label><input type="radio" name="font" id="font-m" value="m"> <span data-i="fM">Крупный</span> <small>112%</small></label>
+      <label><input type="radio" name="font" id="font-l" value="l"> <span data-i="fL">Очень крупный</span> <small>125%</small></label>
+    </fieldset>
+    <div class="actions"><button class="btn" type="button" data-close data-i="done">Готово</button></div>
+  </div>
+</div>
+
+<div class="dialog" id="search" role="dialog" aria-modal="true" aria-label="Поиск" data-i-al="search" hidden>
+  <div class="box search-box">
+    <input class="search-input" id="searchInput" type="search" placeholder="Например: слив топлива" autocomplete="off" aria-label="Поиск" data-i-ph="searchPh" data-i-al="search">
+    <ol class="results" id="searchResults" aria-live="polite"></ol>
+  </div>
+</div>
+
+<div class="dialog lightbox" id="lightbox" hidden><img id="lightboxImg" alt=""></div>
+
+<script>
+/* Строки интерфейса сайта документации на всех языках. Статьи переводятся отдельно (i18n/<язык>/). */
+window.UI_I18N = {
+  ru: {
+    name: 'Русский', title: 'Документация PILOT', sections: 'Разделы', home: 'PILOT, на главную', ver: 'версия 7.10',
+    searchDocs: 'Поиск по документации', whatsNew: 'Что нового', settingsAria: 'Настройки отображения', settings: 'Настройки',
+    h1: 'Что нужно найти?', lead: (n) => `Руководство пользователя PILOT 7.10: ${n} статей`, homePh: 'Например: как добавить датчик', find: 'Найти',
+    topics: 'Темы', reset: 'Сбросить', path: 'Путь', pager: 'Соседние статьи', onPage: 'На странице',
+    theme: 'Тема оформления', skinAuto: 'Как в приложении', skinLight: 'Светлая', skinDark: 'Тёмная',
+    contrast: 'Контраст', cLow: 'Слабый', cNormal: 'Обычный', cHigh: 'Сильный',
+    fontSize: 'Размер текста', fS: 'Обычный', fM: 'Крупный', fL: 'Очень крупный', done: 'Готово', language: 'Язык',
+    search: 'Поиск', searchPh: 'Например: слив топлива', expand: 'Развернуть', docs: 'Документация',
+    loadingSearch: 'Загружаю поиск…', nothing: 'Ничего не нашлось. Попробуйте другое слово или более короткий запрос.',
+    noTagged: 'Нет статей со всеми выбранными темами.', loading: 'Загружаю статью…', loadFail: 'Не удалось загрузить статью. Обновите страницу.',
+    empty: 'В этой статье пока нет текста.', prev: 'Назад', next: 'Далее', failAll: 'Не удалось загрузить документацию. Обновите страницу.',
+    fallback: 'Эта статья пока доступна только на русском языке.',
+    popular: ['Как добавить датчик', 'Слив топлива', 'Геозоны', 'Роли и права доступа', 'API'],
+    count: (c) => `${c} ${c % 10 === 1 && c % 100 !== 11 ? 'статья' : (c % 10 >= 2 && c % 10 <= 4 && (c % 100 < 12 || c % 100 > 14)) ? 'статьи' : 'статей'}`,
+    tags: { start: 'Начало работы', news: 'Обновления', reports: 'Отчёты', sensors: 'Датчики', fuel: 'Топливо', geozones: 'Геозоны', map: 'Карта', interface: 'Интерфейс', objects: 'Объекты', users: 'Пользователи и права', notify: 'Уведомления', history: 'История и треки', mobile: 'Мобильные приложения', telegram: 'Telegram', api: 'API', bi: 'BI и интеграции', hardware: 'Оборудование', drivers: 'Водители', agro: 'Агро', video: 'Видео и медиа', temp: 'Температура', logistics: 'Логистика', maintenance: 'Техобслуживание', admin: 'Администрирование', rfid: 'RFID', modules: 'Модули' },
+  },
+  en: {
+    name: 'English', title: 'PILOT Documentation', sections: 'Sections', home: 'PILOT, home', ver: 'version 7.10',
+    searchDocs: 'Search the docs', whatsNew: 'What’s new', settingsAria: 'Display settings', settings: 'Settings',
+    h1: 'What are you looking for?', lead: (n) => `PILOT 7.10 user guide: ${n} articles`, homePh: 'For example: how to add a sensor', find: 'Search',
+    topics: 'Topics', reset: 'Clear', path: 'Path', pager: 'Next and previous articles', onPage: 'On this page',
+    theme: 'Theme', skinAuto: 'Same as the app', skinLight: 'Light', skinDark: 'Dark',
+    contrast: 'Contrast', cLow: 'Low', cNormal: 'Normal', cHigh: 'High',
+    fontSize: 'Text size', fS: 'Normal', fM: 'Large', fL: 'Extra large', done: 'Done', language: 'Language',
+    search: 'Search', searchPh: 'For example: fuel drain', expand: 'Expand', docs: 'Documentation',
+    loadingSearch: 'Loading search…', nothing: 'Nothing found. Try another word or a shorter query.',
+    noTagged: 'No articles have all the selected topics.', loading: 'Loading the article…', loadFail: 'Could not load the article. Reload the page.',
+    empty: 'This article has no text yet.', prev: 'Previous', next: 'Next', failAll: 'Could not load the documentation. Reload the page.',
+    fallback: 'This article is only available in Russian for now.',
+    popular: ['How to add a sensor', 'Fuel drain', 'Geofences', 'Roles and access rights', 'API'],
+    count: (c) => `${c} ${c === 1 ? 'article' : 'articles'}`,
+    tags: { start: 'Getting started', news: 'Updates', reports: 'Reports', sensors: 'Sensors', fuel: 'Fuel', geozones: 'Geofences', map: 'Map', interface: 'Interface', objects: 'Objects', users: 'Users and rights', notify: 'Notifications', history: 'History and tracks', mobile: 'Mobile apps', telegram: 'Telegram', api: 'API', bi: 'BI and integrations', hardware: 'Hardware', drivers: 'Drivers', agro: 'Agro', video: 'Video and media', temp: 'Temperature', logistics: 'Logistics', maintenance: 'Maintenance', admin: 'Administration', rfid: 'RFID', modules: 'Modules' },
+  },
+  uk: {
+    name: 'Українська', title: 'Документація PILOT', sections: 'Розділи', home: 'PILOT, на головну', ver: 'версія 7.10',
+    searchDocs: 'Пошук у документації', whatsNew: 'Що нового', settingsAria: 'Налаштування відображення', settings: 'Налаштування',
+    h1: 'Що потрібно знайти?', lead: (n) => `Посібник користувача PILOT 7.10: ${n} статей`, homePh: 'Наприклад: як додати датчик', find: 'Знайти',
+    topics: 'Теми', reset: 'Скинути', path: 'Шлях', pager: 'Сусідні статті', onPage: 'На сторінці',
+    theme: 'Тема оформлення', skinAuto: 'Як у застосунку', skinLight: 'Світла', skinDark: 'Темна',
+    contrast: 'Контраст', cLow: 'Слабкий', cNormal: 'Звичайний', cHigh: 'Сильний',
+    fontSize: 'Розмір тексту', fS: 'Звичайний', fM: 'Великий', fL: 'Дуже великий', done: 'Готово', language: 'Мова',
+    search: 'Пошук', searchPh: 'Наприклад: злив палива', expand: 'Розгорнути', docs: 'Документація',
+    loadingSearch: 'Завантажую пошук…', nothing: 'Нічого не знайдено. Спробуйте інше слово або коротший запит.',
+    noTagged: 'Немає статей з усіма вибраними темами.', loading: 'Завантажую статтю…', loadFail: 'Не вдалося завантажити статтю. Оновіть сторінку.',
+    empty: 'У цій статті поки немає тексту.', prev: 'Назад', next: 'Далі', failAll: 'Не вдалося завантажити документацію. Оновіть сторінку.',
+    fallback: 'Ця стаття поки доступна лише російською мовою.',
+    popular: ['Як додати датчик', 'Злив палива', 'Геозони', 'Ролі та права доступу', 'API'],
+    count: (c) => `${c} ${c % 10 === 1 && c % 100 !== 11 ? 'стаття' : (c % 10 >= 2 && c % 10 <= 4 && (c % 100 < 12 || c % 100 > 14)) ? 'статті' : 'статей'}`,
+    tags: { start: 'Початок роботи', news: 'Оновлення', reports: 'Звіти', sensors: 'Датчики', fuel: 'Паливо', geozones: 'Геозони', map: 'Карта', interface: 'Інтерфейс', objects: 'Об’єкти', users: 'Користувачі та права', notify: 'Сповіщення', history: 'Історія та треки', mobile: 'Мобільні застосунки', telegram: 'Telegram', api: 'API', bi: 'BI та інтеграції', hardware: 'Обладнання', drivers: 'Водії', agro: 'Агро', video: 'Відео та медіа', temp: 'Температура', logistics: 'Логістика', maintenance: 'Техобслуговування', admin: 'Адміністрування', rfid: 'RFID', modules: 'Модулі' },
+  },
+  ar: {
+    name: 'العربية', title: 'وثائق PILOT', sections: 'الأقسام', home: 'PILOT، الصفحة الرئيسية', ver: 'الإصدار 7.10',
+    searchDocs: 'البحث في الوثائق', whatsNew: 'ما الجديد', settingsAria: 'إعدادات العرض', settings: 'الإعدادات',
+    h1: 'عمّ تبحث؟', lead: (n) => `دليل مستخدم PILOT 7.10: ${n} مقالة`, homePh: 'مثال: كيفية إضافة حساس', find: 'بحث',
+    topics: 'المواضيع', reset: 'مسح', path: 'المسار', pager: 'المقالات المجاورة', onPage: 'في هذه الصفحة',
+    theme: 'المظهر', skinAuto: 'مثل التطبيق', skinLight: 'فاتح', skinDark: 'داكن',
+    contrast: 'التباين', cLow: 'منخفض', cNormal: 'عادي', cHigh: 'مرتفع',
+    fontSize: 'حجم النص', fS: 'عادي', fM: 'كبير', fL: 'كبير جدًا', done: 'تم', language: 'اللغة',
+    search: 'بحث', searchPh: 'مثال: تصريف الوقود', expand: 'توسيع', docs: 'الوثائق',
+    loadingSearch: 'جارٍ تحميل البحث…', nothing: 'لم يتم العثور على نتائج. جرّب كلمة أخرى أو استعلامًا أقصر.',
+    noTagged: 'لا توجد مقالات تحتوي على كل المواضيع المحددة.', loading: 'جارٍ تحميل المقالة…', loadFail: 'تعذّر تحميل المقالة. أعد تحميل الصفحة.',
+    empty: 'لا يوجد نص في هذه المقالة بعد.', prev: 'السابق', next: 'التالي', failAll: 'تعذّر تحميل الوثائق. أعد تحميل الصفحة.',
+    fallback: 'هذه المقالة متاحة حاليًا باللغة الروسية فقط.',
+    popular: ['كيفية إضافة حساس', 'تصريف الوقود', 'السياجات الجغرافية', 'الأدوار وصلاحيات الوصول', 'API'],
+    count: (c) => `${c} ${c === 1 ? 'مقالة' : c === 2 ? 'مقالتان' : c <= 10 ? 'مقالات' : 'مقالة'}`,
+    tags: { start: 'البدء', news: 'التحديثات', reports: 'التقارير', sensors: 'الحساسات', fuel: 'الوقود', geozones: 'السياجات الجغرافية', map: 'الخريطة', interface: 'الواجهة', objects: 'الكائنات', users: 'المستخدمون والصلاحيات', notify: 'الإشعارات', history: 'السجل والمسارات', mobile: 'تطبيقات الجوال', telegram: 'Telegram', api: 'API', bi: 'BI والتكامل', hardware: 'الأجهزة', drivers: 'السائقون', agro: 'الزراعة', video: 'الفيديو والوسائط', temp: 'درجة الحرارة', logistics: 'اللوجستيات', maintenance: 'الصيانة', admin: 'الإدارة', rfid: 'RFID', modules: 'الوحدات البرمجية' },
+  },
+
+  es: {
+    name: 'Español', title: 'Documentación de PILOT', sections: 'Secciones', home: 'PILOT, inicio', ver: 'versión 7.10',
+    searchDocs: 'Buscar en la documentación', whatsNew: 'Novedades', settingsAria: 'Ajustes de visualización', settings: 'Ajustes',
+    h1: '¿Qué está buscando?', lead: (n) => `Guía del usuario de PILOT 7.10: ${n} artículos`, homePh: 'Por ejemplo: cómo añadir un sensor', find: 'Buscar',
+    topics: 'Temas', reset: 'Borrar', path: 'Ruta', pager: 'Artículos anterior y siguiente', onPage: 'En esta página',
+    theme: 'Tema', skinAuto: 'Igual que la aplicación', skinLight: 'Claro', skinDark: 'Oscuro',
+    contrast: 'Contraste', cLow: 'Bajo', cNormal: 'Normal', cHigh: 'Alto',
+    fontSize: 'Tamaño del texto', fS: 'Normal', fM: 'Grande', fL: 'Muy grande', done: 'Listo', language: 'Idioma',
+    search: 'Buscar', searchPh: 'Por ejemplo: drenaje de combustible', expand: 'Expandir', docs: 'Documentación',
+    loadingSearch: 'Cargando la búsqueda…', nothing: 'No se encontró nada. Pruebe otra palabra o una búsqueda más corta.',
+    noTagged: 'Ningún artículo tiene todos los temas seleccionados.', loading: 'Cargando el artículo…', loadFail: 'No se pudo cargar el artículo. Recargue la página.',
+    empty: 'Este artículo aún no tiene texto.', prev: 'Anterior', next: 'Siguiente', failAll: 'No se pudo cargar la documentación. Recargue la página.',
+    fallback: 'Por ahora este artículo solo está disponible en ruso.',
+    popular: ['Cómo añadir un sensor', 'Drenaje de combustible', 'Geocercas', 'Roles y derechos de acceso', 'API'],
+    count: (c) => `${c} ${c === 1 ? 'artículo' : 'artículos'}`,
+    tags: { start: 'Primeros pasos', news: 'Novedades', reports: 'Informes', sensors: 'Sensores', fuel: 'Combustible', geozones: 'Geocercas', map: 'Mapa', interface: 'Interfaz', objects: 'Objetos', users: 'Usuarios y derechos', notify: 'Notificaciones', history: 'Historial y recorridos', mobile: 'Aplicaciones móviles', telegram: 'Telegram', api: 'API', bi: 'BI e integraciones', hardware: 'Equipos', drivers: 'Conductores', agro: 'Agro', video: 'Vídeo y multimedia', temp: 'Temperatura', logistics: 'Logística', maintenance: 'Mantenimiento', admin: 'Administración', rfid: 'RFID', modules: 'Módulos' },
+  },};
+</script>
+<script>
+/* Интерактивные экраны PILOT для раздела «С чего начать».
+   Каждый экран — мини-интерфейс, собранный кодом; живёт внутри своей рамки и не трогает страницу.
+   Тексты лежат в DEMO_I18N, чтобы экраны можно было перевести вместе со статьями. */
+(function () {
+  const DEMO_I18N = {
+    ru: {
+      hint: 'Можно нажимать', tabs: ['Основные', 'История', 'Отчёты', 'Договор', 'Сервис'], user: 'Алена (master)', balance: '0,00 ₽',
+      online: 'Онлайн', objects: 'Объекты', status: 'Статус', updated: 'Обновлено', all: 'Все', common: 'Общая', mine: 'Мои',
+      st: { move: (v) => `Движение ${v} км/ч`, park: ([h, m]) => `Стоянка ${h} ч ${m} мин`, nolink: 'Нет связи более 8 дней', never: 'Не выходил на связь' },
+      login: { demo: 'Демо', login: 'Логин', pass: 'Пароль', remember: 'Запомнить меня', forgot: 'Забыли пароль?', enter: 'Войти', needLogin: 'Введите логин', needPass: 'Введите пароль', welcome: 'Вы вошли как', logout: 'Выйти', langs: ['Русский', 'English', 'Українська', 'العربية', 'Español'],
+        cap: 'Введите логин и пароль, выберите язык и нажмите «Войти».', steps: ['Логин', 'Пароль', 'Язык', 'Войти'] },
+      over: { cap: 'Нажмите на вкладку в верхней панели или на объект в списке: он подсветится на карте.', steps: ['Верхняя панель', 'Рабочая область', 'Карта'], soon: 'Здесь откроется раздел' },
+      obj: { add: 'Добавить объект', title: 'Новый объект', side: ['Основные', 'Инфо', 'Настройки', 'Доп. параметры', 'Топливо'], num: 'Номер машины', id: 'ID устройства', idHint: 'IMEI, 15 цифр', dtype: 'Тип устройства', vtype: 'Тип ТС', group: 'Группа', tz: 'Часовой пояс', choose: 'Выберите…', vtypes: ['Легковой', 'Грузовой', 'Спецтехника', 'Прицеп', 'Животное', 'Человек'], required: 'Обязательное поле', reset: 'Сбросить', save: 'Сохранить', ready: 'Всё заполнено, можно сохранять', saved: 'Объект добавлен в список',
+        cap: 'Нажмите «+», заполните три обязательных поля и сохраните объект.', steps: ['Кнопка «Добавить»', 'Номер машины', 'ID устройства', 'Тип устройства', 'Сохранить'] },
+      sen: { menu: ['Текущий трек', 'Следить за объектом', 'Карта', 'Редактировать', 'Датчики', 'Точки', 'Медиа', 'История', 'Удалить'], sensorsOf: 'Датчики объекта', name: 'Название', type: 'Назначение', field: 'Поле', value: 'Значение', add: 'Добавить датчик', pick: 'Выберите тип датчика', types: [['Датчик зажигания', 'Двухпозиционный'], ['Уровень топлива', 'Ёмкость бака, л'], ['Температура', '°C'], ['Пробег', 'км'], ['Моточасы', 'ч'], ['Тревожная кнопка', 'Двухпозиционный']], min: 'Мин. значение', max: 'Макс. значение', events: 'Создавать события', history: 'Сохранять историю', save: 'Сохранить', back: 'Назад', needName: 'Название: обязательное поле', needField: 'Поле: выберите поле устройства', ok: 'Датчик готов к сохранению', on: 'вкл.', off: 'выкл.', rightClick: 'Нажмите на объект правой кнопкой (или ⋮)',
+        cap: 'Откройте меню объекта, перейдите в «Датчики», добавьте датчик и сохраните.', steps: ['Меню объекта', 'Датчики', 'Добавить', 'Тип датчика', 'Поля', 'Сохранить'], existing: [['Скорость', 'speed', '7 км/ч'], ['Напряжение питания', 'pwr_ext', '13,8 В']] },
+      his: { obj: 'Объект', from: 'С', to: 'По', search: 'Поиск', trips: 'Рейсы', date: 'Дата', start: 'Старт', stop: 'Стоп', dur: 'Длит.', dist: 'Км', vmax: 'Макс.', pick: 'Отметьте рейсы галочкой, чтобы увидеть трек', events: 'События', speed: 'Скорость', ev: ['Начало движения', 'Превышение скорости 92 км/ч', 'Стоянка 4 мин', 'Конец движения'],
+        cap: 'Выберите объект и период, нажмите «Поиск», отметьте рейсы и запустите плеер.', steps: ['Объект', 'Период', 'Поиск', 'Рейсы', 'Плеер', 'График'] },
+      rep: { title: 'Отчёты', split: 'Разбивать', splits: ['По суткам', 'По неделям', 'Без разбивки'], from: 'С даты', to: 'По дату', group: 'Группировка', groups: ['По датам', 'По объектам'], sgroups: 'Группы датчиков', sgroupsAll: 'Все', type: 'Тип отчёта', types: ['Пробег', 'Стоянки', 'Поездки', 'Расход топлива'], build: 'Построить отчёт', need: 'Отметьте объект и выберите тип отчёта', back: 'Параметры', total: 'Итого', noDl: 'В демо файлы не скачиваются',
+        cols: [['Пробег, км', 'В движении', 'Макс. скорость'], ['Стоянок', 'Время стоянок', 'Самая долгая'], ['Поездок', 'Пробег, км', 'Ср. скорость'], ['Расход, л', 'Заправлено, л', 'Сливы, л']],
+        period: 'Период', week: (n) => `${n}-я неделя`, h: 'ч', min: 'мин', kmh: 'км/ч', locale: 'ru-RU',
+        cap: 'Отметьте объект, задайте период и тип отчёта, нажмите «Построить отчёт».', steps: ['Объект', 'Период', 'Тип отчёта', 'Разбивка', 'Группировка', 'Группы датчиков', 'Построить'] },
+    },
+    en: {
+      hint: 'Try it', tabs: ['Main', 'History', 'Reports', 'Contract', 'Service'], user: 'Alena (master)', balance: '₽0.00',
+      online: 'Online', objects: 'Objects', status: 'Status', updated: 'Updated', all: 'All', common: 'General', mine: 'Mine',
+      st: { move: (v) => `Moving ${v} km/h`, park: ([h, m]) => `Parked ${h} h ${m} min`, nolink: 'No signal for over 8 days', never: 'Never connected' },
+      login: { demo: 'Demo', login: 'Login', pass: 'Password', remember: 'Remember me', forgot: 'Forgot password?', enter: 'Sign in', needLogin: 'Enter your login', needPass: 'Enter your password', welcome: 'Signed in as', logout: 'Sign out', langs: ['English', 'Русский', 'Українська', 'العربية', 'Español'],
+        cap: 'Enter your login and password, choose a language and click “Sign in”.', steps: ['Login', 'Password', 'Language', 'Sign in'] },
+      over: { cap: 'Click a tab in the top bar or an object in the list: it lights up on the map.', steps: ['Top bar', 'Workspace', 'Map'], soon: 'This opens the section' },
+      obj: { add: 'Add object', title: 'New object', side: ['Main', 'Info', 'Settings', 'Extra parameters', 'Fuel'], num: 'Vehicle number', id: 'Device ID', idHint: 'IMEI, 15 digits', dtype: 'Device type', vtype: 'Vehicle type', group: 'Group', tz: 'Time zone', choose: 'Choose…', vtypes: ['Car', 'Truck', 'Special machinery', 'Trailer', 'Animal', 'Person'], required: 'Required field', reset: 'Reset', save: 'Save', ready: 'All set, you can save', saved: 'Object added to the list',
+        cap: 'Click “+”, fill in the three required fields and save the object.', steps: ['“Add” button', 'Vehicle number', 'Device ID', 'Device type', 'Save'] },
+      sen: { menu: ['Current track', 'Follow object', 'Map', 'Edit', 'Sensors', 'Points', 'Media', 'History', 'Delete'], sensorsOf: 'Sensors of', name: 'Name', type: 'Purpose', field: 'Field', value: 'Value', add: 'Add sensor', pick: 'Choose a sensor type', types: [['Ignition sensor', 'Two-state'], ['Fuel level', 'Tank volume, l'], ['Temperature', '°C'], ['Mileage', 'km'], ['Engine hours', 'h'], ['Panic button', 'Two-state']], min: 'Min. value', max: 'Max. value', events: 'Create events', history: 'Keep history', save: 'Save', back: 'Back', needName: 'Name: required field', needField: 'Field: choose a device field', ok: 'The sensor is ready to save', on: 'on', off: 'off', rightClick: 'Right-click the object (or ⋮)',
+        cap: 'Open the object menu, go to “Sensors”, add a sensor and save it.', steps: ['Object menu', 'Sensors', 'Add', 'Sensor type', 'Fields', 'Save'], existing: [['Speed', 'speed', '7 km/h'], ['Supply voltage', 'pwr_ext', '13.8 V']] },
+      his: { obj: 'Object', from: 'From', to: 'To', search: 'Search', trips: 'Trips', date: 'Date', start: 'Start', stop: 'Stop', dur: 'Dur.', dist: 'km', vmax: 'Max', pick: 'Tick trips to see the track', events: 'Events', speed: 'Speed', ev: ['Started moving', 'Speeding 92 km/h', 'Stopped for 4 min', 'Stopped moving'],
+        cap: 'Choose an object and a period, click “Search”, tick trips and start the player.', steps: ['Object', 'Period', 'Search', 'Trips', 'Player', 'Chart'] },
+      rep: { title: 'Reports', split: 'Split', splits: ['By day', 'By week', 'No split'], from: 'From', to: 'To', group: 'Grouping', groups: ['By date', 'By object'], sgroups: 'Sensor groups', sgroupsAll: 'All', type: 'Report type', types: ['Mileage', 'Parking', 'Trips', 'Fuel consumption'], build: 'Build report', need: 'Tick an object and choose a report type', back: 'Parameters', total: 'Total', noDl: 'Files are not downloaded in the demo',
+        cols: [['Mileage, km', 'Moving', 'Max speed'], ['Stops', 'Parking time', 'Longest'], ['Trips', 'Mileage, km', 'Avg. speed'], ['Used, l', 'Refueled, l', 'Drains, l']],
+        period: 'Period', week: (n) => `Week ${n}`, h: 'h', min: 'min', kmh: 'km/h', locale: 'en-GB',
+        cap: 'Tick an object, set the period and report type, then click “Build report”.', steps: ['Object', 'Period', 'Report type', 'Split', 'Grouping', 'Sensor groups', 'Build'] },
+    },
+    uk: {
+      hint: 'Можна натискати', tabs: ['Основні', 'Історія', 'Звіти', 'Договір', 'Сервіс'], user: 'Альона (master)', balance: '0,00 ₴',
+      online: 'Онлайн', objects: 'Об’єкти', status: 'Статус', updated: 'Оновлено', all: 'Усі', common: 'Загальна', mine: 'Мої',
+      st: { move: (v) => `Рух ${v} км/год`, park: ([h, m]) => `Стоянка ${h} год ${m} хв`, nolink: 'Немає зв’язку понад 8 днів', never: 'Не виходив на зв’язок' },
+      login: { demo: 'Демо', login: 'Логін', pass: 'Пароль', remember: 'Запам’ятати мене', forgot: 'Забули пароль?', enter: 'Увійти', needLogin: 'Введіть логін', needPass: 'Введіть пароль', welcome: 'Ви увійшли як', logout: 'Вийти', langs: ['Українська', 'English', 'Русский', 'العربية', 'Español'],
+        cap: 'Введіть логін і пароль, виберіть мову й натисніть «Увійти».', steps: ['Логін', 'Пароль', 'Мова', 'Увійти'] },
+      over: { cap: 'Натисніть вкладку у верхній панелі або об’єкт у списку: він підсвітиться на карті.', steps: ['Верхня панель', 'Робоча область', 'Карта'], soon: 'Тут відкриється розділ' },
+      obj: { add: 'Додати об’єкт', title: 'Новий об’єкт', side: ['Основні', 'Інфо', 'Налаштування', 'Дод. параметри', 'Паливо'], num: 'Номер машини', id: 'ID пристрою', idHint: 'IMEI, 15 цифр', dtype: 'Тип пристрою', vtype: 'Тип ТЗ', group: 'Група', tz: 'Часовий пояс', choose: 'Виберіть…', vtypes: ['Легковий', 'Вантажний', 'Спецтехніка', 'Причіп', 'Тварина', 'Людина'], required: 'Обов’язкове поле', reset: 'Скинути', save: 'Зберегти', ready: 'Усе заповнено, можна зберігати', saved: 'Об’єкт додано до списку',
+        cap: 'Натисніть «+», заповніть три обов’язкові поля й збережіть об’єкт.', steps: ['Кнопка «Додати»', 'Номер машини', 'ID пристрою', 'Тип пристрою', 'Зберегти'] },
+      sen: { menu: ['Поточний трек', 'Стежити за об’єктом', 'Карта', 'Редагувати', 'Датчики', 'Точки', 'Медіа', 'Історія', 'Видалити'], sensorsOf: 'Датчики об’єкта', name: 'Назва', type: 'Призначення', field: 'Поле', value: 'Значення', add: 'Додати датчик', pick: 'Виберіть тип датчика', types: [['Датчик запалювання', 'Двопозиційний'], ['Рівень палива', 'Об’єм бака, л'], ['Температура', '°C'], ['Пробіг', 'км'], ['Мотогодини', 'год'], ['Тривожна кнопка', 'Двопозиційний']], min: 'Мін. значення', max: 'Макс. значення', events: 'Створювати події', history: 'Зберігати історію', save: 'Зберегти', back: 'Назад', needName: 'Назва: обов’язкове поле', needField: 'Поле: виберіть поле пристрою', ok: 'Датчик готовий до збереження', on: 'увімк.', off: 'вимк.', rightClick: 'Натисніть на об’єкт правою кнопкою (або ⋮)',
+        cap: 'Відкрийте меню об’єкта, перейдіть у «Датчики», додайте датчик і збережіть.', steps: ['Меню об’єкта', 'Датчики', 'Додати', 'Тип датчика', 'Поля', 'Зберегти'], existing: [['Швидкість', 'speed', '7 км/год'], ['Напруга живлення', 'pwr_ext', '13,8 В']] },
+      his: { obj: 'Об’єкт', from: 'З', to: 'По', search: 'Пошук', trips: 'Рейси', date: 'Дата', start: 'Старт', stop: 'Стоп', dur: 'Трив.', dist: 'Км', vmax: 'Макс.', pick: 'Позначте рейси галочкою, щоб побачити трек', events: 'Події', speed: 'Швидкість', ev: ['Початок руху', 'Перевищення швидкості 92 км/год', 'Стоянка 4 хв', 'Кінець руху'],
+        cap: 'Виберіть об’єкт і період, натисніть «Пошук», позначте рейси й запустіть плеєр.', steps: ['Об’єкт', 'Період', 'Пошук', 'Рейси', 'Плеєр', 'Графік'] },
+      rep: { title: 'Звіти', split: 'Розбивати', splits: ['По добах', 'По тижнях', 'Без розбивки'], from: 'З дати', to: 'По дату', group: 'Групування', groups: ['За датами', 'За об’єктами'], sgroups: 'Групи датчиків', sgroupsAll: 'Усі', type: 'Тип звіту', types: ['Пробіг', 'Стоянки', 'Поїздки', 'Витрата палива'], build: 'Побудувати звіт', need: 'Позначте об’єкт і виберіть тип звіту', back: 'Параметри', total: 'Разом', noDl: 'У демо файли не завантажуються',
+        cols: [['Пробіг, км', 'У русі', 'Макс. швидкість'], ['Стоянок', 'Час стоянок', 'Найдовша'], ['Поїздок', 'Пробіг, км', 'Сер. швидкість'], ['Витрата, л', 'Заправлено, л', 'Зливи, л']],
+        period: 'Період', week: (n) => `${n}-й тиждень`, h: 'год', min: 'хв', kmh: 'км/год', locale: 'uk-UA',
+        cap: 'Позначте об’єкт, задайте період і тип звіту, натисніть «Побудувати звіт».', steps: ['Об’єкт', 'Період', 'Тип звіту', 'Розбивка', 'Групування', 'Групи датчиків', 'Побудувати'] },
+    },
+    ar: {
+      hint: 'جرّب بنفسك', tabs: ['الرئيسية', 'السجل', 'التقارير', 'العقد', 'الخدمة'], user: 'Alena (master)', balance: '0.00 ₽',
+      online: 'مباشر', objects: 'الكائنات', status: 'الحالة', updated: 'آخر تحديث', all: 'الكل', common: 'عامة', mine: 'الخاصة بي',
+      st: { move: (v) => `يتحرك ${v} كم/س`, park: ([h, m]) => `متوقف ${h} س ${m} د`, nolink: 'لا اتصال منذ أكثر من 8 أيام', never: 'لم يتصل أبدًا' },
+      login: { demo: 'تجريبي', login: 'اسم المستخدم', pass: 'كلمة المرور', remember: 'تذكرني', forgot: 'نسيت كلمة المرور؟', enter: 'تسجيل الدخول', needLogin: 'أدخل اسم المستخدم', needPass: 'أدخل كلمة المرور', welcome: 'سجّلت الدخول باسم', logout: 'خروج', langs: ['العربية', 'English', 'Русский', 'Українська', 'Español'],
+        cap: 'أدخل اسم المستخدم وكلمة المرور، واختر اللغة، ثم اضغط «تسجيل الدخول».', steps: ['اسم المستخدم', 'كلمة المرور', 'اللغة', 'تسجيل الدخول'] },
+      over: { cap: 'اضغط على تبويب في الشريط العلوي أو على كائن في القائمة: سيتم تمييزه على الخريطة.', steps: ['الشريط العلوي', 'منطقة العمل', 'الخريطة'], soon: 'هنا يُفتح قسم' },
+      obj: { add: 'إضافة كائن', title: 'كائن جديد', side: ['الأساسية', 'معلومات', 'الإعدادات', 'معلمات إضافية', 'الوقود'], num: 'رقم المركبة', id: 'معرّف الجهاز', idHint: 'IMEI، 15 رقمًا', dtype: 'نوع الجهاز', vtype: 'نوع المركبة', group: 'المجموعة', tz: 'المنطقة الزمنية', choose: 'اختر…', vtypes: ['سيارة', 'شاحنة', 'معدات خاصة', 'مقطورة', 'حيوان', 'شخص'], required: 'حقل إلزامي', reset: 'إعادة تعيين', save: 'حفظ', ready: 'كل الحقول مكتملة، يمكنك الحفظ', saved: 'تمت إضافة الكائن إلى القائمة',
+        cap: 'اضغط «+»، واملأ الحقول الإلزامية الثلاثة، ثم احفظ الكائن.', steps: ['زر «إضافة»', 'رقم المركبة', 'معرّف الجهاز', 'نوع الجهاز', 'حفظ'] },
+      sen: { menu: ['المسار الحالي', 'متابعة الكائن', 'الخريطة', 'تعديل', 'الحساسات', 'النقاط', 'الوسائط', 'السجل', 'حذف'], sensorsOf: 'حساسات الكائن', name: 'الاسم', type: 'الغرض', field: 'الحقل', value: 'القيمة', add: 'إضافة حساس', pick: 'اختر نوع الحساس', types: [['حساس الإشعال', 'ثنائي الحالة'], ['مستوى الوقود', 'سعة الخزان، لتر'], ['درجة الحرارة', '°C'], ['المسافة المقطوعة', 'كم'], ['ساعات تشغيل المحرك', 'س'], ['زر الطوارئ', 'ثنائي الحالة']], min: 'أدنى قيمة', max: 'أعلى قيمة', events: 'إنشاء أحداث', history: 'حفظ السجل', save: 'حفظ', back: 'رجوع', needName: 'الاسم: حقل إلزامي', needField: 'الحقل: اختر حقل الجهاز', ok: 'الحساس جاهز للحفظ', on: 'تشغيل', off: 'إيقاف', rightClick: 'انقر بزر الفأرة الأيمن على الكائن (أو ⋮)',
+        cap: 'افتح قائمة الكائن، وانتقل إلى «الحساسات»، وأضف حساسًا ثم احفظه.', steps: ['قائمة الكائن', 'الحساسات', 'إضافة', 'نوع الحساس', 'الحقول', 'حفظ'], existing: [['السرعة', 'speed', '7 كم/س'], ['جهد التغذية', 'pwr_ext', '13.8 فولت']] },
+      his: { obj: 'الكائن', from: 'من', to: 'إلى', search: 'بحث', trips: 'الرحلات', date: 'التاريخ', start: 'البدء', stop: 'التوقف', dur: 'المدة', dist: 'كم', vmax: 'الأقصى', pick: 'حدّد الرحلات لرؤية المسار', events: 'الأحداث', speed: 'السرعة', ev: ['بدء الحركة', 'تجاوز السرعة 92 كم/س', 'توقف 4 دقائق', 'نهاية الحركة'],
+        cap: 'اختر كائنًا وفترة، واضغط «بحث»، وحدّد الرحلات ثم شغّل المشغّل.', steps: ['الكائن', 'الفترة', 'بحث', 'الرحلات', 'المشغّل', 'الرسم البياني'] },
+      rep: { title: 'التقارير', split: 'التقسيم', splits: ['حسب اليوم', 'حسب الأسبوع', 'بدون تقسيم'], from: 'من تاريخ', to: 'إلى تاريخ', group: 'التجميع', groups: ['حسب التاريخ', 'حسب الكائن'], sgroups: 'مجموعات الحساسات', sgroupsAll: 'الكل', type: 'نوع التقرير', types: ['المسافة المقطوعة', 'التوقفات', 'الرحلات', 'استهلاك الوقود'], build: 'إنشاء التقرير', need: 'حدّد كائنًا واختر نوع التقرير', back: 'المعلمات', total: 'الإجمالي', noDl: 'لا يتم تنزيل الملفات في النسخة التجريبية',
+        cols: [['المسافة، كم', 'وقت الحركة', 'أقصى سرعة'], ['التوقفات', 'وقت التوقف', 'الأطول'], ['الرحلات', 'المسافة، كم', 'متوسط السرعة'], ['الاستهلاك، لتر', 'التزود، لتر', 'التصريف، لتر']],
+        period: 'الفترة', week: (n) => `الأسبوع ${n}`, h: 'س', min: 'د', kmh: 'كم/س', locale: 'ar-EG',
+        cap: 'حدّد كائنًا، واضبط الفترة ونوع التقرير، ثم اضغط «إنشاء التقرير».', steps: ['الكائن', 'الفترة', 'نوع التقرير', 'التقسيم', 'التجميع', 'مجموعات الحساسات', 'إنشاء'] },
+    },
+
+    es: {
+      hint: 'Puede hacer clic', tabs: ['Principal', 'Historial', 'Informes', 'Contrato', 'Servicio'], user: 'Alena (master)', balance: '0,00 ₽',
+      online: 'En línea', objects: 'Objetos', status: 'Estado', updated: 'Actualizado', all: 'Todos', common: 'General', mine: 'Míos',
+      st: { move: (v) => `En movimiento ${v} km/h`, park: ([h, m]) => `Estacionado ${h} h ${m} min`, nolink: 'Sin conexión desde hace más de 8 días', never: 'Nunca se conectó' },
+      login: { demo: 'Demo', login: 'Usuario', pass: 'Contraseña', remember: 'Recordarme', forgot: '¿Olvidó la contraseña?', enter: 'Entrar', needLogin: 'Introduzca el usuario', needPass: 'Introduzca la contraseña', welcome: 'Ha entrado como', logout: 'Salir', langs: ['Español', 'English', 'Русский', 'Українська', 'العربية'],
+        cap: 'Introduzca el usuario y la contraseña, elija el idioma y haga clic en «Entrar».', steps: ['Usuario', 'Contraseña', 'Idioma', 'Entrar'] },
+      over: { cap: 'Haga clic en una pestaña de la barra superior o en un objeto de la lista: se resaltará en el mapa.', steps: ['Barra superior', 'Área de trabajo', 'Mapa'], soon: 'Aquí se abre la sección' },
+      obj: { add: 'Añadir objeto', title: 'Nuevo objeto', side: ['Principal', 'Info', 'Ajustes', 'Parámetros adicionales', 'Combustible'], num: 'Matrícula', id: 'ID del dispositivo', idHint: 'IMEI, 15 dígitos', dtype: 'Tipo de dispositivo', vtype: 'Tipo de vehículo', group: 'Grupo', tz: 'Zona horaria', choose: 'Elija…', vtypes: ['Turismo', 'Camión', 'Maquinaria especial', 'Remolque', 'Animal', 'Persona'], required: 'Campo obligatorio', reset: 'Restablecer', save: 'Guardar', ready: 'Todo completo, puede guardar', saved: 'Objeto añadido a la lista',
+        cap: 'Haga clic en «+», complete los tres campos obligatorios y guarde el objeto.', steps: ['Botón «Añadir»', 'Matrícula', 'ID del dispositivo', 'Tipo de dispositivo', 'Guardar'] },
+      sen: { menu: ['Recorrido actual', 'Seguir objeto', 'Mapa', 'Editar', 'Sensores', 'Puntos', 'Multimedia', 'Historial', 'Eliminar'], sensorsOf: 'Sensores de', name: 'Nombre', type: 'Función', field: 'Campo', value: 'Valor', add: 'Añadir sensor', pick: 'Elija el tipo de sensor', types: [['Sensor de encendido', 'De dos estados'], ['Nivel de combustible', 'Capacidad del depósito, l'], ['Temperatura', '°C'], ['Kilometraje', 'km'], ['Horas de motor', 'h'], ['Botón de pánico', 'De dos estados']], min: 'Valor mín.', max: 'Valor máx.', events: 'Crear eventos', history: 'Guardar historial', save: 'Guardar', back: 'Atrás', needName: 'Nombre: campo obligatorio', needField: 'Campo: elija un campo del dispositivo', ok: 'El sensor está listo para guardar', on: 'enc.', off: 'apag.', rightClick: 'Haga clic derecho en el objeto (o en ⋮)',
+        cap: 'Abra el menú del objeto, vaya a «Sensores», añada un sensor y guárdelo.', steps: ['Menú del objeto', 'Sensores', 'Añadir', 'Tipo de sensor', 'Campos', 'Guardar'], existing: [['Velocidad', 'speed', '7 km/h'], ['Tensión de alimentación', 'pwr_ext', '13,8 V']] },
+      his: { obj: 'Objeto', from: 'Desde', to: 'Hasta', search: 'Buscar', trips: 'Viajes', date: 'Fecha', start: 'Inicio', stop: 'Fin', dur: 'Dur.', dist: 'Km', vmax: 'Máx.', pick: 'Marque viajes para ver el recorrido', events: 'Eventos', speed: 'Velocidad', ev: ['Inicio del movimiento', 'Exceso de velocidad 92 km/h', 'Parada de 4 min', 'Fin del movimiento'],
+        cap: 'Elija un objeto y un periodo, haga clic en «Buscar», marque viajes e inicie el reproductor.', steps: ['Objeto', 'Periodo', 'Buscar', 'Viajes', 'Reproductor', 'Gráfico'] },
+      rep: { title: 'Informes', split: 'Dividir', splits: ['Por día', 'Por semana', 'Sin dividir'], from: 'Desde', to: 'Hasta', group: 'Agrupación', groups: ['Por fecha', 'Por objeto'], sgroups: 'Grupos de sensores', sgroupsAll: 'Todos', type: 'Tipo de informe', types: ['Kilometraje', 'Estacionamientos', 'Viajes', 'Consumo de combustible'], build: 'Generar informe', need: 'Marque un objeto y elija el tipo de informe', back: 'Parámetros', total: 'Total', noDl: 'En la demo no se descargan archivos',
+        cols: [['Kilometraje, km', 'En movimiento', 'Velocidad máx.'], ['Paradas', 'Tiempo parado', 'La más larga'], ['Viajes', 'Kilometraje, km', 'Velocidad media'], ['Consumo, l', 'Repostado, l', 'Drenajes, l']],
+        period: 'Periodo', week: (n) => `Semana ${n}`, h: 'h', min: 'min', kmh: 'km/h', locale: 'es-ES',
+        cap: 'Marque un objeto, defina el periodo y el tipo de informe y haga clic en «Generar informe».', steps: ['Objeto', 'Periodo', 'Tipo de informe', 'División', 'Agrupación', 'Grupos de sensores', 'Generar'] },
+    },
+  };
+  // дополнительные строки для экранов, повторяющих настоящий интерфейс
+  const X = {
+    ru: {
+      tagsCol: 'Метки', layers: 'Слои объектов', street: 'Просмотр улиц', traffic: 'Пробки',
+      o2: { brand: 'Марка', model: 'Модель', modif: 'Модификация', imei: 'Дополнительный IMEI', chBrand: 'Выберите марку', chModel: 'Выберите модель', chModif: 'Выберите модификацию', sim: 'SIM устройства', op: 'Оператор SIM', other: 'Другой', color: 'Цвет', photo: 'Исп. фото', tags: 'Теги устройств', tagVals: ['Доставка', 'Грузовой'], tpl: 'Шаблон', chTpl: 'Выберите шаблон', mil: 'Начальный пробег', hours: 'Начальные моточасы', shift: 'Сдвиг времени пакетов', desc: 'Описание' },
+      s2: { side: ['Датчики', 'Обработчики', 'Группы', 'Метки'], tpl: 'Шаблон', edit: 'Редактирование датчика объекта', desc: 'Описание', kind: 'Тип', unit: 'Ед. измерения', group: 'Группа', formula: 'Формула преобразования', test: 'Тест', tags: 'Метки', onName: 'Название вкл.', offName: 'Название выкл.', clear: 'Очистить', filter: 'Фильтровать значения', tips: 'Отображать во всплывающих подсказках', eh: 'Считать моточасы', cols: ['Название', 'Описание', 'Тип', 'Поле', 'Ед.', 'Группа'], kinds: ['Двухпозиционный', 'Дискретный'],
+        purposes: [['Датчик зажигания', 0, ''], ['Датчик топлива', 1, 'л'], ['Датчик температуры', 1, '°C'], ['Датчик пробега', 1, 'км'], ['Датчик моточасов', 1, 'ч'], ['Кнопка SOS', 0, '']],
+        rows: [['GPS', 'Датчик антенны GPS', 1, 'navitel_gps', '', ''], ['Зажигание', 'Датчик зажигания', 0, 'pwr_ext', '', 'Работа двигателя'], ['Заряд АКБ', 'Датчик работы спецоборудования', 1, 'battery', '%', ''], ['Топливо', 'Датчик топлива', 1, 'can_fuel', 'л', 'Топливо']] },
+      h2: { title: 'История', lastRep: 'Последний отчёт', wd: 'Будни', we: 'Выходные', stops: 'Стоянки', media: 'Медиа', evCols: ['Объект', 'Дата', 'Событие', 'Адрес'], recs: (n) => `${n} записей`, needObj: 'Отметьте объект в списке', dur: 'Длительность', dist: 'Расстояние (км)', vmax: 'Макс. (км/ч)' },
+      r2: { map: 'Карта', settings: 'Настройки отчёта', object: 'Объект', of: (a, b) => `с ${a} по ${b}` },
+    },
+    en: {
+      tagsCol: 'Tags', layers: 'Object layers', street: 'Street view', traffic: 'Traffic',
+      o2: { brand: 'Make', model: 'Model', modif: 'Modification', imei: 'Additional IMEI', chBrand: 'Choose a make', chModel: 'Choose a model', chModif: 'Choose a modification', sim: 'Device SIM', op: 'SIM operator', other: 'Other', color: 'Color', photo: 'Use photo', tags: 'Device tags', tagVals: ['Delivery', 'Truck'], tpl: 'Template', chTpl: 'Choose a template', mil: 'Initial mileage', hours: 'Initial engine hours', shift: 'Packet time shift', desc: 'Description' },
+      s2: { side: ['Sensors', 'Handlers', 'Groups', 'Tags'], tpl: 'Template', edit: 'Edit sensor of', desc: 'Description', kind: 'Type', unit: 'Unit', group: 'Group', formula: 'Conversion formula', test: 'Test', tags: 'Tags', onName: 'On label', offName: 'Off label', clear: 'Clear', filter: 'Filter values', tips: 'Show in tooltips', eh: 'Count engine hours', cols: ['Name', 'Description', 'Type', 'Field', 'Unit', 'Group'], kinds: ['Two-state', 'Discrete'],
+        purposes: [['Ignition sensor', 0, ''], ['Fuel sensor', 1, 'l'], ['Temperature sensor', 1, '°C'], ['Mileage sensor', 1, 'km'], ['Engine hours sensor', 1, 'h'], ['SOS button', 0, '']],
+        rows: [['GPS', 'GPS antenna sensor', 1, 'navitel_gps', '', ''], ['Ignition', 'Ignition sensor', 0, 'pwr_ext', '', 'Engine operation'], ['Battery charge', 'Special equipment sensor', 1, 'battery', '%', ''], ['Fuel', 'Fuel sensor', 1, 'can_fuel', 'l', 'Fuel']] },
+      h2: { title: 'History', lastRep: 'Last report', wd: 'Weekdays', we: 'Weekends', stops: 'Parking', media: 'Media', evCols: ['Object', 'Date', 'Event', 'Address'], recs: (n) => `${n} records`, needObj: 'Tick an object in the list', dur: 'Duration', dist: 'Distance (km)', vmax: 'Max (km/h)' },
+      r2: { map: 'Map', settings: 'Report settings', object: 'Object', of: (a, b) => `from ${a} to ${b}` },
+    },
+    uk: {
+      tagsCol: 'Мітки', layers: 'Шари об’єктів', street: 'Перегляд вулиць', traffic: 'Затори',
+      o2: { brand: 'Марка', model: 'Модель', modif: 'Модифікація', imei: 'Додатковий IMEI', chBrand: 'Виберіть марку', chModel: 'Виберіть модель', chModif: 'Виберіть модифікацію', sim: 'SIM пристрою', op: 'Оператор SIM', other: 'Інший', color: 'Колір', photo: 'Вик. фото', tags: 'Теги пристроїв', tagVals: ['Доставка', 'Вантажний'], tpl: 'Шаблон', chTpl: 'Виберіть шаблон', mil: 'Початковий пробіг', hours: 'Початкові мотогодини', shift: 'Зсув часу пакетів', desc: 'Опис' },
+      s2: { side: ['Датчики', 'Обробники', 'Групи', 'Мітки'], tpl: 'Шаблон', edit: 'Редагування датчика об’єкта', desc: 'Опис', kind: 'Тип', unit: 'Од. виміру', group: 'Група', formula: 'Формула перетворення', test: 'Тест', tags: 'Мітки', onName: 'Назва увімк.', offName: 'Назва вимк.', clear: 'Очистити', filter: 'Фільтрувати значення', tips: 'Показувати у спливних підказках', eh: 'Рахувати мотогодини', cols: ['Назва', 'Опис', 'Тип', 'Поле', 'Од.', 'Група'], kinds: ['Двопозиційний', 'Дискретний'],
+        purposes: [['Датчик запалювання', 0, ''], ['Датчик палива', 1, 'л'], ['Датчик температури', 1, '°C'], ['Датчик пробігу', 1, 'км'], ['Датчик мотогодин', 1, 'год'], ['Кнопка SOS', 0, '']],
+        rows: [['GPS', 'Датчик антени GPS', 1, 'navitel_gps', '', ''], ['Запалювання', 'Датчик запалювання', 0, 'pwr_ext', '', 'Робота двигуна'], ['Заряд АКБ', 'Датчик роботи спецобладнання', 1, 'battery', '%', ''], ['Паливо', 'Датчик палива', 1, 'can_fuel', 'л', 'Паливо']] },
+      h2: { title: 'Історія', lastRep: 'Останній звіт', wd: 'Будні', we: 'Вихідні', stops: 'Стоянки', media: 'Медіа', evCols: ['Об’єкт', 'Дата', 'Подія', 'Адреса'], recs: (n) => `${n} записів`, needObj: 'Позначте об’єкт у списку', dur: 'Тривалість', dist: 'Відстань (км)', vmax: 'Макс. (км/год)' },
+      r2: { map: 'Карта', settings: 'Налаштування звіту', object: 'Об’єкт', of: (a, b) => `з ${a} по ${b}` },
+    },
+    ar: {
+      tagsCol: 'الوسوم', layers: 'طبقات الكائنات', street: 'عرض الشارع', traffic: 'الازدحام',
+      o2: { brand: 'الشركة المصنّعة', model: 'الطراز', modif: 'الفئة', imei: 'IMEI إضافي', chBrand: 'اختر الشركة المصنّعة', chModel: 'اختر الطراز', chModif: 'اختر الفئة', sim: 'شريحة SIM للجهاز', op: 'مشغّل SIM', other: 'آخر', color: 'اللون', photo: 'استخدام صورة', tags: 'وسوم الأجهزة', tagVals: ['توصيل', 'شاحنة'], tpl: 'القالب', chTpl: 'اختر قالبًا', mil: 'المسافة الأولية', hours: 'ساعات المحرك الأولية', shift: 'إزاحة وقت الحزم', desc: 'الوصف' },
+      s2: { side: ['الحساسات', 'المعالجات', 'المجموعات', 'الوسوم'], tpl: 'القالب', edit: 'تعديل حساس الكائن', desc: 'الوصف', kind: 'النوع', unit: 'وحدة القياس', group: 'المجموعة', formula: 'صيغة التحويل', test: 'اختبار', tags: 'الوسوم', onName: 'تسمية التشغيل', offName: 'تسمية الإيقاف', clear: 'مسح', filter: 'تصفية القيم', tips: 'العرض في التلميحات', eh: 'احتساب ساعات المحرك', cols: ['الاسم', 'الوصف', 'النوع', 'الحقل', 'الوحدة', 'المجموعة'], kinds: ['ثنائي الحالة', 'متقطع'],
+        purposes: [['حساس الإشعال', 0, ''], ['حساس الوقود', 1, 'لتر'], ['حساس الحرارة', 1, '°C'], ['حساس المسافة', 1, 'كم'], ['حساس ساعات المحرك', 1, 'س'], ['زر SOS', 0, '']],
+        rows: [['GPS', 'حساس هوائي GPS', 1, 'navitel_gps', '', ''], ['الإشعال', 'حساس الإشعال', 0, 'pwr_ext', '', 'تشغيل المحرك'], ['شحن البطارية', 'حساس المعدات الخاصة', 1, 'battery', '%', ''], ['الوقود', 'حساس الوقود', 1, 'can_fuel', 'لتر', 'الوقود']] },
+      h2: { title: 'السجل', lastRep: 'آخر تقرير', wd: 'أيام العمل', we: 'عطلة نهاية الأسبوع', stops: 'التوقفات', media: 'الوسائط', evCols: ['الكائن', 'التاريخ', 'الحدث', 'العنوان'], recs: (n) => `${n} سجلًا`, needObj: 'حدّد كائنًا في القائمة', dur: 'المدة', dist: 'المسافة (كم)', vmax: 'الأقصى (كم/س)' },
+      r2: { map: 'الخريطة', settings: 'إعدادات التقرير', object: 'الكائن', of: (a, b) => `من ${a} إلى ${b}` },
+    },
+    es: {
+      tagsCol: 'Etiquetas', layers: 'Capas de objetos', street: 'Vista de calle', traffic: 'Tráfico',
+      o2: { brand: 'Marca', model: 'Modelo', modif: 'Versión', imei: 'IMEI adicional', chBrand: 'Elija la marca', chModel: 'Elija el modelo', chModif: 'Elija la versión', sim: 'SIM del dispositivo', op: 'Operador SIM', other: 'Otro', color: 'Color', photo: 'Usar foto', tags: 'Etiquetas del dispositivo', tagVals: ['Reparto', 'Camión'], tpl: 'Plantilla', chTpl: 'Elija una plantilla', mil: 'Kilometraje inicial', hours: 'Horas de motor iniciales', shift: 'Desfase de hora de paquetes', desc: 'Descripción' },
+      s2: { side: ['Sensores', 'Procesadores', 'Grupos', 'Etiquetas'], tpl: 'Plantilla', edit: 'Edición del sensor de', desc: 'Descripción', kind: 'Tipo', unit: 'Unidad', group: 'Grupo', formula: 'Fórmula de conversión', test: 'Probar', tags: 'Etiquetas', onName: 'Texto encendido', offName: 'Texto apagado', clear: 'Limpiar', filter: 'Filtrar valores', tips: 'Mostrar en las ventanas emergentes', eh: 'Contar horas de motor', cols: ['Nombre', 'Descripción', 'Tipo', 'Campo', 'Unidad', 'Grupo'], kinds: ['De dos estados', 'Discreto'],
+        purposes: [['Sensor de encendido', 0, ''], ['Sensor de combustible', 1, 'l'], ['Sensor de temperatura', 1, '°C'], ['Sensor de kilometraje', 1, 'km'], ['Sensor de horas de motor', 1, 'h'], ['Botón SOS', 0, '']],
+        rows: [['GPS', 'Sensor de antena GPS', 1, 'navitel_gps', '', ''], ['Encendido', 'Sensor de encendido', 0, 'pwr_ext', '', 'Funcionamiento del motor'], ['Carga de batería', 'Sensor de equipo especial', 1, 'battery', '%', ''], ['Combustible', 'Sensor de combustible', 1, 'can_fuel', 'l', 'Combustible']] },
+      h2: { title: 'Historial', lastRep: 'Último informe', wd: 'Laborables', we: 'Fines de semana', stops: 'Estacionamientos', media: 'Multimedia', evCols: ['Objeto', 'Fecha', 'Evento', 'Dirección'], recs: (n) => `${n} registros`, needObj: 'Marque un objeto en la lista', dur: 'Duración', dist: 'Distancia (km)', vmax: 'Máx. (km/h)' },
+      r2: { map: 'Mapa', settings: 'Ajustes del informe', object: 'Objeto', of: (a, b) => `del ${a} al ${b}` },
+    },
+  };
+  Object.keys(X).forEach((l) => Object.assign(DEMO_I18N[l], X[l]));
+
+  const lang = () => (window.DOC_LANG && DEMO_I18N[window.DOC_LANG]) ? window.DOC_LANG : 'ru';
+  const T = () => DEMO_I18N[lang()];
+
+  // ---------- иконки ----------
+  const P = {
+    home: 'M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z', hist: 'M4 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM20 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM6 16h7a3 3 0 0 0 0-6h-2a3 3 0 0 1 0-6h7', rep: 'M7 3h7l5 5v13H7zM14 3v5h5M10 13h6M10 17h6', doc: 'M3 7h18v12H3zM3 11h18M16 15h2M7 7V5h10v2',
+    tool: 'M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z', bell: 'M6 8a6 6 0 1 1 12 0c0 7 3 8 3 8H3s3-1 3-8M10 20a2 2 0 0 0 4 0', gear: 'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19.4 15l1.6 1-2 3.4-1.8-.7a7 7 0 0 1-1.9 1.1L15 22h-4l-.3-2.2a7 7 0 0 1-1.9-1.1l-1.8.7-2-3.4 1.6-1a7 7 0 0 1 0-2.2L5 11.8l2-3.4 1.8.7a7 7 0 0 1 1.9-1.1L11 6h4l.3 2.2a7 7 0 0 1 1.9 1.1l1.8-.7 2 3.4-1.6 1a7 7 0 0 1 0 2.2z',
+    more: 'M12 5h.01M12 12h.01M12 19h.01', plus: 'M12 5v14M5 12h14', minus: 'M5 12h14', refresh: 'M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7', search: 'M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM21 21l-5-5', filter: 'M3 5h18l-7 8v6l-4 2v-8z',
+    play: 'M7 4l13 8-13 8z', pause: 'M7 4h4v16H7zM14 4h4v16h-4z', rew: 'M11 6l-8 6 8 6zM21 6l-8 6 8 6z', ff: 'M13 6l8 6-8 6zM3 6l8 6-8 6z', back: 'M19 12H5M11 6l-6 6 6 6', fwd: 'M5 12h14M13 6l6 6-6 6', cal: 'M4 6h16v14H4zM4 10h16M9 3v5M15 3v5', x: 'M6 6l12 12M18 6L6 18', warn: 'M12 3l10 18H2zM12 10v5M12 18h.01',
+    eye: 'M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z', map: 'M9 4l6 2 6-2v16l-6 2-6-2-6 2V6zM9 4v16M15 6v16', edit: 'M4 20h4L19 9l-4-4L4 16zM14 6l4 4', clip: 'M8 12V7a4 4 0 0 1 8 0v9a2 2 0 0 1-4 0V8', list: 'M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01', cam: 'M4 7h4l2-3h4l2 3h4v12H4zM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z', trash: 'M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13',
+    dl: 'M12 4v11M7 10l5 5 5-5M5 20h14', up: 'M12 16V5M7 10l5-5 5 5M5 20h14', print: 'M7 8V3h10v5M7 17H4V9h16v8h-3M7 14h10v7H7z', lock: 'M6 11h12v10H6zM9 11V7a3 3 0 0 1 5.8-1', key: 'M15 7a4 4 0 1 1-3.5 6L5 19.5V22H2v-3l6.5-6.5A4 4 0 0 1 15 7z', chev: 'M6 9l6 6 6-6', chevR: 'M9 6l6 6-6 6',
+    folder: 'M3 6h6l2 2h10v11H3zM12 11v5M9.5 13.5h5', file: 'M7 3h7l5 5v13H7zM14 3v5h5', bucket: 'M5 11l7-7 7 7-7 7zM19 15c1 1.5 2 2.6 2 3.6a2 2 0 0 1-4 0c0-1 1-2.1 2-3.6z', tree: 'M4 4h6v5H4zM14 10h6v4h-6zM14 17h6v4h-6zM7 9v10h7M7 12h7',
+    layers: 'M12 3l9 5-9 5-9-5zM3 13l9 5 9-5', pin: 'M12 22s7-6.4 7-12a7 7 0 1 0-14 0c0 5.6 7 12 7 12zM12 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z', globe: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM3 12h18M12 3c2.5 2.7 3.5 5.7 3.5 9s-1 6.3-3.5 9c-2.5-2.7-3.5-5.7-3.5-9s1-6.3 3.5-9z',
+    building: 'M4 21V5l8-3v19M12 8l8 3v10M7 8h2M7 12h2M7 16h2M15 13h2M15 17h2M2 21h20', undo: 'M9 14L4 9l5-5M4 9h10a6 6 0 0 1 0 12h-3', save: 'M5 3h11l4 4v14H5zM8 3v5h7V3M8 21v-7h8v7', ruler: 'M3 17L17 3l4 4L7 21zM7 13l2 2M10 10l2 2M13 7l2 2', crop: 'M6 2v16h16M2 6h16v16',
+    sliders: 'M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M14 4v4M8 10v4M16 16v4', info: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 11v6M12 7.5h.01', puzzle: 'M10 4a2 2 0 1 1 4 0v2h5v5h-2a2 2 0 1 0 0 4h2v5h-5v-2a2 2 0 1 0-4 0v2H5v-5h2a2 2 0 1 0 0-4H5V6h5z',
+    fuel: 'M4 21V5a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v16M3 21h13M4 10h11M15 8l3 3v7a1.5 1.5 0 0 0 3 0V9l-3-3', therm: 'M10 14V5a2 2 0 1 1 4 0v9a4 4 0 1 1-4 0z', tag: 'M3 12V3h9l9 9-9 9zM7.5 7.5h.01', ok: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM8 12l3 3 5-6',
+    run: 'M13 4a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM7 21l3-6 3 2v5M9 9l4-2 3 4h3M10 15l1-6M6 11l3-2', copy: 'M8 8h12v12H8zM4 16V4h12', expand: 'M7 7l5 5-5 5M13 7l5 5-5 5',
+  };
+  const ic = (n) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${P[n]}"/></svg>`;
+  const logo = '<svg viewBox="0 0 33 33" aria-hidden="true"><path fill="#0284C7" d="M27.36 27.77c-4.39 4.42-10.7 5.74-16.25 3.970a3 3 0 0 1-1.94-3.45c.59-2.43 2-5.790 5.28-9.13a7.84 7.84 0 0 1 5.32-2.29c2.43-.03 4.87.78 6.770 2.43a10.4 10.4 0 0 1-2.42-6.68c0-2.52.85-4.74 2.46-6.68a10.37 10.37 0 0 1-6.68 2.45c-2.52.01-4.75-.83-6.7-2.42a10.4 10.4 0 0 1 2.43 6.69 7.9 7.9 0 0 1-2.17 5.26c-1.88 1.92-5.3 4.97-8.94 5.99a3 3 0 0 1-3.48-1.77C-1.12 16.48.09 9.78 4.69 5.19c6.21-6.22 16.27-6.25 22.53-.1 6.32 6.2 6.39 16.41.15 22.69Z"/></svg>';
+  // силуэты техники, как в списке объектов PILOT
+  const VEH = {
+    sedan: 'M1.5 11.2V9.3c0-.7.5-1.2 1.1-1.3l4-.8 3.5-3.3c.5-.4 1.1-.7 1.8-.7h6.5c.8 0 1.5.3 2 .9l2.6 3 2.5.6c.8.2 1.3.8 1.3 1.6v1.9c0 .4-.3.7-.7.7h-1.4a2.7 2.7 0 0 0-5.3 0H9.1a2.7 2.7 0 0 0-5.3 0H2.2c-.4 0-.7-.3-.7-.7zM10.6 7.2h4V4.6h-1.7c-.5 0-1 .2-1.3.5zM15.8 7.2h4.4l-1.8-2.1c-.3-.3-.7-.5-1.1-.5h-1.5z',
+    suv: 'M1.5 11.3V7.4c0-.6.4-1.1 1-1.2l2.3-.4 2.6-3c.4-.4.9-.6 1.4-.6h10c.6 0 1.1.2 1.5.7l2.6 3.2 2.6.6c.6.2 1 .7 1 1.3v3.3c0 .4-.3.7-.7.7h-1.2a2.8 2.8 0 0 0-5.5 0H9.4a2.8 2.8 0 0 0-5.5 0H2.2c-.4 0-.7-.3-.7-.7zM8.5 6.2h4.6V3.6H10zM14.4 6.2h4.8l-1.9-2.6h-2.9z',
+    truck: 'M1 2.5h15.5v8.8H1zM17.5 5h4.6c.4 0 .8.2 1 .5l2.6 3.4c.2.2.3.5.3.8v1.6h-8.5zM19 6.2v2.6h4.6L21.7 6.2z',
+    van: 'M1.2 10.8V4.5c0-1 .8-1.8 1.8-1.8h14.6c.6 0 1.1.3 1.5.7l3.5 4 2.2.7c.6.2 1 .7 1 1.3v1.4c0 .4-.3.7-.7.7h-1.3a2.7 2.7 0 0 0-5.3 0H9.1a2.7 2.7 0 0 0-5.3 0H1.9c-.4 0-.7-.3-.7-.7zM18 7.6h3.4l-2.7-3.1H18z',
+    tractor: 'M2.5 10.5V7.2h3.2V3.4h2v3.8h3.5l1-4.6h5.6l1.4 5H20l2.3 2.2v.5a4.5 4.5 0 0 0-7 0H8.2a3 3 0 0 0-5.2 0zM13.5 3.8l-.7 3.4h4.4l-1-3.4z',
+  };
+  const WH = { sedan: [[6.4, 11.6, 2.1], [20.4, 11.6, 2.1]], suv: [[6.6, 11.6, 2.3], [20.6, 11.6, 2.3]], truck: [[5, 12, 2.2], [11, 12, 2.2], [21, 12, 2.2]], van: [[6.4, 11.4, 2.1], [20.6, 11.4, 2.1]], tractor: [[5.6, 11.6, 2.1], [18.8, 10.2, 3.6]] };
+  const veh = (k, c) => `<svg class="a-car" viewBox="0 0 27 15" aria-hidden="true"><path fill="${c || 'currentColor'}" fill-rule="evenodd" d="${VEH[k]}"/>${WH[k].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${c || 'currentColor'}"/><circle cx="${x}" cy="${y}" r="${r * .42}" fill="var(--a-bg)"/>`).join('')}</svg>`;
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+  // ---------- карта: город в стиле Google Maps, подписи на английском ----------
+  const MW = 1600, MH = 1000;
+  const XS = [70, 200, 330, 470, 600, 740, 870, 1010, 1150, 1290, 1430, 1560];
+  const YS = [50, 160, 270, 390, 500, 610, 720, 830, 940];
+  const XN = ['Polevaya St', 'Krasnoarmeyskaya St', 'Nevskaya St', 'Ulyanovskaya St', 'Gagarin St', 'Lesnaya St', 'Michurin St', 'Tukhachevsky St', 'Volzhsky Ave', null, 'Zarechnaya St', 'Ozernaya St'];
+  const YN = ['Kuybyshev St', 'Molodogvardeyskaya St', 'Galaktionovskaya St', 'Moskovskoye Hwy', 'Sadovaya St', 'Lenin Ave', 'Chapaevskaya St', 'Samarskaya St', 'Frunze St'];
+  const RIV = [[1270, -60], [1235, 140], [1300, 330], [1255, 520], [1320, 730], [1290, 1060]];
+  const BRIDGE = [3, 6];
+  const DIAG = [[0, 900], [1150, 40]];
+  const PARKS = [[330, 500, 470, 610, 'Gagarin Park'], [740, 50, 870, 160, 'Victory Park'], [1010, 720, 1150, 940, 'Riverside Park'], [70, 720, 200, 830, 'Druzhby Park']];
+  const POI = [[548, 418, 'M', '#d93025', 'Gagarinskaya'], [690, 228, '+', '#ea4335', 'City Hospital No. 2'], [945, 338, '▲', '#8d6e63', 'Samara State University'], [800, 552, '●', '#1a73e8', 'Magnit'], [262, 330, '⛽', '#1a73e8', 'Shell'], [1078, 456, '☕', '#e8710a', 'Coffee Like'], [962, 862, '$', '#5f6368', 'Sberbank'], [1470, 668, '⛽', '#1a73e8', 'Lukoil'], [400, 448, '●', '#1a73e8', 'Pyaterochka'], [158, 590, '☕', '#e8710a', 'Burger King'], [1386, 236, '▲', '#8d6e63', 'School No. 47']];
+  const DIST = [[300, 215, 'OKTYABRSKY DISTRICT'], [820, 680, 'SOVETSKY DISTRICT'], [1470, 480, 'ZARECHYE']];
+  function dSeg(px, py, ax, ay, bx, by) {
+    const dx = bx - ax, dy = by - ay, l = dx * dx + dy * dy, k = l ? clamp(((px - ax) * dx + (py - ay) * dy) / l, 0, 1) : 0;
+    return Math.hypot(px - ax - k * dx, py - ay - k * dy);
+  }
+  const dRiver = (x, y) => Math.min(...RIV.slice(1).map((b, i) => dSeg(x, y, RIV[i][0], RIV[i][1], b[0], b[1])));
+  const riverX = (y) => { for (let i = 1; i < RIV.length; i++) if (y <= RIV[i][1]) { const a = RIV[i - 1], b = RIV[i]; return a[0] + (b[0] - a[0]) * (y - a[1]) / (b[1] - a[1]); } return RIV[RIV.length - 1][0]; };
+  const inPark = (x, y, m = 0) => PARKS.some((p) => x > p[0] - m && x < p[2] + m && y > p[1] - m && y < p[3] + m);
+  let CITY = null;
+  function city() {
+    if (CITY) return CITY;
+    let seed = 7; const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+    const R = (n) => Math.round(n * 10) / 10;
+    const riv = 'M' + RIV.map((p) => p.join(' ')).join(' L');
+    let s = `<rect class="ml" x="-400" y="-400" width="${MW + 800}" height="${MH + 800}"/>`;
+    s += `<path class="mpk" d="${riv}" fill="none" stroke-width="170" stroke-linejoin="round"/>`;
+    s += PARKS.map((p) => `<rect class="mp" x="${p[0]}" y="${p[1]}" width="${p[2] - p[0]}" height="${p[3] - p[1]}"/>`).join('');
+    s += `<ellipse class="mwf" cx="400" cy="560" rx="38" ry="22"/><path class="mw" d="${riv}" fill="none" stroke-width="84" stroke-linejoin="round"/>`;
+    // дома: вдоль периметра кварталов, полосами или точечно
+    let b = '';
+    const add = (x, y, w, h) => {
+      const cx = x + w / 2, cy = y + h / 2;
+      if (w < 6 || h < 6 || dRiver(cx, cy) < 95 || inPark(cx, cy, 6) || dSeg(cx, cy, ...DIAG[0], ...DIAG[1]) < Math.max(w, h) / 2 + 12) return;
+      b += `<rect x="${R(x)}" y="${R(y)}" width="${R(w)}" height="${R(h)}"/>`;
+    };
+    for (let i = 0; i < XS.length - 1; i++) for (let j = 0; j < YS.length - 1; j++) {
+      const x0 = XS[i] + 13, x1 = XS[i + 1] - 13, y0 = YS[j] + 13, y1 = YS[j + 1] - 13, w = x1 - x0, h = y1 - y0, r = rnd();
+      if (r < .42) {
+        const t = 16 + rnd() * 6, g = 10 + rnd() * 14;
+        add(x0, y0, w * .55 - g / 2, t); add(x0 + w * .55 + g / 2, y0, w * .45 - g / 2, t);
+        add(x0, y1 - t, w * .4 - g / 2, t); add(x0 + w * .4 + g / 2, y1 - t, w * .6 - g / 2, t);
+        add(x0, y0 + t + 8, t, h - 2 * t - 16); add(x1 - t, y0 + t + 8, t, h - 2 * t - 16);
+        if (rnd() < .5) add(x0 + w / 2 - 14, y0 + h / 2 - 12, 28, 24);
+      } else if (r < .74) {
+        const n = Math.max(2, Math.floor(h / 30)), step = h / n;
+        for (let k = 0; k < n; k++) { const cut = rnd() < .5 ? w * (.35 + rnd() * .3) : w; add(x0, y0 + k * step + 3, cut - 6, step - 12); if (cut < w) add(x0 + cut + 6, y0 + k * step + 3, w - cut - 6, step - 12); }
+      } else {
+        const cols = 2 + (rnd() < .5 ? 1 : 0), rows = 2;
+        for (let a = 0; a < cols; a++) for (let c = 0; c < rows; c++) { const cw = w / cols, ch = h / rows, sw = cw * (.55 + rnd() * .3), sh = ch * (.5 + rnd() * .35); add(x0 + a * cw + (cw - sw) / 2, y0 + c * ch + (ch - sh) / 2, sw, sh); }
+      }
+    }
+    s += `<g class="mb">${b}</g>`;
+    // улицы: обводка, затем заливка; крупные дороги поверх мелких
+    const minor = [], art = [], hw = [];
+    XS.forEach((x, i) => { if (XN[i] === null) return; (i === 4 ? hw : i === 8 ? art : minor).push(`M${x} -40V${MH + 40}`); });
+    YS.forEach((y, j) => {
+      const list = j === 3 ? hw : j === 5 ? art : minor;
+      if (BRIDGE.includes(j)) list.push(`M-40 ${y}H${MW + 40}`);
+      else { const rx = riverX(y); list.push(`M-40 ${y}H${R(rx - 70)}`, `M${R(rx + 70)} ${y}H${MW + 40}`); }
+    });
+    art.push(`M${DIAG[0].join(' ')}L${DIAG[1].join(' ')}`);
+    const road = (d, cls, w) => `<path class="${cls}" d="${d.join('')}" fill="none" stroke-width="${w}" stroke-linecap="butt"/>`;
+    s += road(minor, 'mc', 12) + road(art, 'mc', 16.5) + road(minor, 'mr', 9.5) + road(art, 'mr', 13.5) + road(hw, 'mhc', 20) + road(hw, 'mh', 16);
+    // слои «Пробки» и «Просмотр улиц» (включаются галочками)
+    s += `<g class="mtraffic"><path d="M-40 390H330M470 390H900" stroke="#34a853"/><path d="M330 390H470M600 160V390" stroke="#f29900"/><path d="M900 390H1150M600 390V610" stroke="#ea4335"/><path d="M1150 390H1640M600 610V1040M600 -40V160" stroke="#34a853"/><path d="M0 900L560 482" stroke="#f29900"/></g>`;
+    s += `<g class="mstreet"><path d="${[...minor, ...art, ...hw].join('')}"/></g>`;
+    // подписи
+    let l = '';
+    const txt = (x, y, str, rot, cls) => `<text class="${cls || 'mt'}" x="${R(x)}" y="${R(y)}"${rot ? ` transform="rotate(${rot} ${R(x)} ${R(y)})"` : ''}>${esc(str)}</text>`;
+    XS.forEach((x, i) => { if (!XN[i]) return; [i % 2 ? 2 : 1, i % 2 ? 6 : 5].forEach((j) => { l += txt(x, (YS[j] + YS[j + 1]) / 2, XN[i], -90, i === 4 ? 'mt mtb' : 'mt'); }); });
+    YS.forEach((y, j) => { [j % 2 ? 2 : 1, j % 2 ? 6 : 5].forEach((i) => { const x = (XS[i] + XS[i + 1]) / 2; if (Math.abs(x - riverX(y)) > 110) l += txt(x, y, YN[j], 0, j === 3 ? 'mt mtb' : 'mt'); }); l += txt(1495, y, YN[j], 0, 'mt'); });
+    l += txt(330, 653, 'Novo-Sadovaya St', -36.8, 'mt') + txt(830, 280, 'Novo-Sadovaya St', -36.8, 'mt');
+    l += txt(1268, 440, 'Samara River', -78, 'mtw') + txt(1302, 860, 'Samara River', -86, 'mtw');
+    PARKS.forEach((p) => { l += txt((p[0] + p[2]) / 2, (p[1] + p[3]) / 2 + 4, p[4], 0, 'mtp'); });
+    DIST.forEach((d) => { l += txt(d[0], d[1], d[2], 0, 'mtd'); });
+    POI.forEach(([x, y, g, c, n]) => { l += `<circle cx="${x}" cy="${y}" r="7" fill="${c}" stroke="#fff" stroke-width="1.5"/><text class="mpi" x="${x}" y="${y + 3}">${g}</text><text class="mtl" x="${x + 11}" y="${y + 3.5}" style="fill:${c}">${esc(n)}</text>`; });
+    s += `<g class="mlab">${l}</g>`;
+    return (CITY = s);
+  }
+  // HTML карты с элементами управления, как в PILOT
+  function mapHtml(n, extra = '') {
+    const t = T();
+    return `<div class="a-map" dir="ltr" ${n ? `data-n="${n}"` : ''}><svg class="m" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${city()}<g data-ov></g></svg><div class="a-mk"></div>` +
+      `<div class="a-mtop"><span class="a-msel">${esc(t.layers)} <small>▾</small></span><label><input type="checkbox" data-sv>${esc(t.street)}</label><label><input type="checkbox" data-tr>${esc(t.traffic)}</label></div>` +
+      `<div class="a-mtools"><button type="button" data-z="1" aria-label="+">${ic('plus')}</button><button type="button" data-z="-1" aria-label="−">${ic('minus')}</button><span>${ic('print')}</span><span>${ic('crop')}</span><span>${ic('ruler')}</span><span>${ic('layers')}</span><span>${ic('sliders')}</span><span>${ic('search')}</span></div>` +
+      `<div class="a-mcoord">53.20158, 50.17363</div>${extra}</div>`;
+  }
+  // перетаскивание, масштаб, координаты под курсором; view хранит центр и масштаб между перерисовками
+  function mapCtl(host, view) {
+    const svg = host.querySelector('svg.m'), mk = host.querySelector('.a-mk'), coord = host.querySelector('.a-mcoord');
+    let box = [0, 0, 1, 1];
+    function draw() {
+      const w = host.clientWidth || 400, h = host.clientHeight || 300, W = w / view.z, H = h / view.z;
+      view.x = W >= MW + 200 ? MW / 2 : clamp(view.x, W / 2 - 100, MW + 100 - W / 2);
+      view.y = H >= MH + 200 ? MH / 2 : clamp(view.y, H / 2 - 100, MH + 100 - H / 2);
+      box = [view.x - W / 2, view.y - H / 2, W, H];
+      svg.setAttribute('viewBox', box.map((v) => v.toFixed(1)).join(' '));
+      mk.querySelectorAll('[data-wx]').forEach((e) => { e.style.left = ((e.dataset.wx - box[0]) * view.z).toFixed(1) + 'px'; e.style.top = ((e.dataset.wy - box[1]) * view.z).toFixed(1) + 'px'; });
+    }
+    const place = (e, x, y) => { e.dataset.wx = x; e.dataset.wy = y; e.style.left = ((x - box[0]) * view.z) + 'px'; e.style.top = ((y - box[1]) * view.z) + 'px'; };
+    const zoom = (d) => { view.z = clamp(view.z * (d > 0 ? 1.35 : 1 / 1.35), .45, 2.4); draw(); };
+    host.querySelectorAll('[data-z]').forEach((b) => (b.onclick = () => zoom(+b.dataset.z)));
+    host.querySelector('[data-tr]').onchange = (e) => svg.classList.toggle('tr-on', e.target.checked);
+    host.querySelector('[data-sv]').onchange = (e) => svg.classList.toggle('sv-on', e.target.checked);
+    let drag = null;
+    svg.addEventListener('pointerdown', (e) => { drag = [e.clientX, e.clientY, view.x, view.y]; svg.setPointerCapture(e.pointerId); host.classList.add('drag'); });
+    svg.addEventListener('pointermove', (e) => {
+      const r = host.getBoundingClientRect(), wx = box[0] + (e.clientX - r.left) / view.z, wy = box[1] + (e.clientY - r.top) / view.z;
+      coord.textContent = `${(53.2215 - wy * .000021).toFixed(5)}, ${(50.1590 + wx * .000035).toFixed(5)}`;
+      if (!drag) return;
+      view.x = drag[2] - (e.clientX - drag[0]) / view.z; view.y = drag[3] - (e.clientY - drag[1]) / view.z; draw();
+    });
+    const end = () => { drag = null; host.classList.remove('drag'); };
+    svg.addEventListener('pointerup', end); svg.addEventListener('pointercancel', end);
+    svg.addEventListener('dblclick', () => zoom(1));
+    if (window.ResizeObserver) new ResizeObserver(() => draw()).observe(host);
+    draw();
+    return { draw, place, ov: svg.querySelector('[data-ov]'), mk, center: (x, y) => { view.x = x; view.y = y; draw(); } };
+  }
+  // точка на ломаной и направление движения
+  function along(p, k, closed) {
+    const pts = closed ? [...p, p[0]] : p, segs = []; let L = 0;
+    for (let i = 1; i < pts.length; i++) { const l = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); segs.push(l); L += l; }
+    let d = (closed ? ((k % 1) + 1) % 1 : clamp(k, 0, 1)) * L;
+    for (let i = 0; i < segs.length; i++) { if (d <= segs[i] || i === segs.length - 1) { const f = segs[i] ? Math.min(1, d / segs[i]) : 0, a = pts[i], b = pts[i + 1]; return [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f, Math.atan2(b[1] - a[1], b[0] - a[0]) * 180 / Math.PI + 90, L]; } d -= segs[i]; }
+    return [...pts[pts.length - 1], 0, L];
+  }
+  const pathLen = (p) => along(p, 0)[3];
+
+  // ---------- общие данные ----------
+  const MC = { move: '#1e9e4a', park: '#1a73e8', nolink: '#e53935', never: '#8a9099' };
+  const OBJ = [
+    { n: 'Mitsubishi Pajero', k: 'suv', s: ['move', 7], t: '10:19 03.04.2025', tg: ['#f59e0b', '#ede4fb'], num: 15, g: 0, p: [XS[3], YS[4]], path: [[XS[2], YS[4]], [XS[6], YS[4]], [XS[6], YS[6]], [XS[2], YS[6]]], v: 3 },
+    { n: 'Nissan Tiida', k: 'truck', kc: '#e53935', s: ['nolink'], t: '13:32 28.03.2025', tg: ['#f59e0b', '#ede4fb'], num: '-', g: 0, p: [XS[5] + 30, YS[2]] },
+    { n: 'Т100ЕЕ761', k: 'truck', s: ['move', 144], t: '14:20 08.09.2025', key: 1, num: 10, g: 0, p: [XS[1], YS[3]], path: [[XS[0], YS[3]], [XS[8], YS[3]], [XS[8], YS[5]], [XS[4], YS[5]], [XS[4], YS[3]]], v: 26 },
+    { n: 'К934АУ190', k: 'van', s: ['park', [3, 4]], t: '16:21 23.01.2025', num: '-', g: 0, p: [XS[6] + 60, YS[5]] },
+    { n: 'МТЗ-1523.3', k: 'tractor', s: ['never'], t: '13:45 13.01.2025', num: '-', g: 0, p: [XS[1] + 40, YS[1]] },
+    { n: 'У235АМ', k: 'sedan', s: ['never'], t: '10:10 24.01.2025', num: '-', g: 0, p: [XS[7], YS[6] + 50] },
+    { n: 'Р100РЕ161', k: 'sedan', s: ['nolink'], t: '12:05 24.03.2025', tg: ['#e5484d'], num: 8, g: 1, p: [XS[3] + 70, YS[7]] },
+    { n: 'К967УН190', k: 'sedan', s: ['never'], t: '11:56 25.11.2024', tg: ['#f59e0b', '#e5484d'], num: '-', g: 1, p: [XS[10], YS[4] + 40] },
+  ];
+  const stText = (s) => { const f = T().st[s[0]]; return typeof f === 'function' ? f(s[1]) : f; };
+  const cloneObjs = () => OBJ.map((o) => ({ ...o, p: [...o.p], d: 0 }));
+
+  // ---------- каркас: верхняя панель, боковая полоса, список объектов ----------
+  function topbar(active, opts = {}) {
+    const t = T();
+    const tabs = [['home', 0], ['hist', 1], ['rep', 2], ['doc', 3], ['tool', 4]];
+    return `<div class="a-top" ${opts.n ? `data-n="${opts.n}"` : ''}><span class="a-logo">${logo}<b>PILOT</b></span><nav class="a-tabs">` +
+      tabs.map(([i, k]) => `<button type="button" class="a-tab${k === active ? ' on' : ''}" data-tab="${k}">${ic(i)}<span>${esc(t.tabs[k])}</span></button>`).join('') +
+      `</nav><span class="a-sp"></span><span class="a-stat"><span style="background:#5f6368">10</span><span style="background:#1e9e4a">1</span><span style="background:#1a73e8">1</span><span style="background:#f5a300">0</span><span style="background:#e53935">8</span></span>` +
+      `<span class="a-user">${ic('building')}<span>${esc(t.user)}<small>${esc(t.balance)}</small></span></span><span class="a-ico a-bell">${ic('bell')}<i>3</i></span><span class="a-ico">${ic('gear')}</span><span class="a-ico">${ic('more')}</span></div>`;
+  }
+  function shell(active, inner, opts = {}) {
+    return topbar(active, opts) + `<div class="a-body"><div class="a-rail"><span class="on">${ic('pin')}</span><span>${ic('layers')}</span><span class="dn">${ic('expand')}</span></div>${inner}</div>`;
+  }
+  function tagsHtml(o) { return (o.tg || []).map((c) => `<i style="background:${c}"></i>`).join(''); }
+  function objTree(list, opts = {}) {
+    const t = T(), groups = [[t.common, 0], [t.mine, 1]];
+    return groups.map(([gn, g]) => {
+      const items = list.map((o, i) => [o, i]).filter(([o]) => (o.g || 0) === g);
+      if (!items.length) return '';
+      const all = opts.sel && items.every(([, i]) => opts.sel.has(i));
+      return `<div class="a-grp">${ic('chev')}<span class="a-cb${all ? ' on' : ''}"></span><span>${esc(gn)} (${items.length})</span></div>` + items.map(([o, i]) => {
+        const on = opts.sel && opts.sel.has(i);
+        const tail = opts.short ? `<span class="tg">${tagsHtml(o)}</span>`
+          : `<span class="st${o.s[0] === 'never' || o.s[0] === 'nolink' ? ' off' : ''}">${esc(stText(o.s))}</span><span class="tm">${esc(o.t)}</span><span class="tg">${tagsHtml(o)}</span><span class="nb">${o.key ? ic('key') : ''}${esc(o.num ?? '-')}</span>` +
+            (opts.ctx ? `<button type="button" class="a-ico a-kebab" data-more="${i}" aria-label="${esc(T().sen.rightClick)}">${ic('more')}</button>` : '');
+        return `<div class="a-row${opts.short ? ' short' : ''}${o.isNew ? ' new' : ''}${on ? ' sel' : ''}" data-i="${i}" ${opts.ctx ? `title="${esc(T().sen.rightClick)}"` : ''}><span class="a-cb${on ? ' on' : ''}"></span>${veh(o.k, o.kc)}<span class="nm">${esc(o.n)}</span>${tail}</div>`;
+      }).join('');
+    }).join('');
+  }
+  function filterRow(full) {
+    const t = T();
+    return `<div class="a-flt">${full ? `<span class="a-dd">${ic('bucket')}${ic('chev')}</span><span class="a-dd">${ic('tree')}${ic('chev')}</span><span class="a-dd a-all"><span>${esc(t.all)}</span>${ic('chev')}</span>` : ''}<span class="a-sr">${ic('filter')}<i></i>${ic('x')}</span><span class="a-sr">${ic('search')}<i></i>${ic('x')}</span></div>`;
+  }
+  function onlinePanel(objs, opts = {}) {
+    const t = T();
+    const tools = ['dl', 'print', 'folder', 'plus', 'file', 'refresh'].map((k) => k === 'plus' && opts.add
+      ? `<button type="button" class="a-ico" data-add data-n="1" aria-label="${esc(opts.add)}" title="${esc(opts.add)}">${ic('plus')}</button>` : `<span class="a-ico">${ic(k)}</span>`).join('');
+    return `<div class="a-panel" ${opts.n ? `data-n="${opts.n}"` : ''}><div class="a-ph"><h4>${esc(t.online)}</h4><span class="a-tb">${tools}</span></div>${filterRow(true)}` +
+      `<div class="a-th"><span class="c3">${esc(t.objects)} (0/${objs.length})</span><span>${esc(t.status)}</span><span>${esc(t.updated)}</span><span>${esc(t.tagsCol)}</span><span class="nb">${ic('key')}${ic('gear')}</span></div>` +
+      `<div class="a-list" ${opts.ln ? `data-n="${opts.ln}"` : ''}>${objTree(objs, opts)}</div></div>`;
+  }
+  // значки объектов на карте: цвет — состояние, стрелка — направление
+  function drawVehicles(mp, objs, sel, onPick) {
+    mp.mk.innerHTML = objs.map((o, i) => `<button type="button" class="a-veh${i === sel ? ' sel' : ''}" data-i="${i}" style="--c:${MC[o.s[0]]}" aria-label="${esc(o.n)}"><span class="dir" style="transform:rotate(${o.h || 0}deg)"></span><span class="dot">${veh(o.k, '#fff')}</span><span class="lb">${esc(o.n)}</span>${i === sel ? `<span class="a-tip"><b>${esc(o.n)}</b>${esc(stText(o.s))}<small>${esc(o.t)}</small></span>` : ''}</button>`).join('');
+    mp.mk.querySelectorAll('.a-veh').forEach((b) => { const o = objs[+b.dataset.i]; b.classList.toggle('mv', o.s[0] === 'move'); mp.place(b, o.p[0], o.p[1]); if (onPick) b.onclick = () => onPick(+b.dataset.i); });
+  }
+  function moveObjs(app, getMp, objs) {
+    const timer = setInterval(() => {
+      const mp = getMp();
+      if (!alive(app) || !mp.mk.isConnected) return clearInterval(timer);
+      if (reduced()) return;
+      objs.forEach((o, i) => {
+        if (!o.path) return;
+        o.d = (o.d || 0) + o.v / pathLen(o.path);
+        const [x, y, h] = along(o.path, o.d, true); o.p = [x, y]; o.h = h;
+        const b = mp.mk.querySelector(`.a-veh[data-i="${i}"]`); if (b) { mp.place(b, x, y); b.querySelector('.dir').style.transform = `rotate(${h}deg)`; }
+      });
+    }, 1000);
+  }
+
+  // ---------- рамка, подпись, выноски ----------
+  function frame(el, { cls, html, cap, steps }) {
+    const t = T();
+    el.innerHTML = `<figure class="demo-fig"><div class="app ${cls || ''}" role="group" aria-label="${esc(cap)}">${html}</div>` +
+      `<figcaption class="demo-cap"><span>${esc(cap)}</span><span class="hint">${esc(t.hint)}</span></figcaption>` +
+      `<ol class="demo-steps">${steps.map((s, i) => `<li><button type="button" data-step="${i + 1}"><b>${i + 1}</b>${esc(s)}</button></li>`).join('')}</ol></figure>`;
+    const app = el.querySelector('.app');
+    const fig = el.querySelector('.demo-fig');
+    fig.querySelectorAll('[data-step]').forEach((b) => {
+      const on = () => { app.querySelectorAll(`[data-n="${b.dataset.step}"]`).forEach((x) => x.classList.add('hl')); b.classList.add('on'); };
+      const off = () => { app.querySelectorAll('.hl').forEach((x) => x.classList.remove('hl')); b.classList.remove('on'); };
+      b.addEventListener('mouseenter', on); b.addEventListener('mouseleave', off);
+      b.addEventListener('focus', on); b.addEventListener('blur', off);
+      b.addEventListener('click', () => { on(); setTimeout(off, 1600); });
+    });
+    return app;
+  }
+  // номерки на элементах с data-n; вызывать после каждой перерисовки
+  function badges(app) {
+    app.querySelectorAll('.a-num').forEach((x) => x.remove());
+    app.querySelectorAll('[data-n]').forEach((x) => {
+      const b = document.createElement('span'); b.className = 'a-num'; b.textContent = x.dataset.n;
+      // поля и большие блоки получают значок внутри угла, чтобы он не наезжал на соседей и не обрезался краем
+      if (x.classList.contains('a-field') || x.offsetWidth > 150 || x.offsetHeight > 60) b.classList.add('in');
+      x.appendChild(b);
+    });
+  }
+  function toast(app, text) {
+    app.querySelectorAll('.a-toast').forEach((x) => x.remove());
+    const d = document.createElement('div'); d.className = 'a-toast'; d.textContent = text; app.appendChild(d);
+    setTimeout(() => d.remove(), 2200);
+  }
+  // таймеры экрана останавливаются, когда статья сменилась
+  function alive(app) { return document.body.contains(app); }
+  const warnHtml = (a, b) => `${ic('warn')}<span><b>${esc(a)}:</b> <i>${esc(b)}</i></span>`;
+
+  // ================= 1. Вход в систему =================
+  function demoLogin(el) {
+    const t = T(), L = t.login;
+    const app = frame(el, { cap: L.cap, steps: L.steps, html: '' });
+    function form(err = {}) {
+      app.innerHTML = `<div class="a-center a-lpage"><form class="a-login" novalidate>
+        <div class="lt"><span class="a-btn soft">${ic('run')}${esc(L.demo)}</span>
+          <div class="a-field a-plain" data-n="3"><select aria-label="${esc(L.steps[2])}">${L.langs.map((l, i) => `<option${i === 0 ? ' selected' : ''}>${esc(l)}</option>`).join('')}</select></div></div>
+        <div class="big">${logo}<b>PILOT</b></div>
+        <div class="a-field${err.l ? ' err' : ''}" data-n="1"><label>${esc(L.login)}</label><input name="l" value="demo" autocomplete="off"><span class="em">${err.l ? esc(L.needLogin) : ''}</span></div>
+        <div class="a-field${err.p ? ' err' : ''}" data-n="2"><label>${esc(L.pass)}</label><input name="p" type="password" value="demo" autocomplete="off"><span class="em">${err.p ? esc(L.needPass) : ''}</span></div>
+        <label class="a-chk"><input type="checkbox"> ${esc(L.remember)}</label>
+        <div class="lb"><button type="button" class="a-btn">${ic('key')}${esc(L.forgot)}</button><button type="submit" class="a-btn wide" data-n="4">${ic('lock')}${esc(L.enter)}</button></div>
+      </form></div>`;
+      badges(app);
+      const f = app.querySelector('form');
+      f.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const l = f.l.value.trim(), p = f.p.value.trim();
+        if (!l || !p) { const v = { l: f.l.value, p: f.p.value }; form({ l: !l, p: !p }); app.querySelector('[name=l]').value = v.l; app.querySelector('[name=p]').value = v.p; return; }
+        const b = f.querySelector('[type=submit]'); b.disabled = true; b.innerHTML = '<span class="a-spin"></span>' + esc(L.enter);
+        setTimeout(() => alive(app) && done(l), reduced() ? 0 : 900);
+      });
+    }
+    function done(user) {
+      const objs = cloneObjs(), view = { x: 640, y: 420, z: .72 };
+      app.innerHTML = shell(0, onlinePanel(objs) + mapHtml()) +
+        `<div class="a-toast" style="animation:none">${esc(L.welcome)} ${esc(user)} · <button type="button" class="a-btn soft" style="padding:2px 8px">${esc(L.logout)}</button></div>`;
+      const mp = mapCtl(app.querySelector('.a-map'), view); drawVehicles(mp, objs, -1); moveObjs(app, () => mp, objs);
+      app.querySelector('.a-toast button').onclick = () => form();
+    }
+    form();
+  }
+
+  // ================= 2. Обзор интерфейса =================
+  function demoOverview(el) {
+    const t = T(), O = t.over;
+    const app = frame(el, { cap: O.cap, steps: O.steps, html: '' });
+    const objs = cloneObjs(), view = { x: 640, y: 420, z: .72 };
+    let sel = -1, tab = 0, mp = null;
+    function pick(i) { sel = sel === i ? -1 : i; if (sel >= 0) mp.center(...objs[sel].p); marks(); rows(); }
+    function marks() { drawVehicles(mp, objs, sel, pick); }
+    function rows() { app.querySelectorAll('.a-row').forEach((r) => r.classList.toggle('sel', +r.dataset.i === sel)); }
+    function render() {
+      const panel = tab === 0 ? onlinePanel(objs, { n: 2 })
+        : `<div class="a-panel" data-n="2"><div class="a-ph"><h4>${esc(t.tabs[tab])}</h4></div><div class="a-center a-soon">${esc(O.soon)} «${esc(t.tabs[tab])}»</div></div>`;
+      app.innerHTML = shell(tab, panel + mapHtml(3), { n: 1 });
+      mp = mapCtl(app.querySelector('.a-map'), view); marks();
+      app.querySelectorAll('.a-row').forEach((r) => (r.onclick = () => pick(+r.dataset.i))); rows();
+      app.querySelectorAll('[data-tab]').forEach((b) => (b.onclick = () => { tab = +b.dataset.tab; render(); }));
+      badges(app);
+    }
+    render();
+    moveObjs(app, () => mp, objs);
+  }
+
+  // ================= 3. Как добавить объект =================
+  function demoObject(el) {
+    const t = T(), B = t.obj, O2 = t.o2;
+    const app = frame(el, { cap: B.cap, steps: B.steps, html: '' });
+    const objs = cloneObjs(), view = { x: 640, y: 420, z: .72 };
+    const DEV = ['Teltonika FMB920', 'Galileosky 7.0', 'Navtelecom Smart S-2435', 'Wialon IPS', 'Queclink GV300'];
+    const sideIc = ['ok', 'info', 'gear', 'puzzle', 'fuel'];
+    function base() {
+      app.innerHTML = shell(0, onlinePanel(objs, { add: B.add }) + mapHtml());
+      const mp = mapCtl(app.querySelector('.a-map'), view); drawVehicles(mp, objs, -1);
+      app.querySelector('[data-add]').onclick = modal;
+      badges(app);
+    }
+    function modal() {
+      const bg = document.createElement('div'); bg.className = 'a-modal-bg';
+      const sel = (opts, name, attrs = '') => `<select ${name ? `name="${name}"` : ''} ${attrs}>${opts.map((o) => Array.isArray(o) ? `<option value="${esc(o[0])}">${esc(o[1])}</option>` : `<option>${esc(o)}</option>`).join('')}</select>`;
+      bg.innerHTML = `<form class="a-modal wide" novalidate><div class="a-mh"><span>${esc(B.title)}</span><button type="button" class="a-ico" data-x aria-label="×">${ic('x')}</button></div>
+        <div class="a-side"><nav>${B.side.map((s, i) => `<span class="${i ? '' : 'on'}">${ic(sideIc[i])}${esc(s)}</span>`).join('')}</nav>
+        <div class="a-mb"><h5>${esc(B.side[0])}</h5><div class="a-grid">
+          <div class="a-field err" data-n="2"><input name="num" placeholder="${esc(B.num)}" aria-label="${esc(B.num)}" autocomplete="off"></div>
+          <div class="a-field err a-dd2" data-n="3"><input name="id" inputmode="numeric" placeholder="${esc(B.id)}" aria-label="${esc(B.id)}" title="${esc(B.idHint)}" autocomplete="off">${ic('chev')}</div>
+          <div class="a-field">${sel([O2.imei])}</div>
+          <div class="a-field"><label>${esc(O2.brand)}</label>${sel([O2.chBrand, 'Mitsubishi', 'Toyota', 'KAMAZ', 'GAZ'])}</div>
+          <div class="a-field"><label>${esc(O2.model)}</label>${sel([O2.chModel])}</div>
+          <div class="a-field"><label>${esc(O2.modif)}</label>${sel([O2.chModif])}</div>
+          <div class="a-field"><label>${esc(O2.sim)}</label><input value="0"></div>
+          <div class="a-field"><label>ICCID</label><input placeholder="ICCID"></div>
+          <div class="a-field"><label>${esc(O2.op)}</label>${sel([O2.other, 'MTS', 'Beeline', 'MegaFon'])}</div>
+          <div class="a-row2"><div class="a-field a-col"><label>${esc(O2.color)}</label><span class="a-colr">${veh('suv', '#1a73e8')}${ic('chev')}</span></div><div class="a-field" style="flex:1"><label>${esc(B.vtype)}</label>${sel(B.vtypes, 'vt')}</div></div>
+          <div class="a-field" style="justify-content:flex-end"><label class="a-chk"><input type="checkbox">${esc(O2.photo)}</label></div>
+          <div class="a-field"><label>${esc(O2.tags)}</label><span class="a-chips"><b style="background:#f5a300">${esc(O2.tagVals[0])} ×</b><b style="background:#e5484d">${esc(O2.tagVals[1])} ×</b></span></div>
+          <div class="a-field err" data-n="4">${sel([['', B.dtype], ...DEV.map((d) => [d, d])], 'dev', `aria-label="${esc(B.dtype)}"`)}</div>
+          <div class="a-field"><label>${esc(B.group)}</label>${sel([t.common, t.mine])}</div>
+          <div class="a-field"><label>${esc(O2.tpl)}</label>${sel([O2.chTpl])}</div>
+          <div class="a-field"><label>${esc(B.tz)}</label>${sel(['Europe/Moscow', 'Europe/Samara', 'Asia/Yekaterinburg'])}</div>
+          <div class="a-field"><label>${esc(O2.mil)}</label><input type="number" value="0"></div>
+          <div class="a-field"><label>${esc(O2.hours)}</label><input type="number" value="0"></div>
+          <div class="a-field"><label>${esc(O2.shift)}</label><input type="number" value="0"></div>
+          <div class="a-field" style="grid-column:1/-1"><input placeholder="${esc(O2.desc)}" aria-label="${esc(O2.desc)}"></div>
+        </div></div></div>
+        <div class="a-mf"><span class="warn"></span><button type="reset" class="a-btn">${ic('undo')}${esc(B.reset)}</button><button type="submit" class="a-btn" data-n="5" disabled>${ic('save')}${esc(B.save)}</button></div></form>`;
+      app.appendChild(bg); badges(app);
+      const f = bg.querySelector('form'), warn = f.querySelector('.warn'), save = f.querySelector('[type=submit]');
+      const check = () => {
+        const miss = [];
+        [['num', B.num], ['id', B.id], ['dev', B.dtype]].forEach(([k, label]) => {
+          const ok = k === 'id' ? /^\d{6,}$/.test(f[k].value.trim()) : !!f[k].value.trim();
+          f[k].closest('.a-field').classList.toggle('err', !ok); if (!ok) miss.push(label);
+        });
+        save.disabled = miss.length > 0;
+        warn.classList.toggle('ok', !miss.length);
+        warn.innerHTML = miss.length ? warnHtml(`${B.side[0]} / ${miss[0]}`, B.required) : `${ic('ok')}<span>${esc(B.ready)}</span>`;
+      };
+      f.addEventListener('input', check); f.addEventListener('change', check);
+      f.addEventListener('reset', () => setTimeout(check));
+      f.querySelector('[data-x]').onclick = () => bg.remove();
+      f.addEventListener('submit', (e) => {
+        e.preventDefault(); if (save.disabled) return;
+        objs.forEach((o) => delete o.isNew);
+        const vt = f.vt.selectedIndex;
+        objs.splice(objs.filter((o) => !o.g).length, 0, { n: f.num.value.trim(), k: ['sedan', 'truck', 'tractor', 'van', 'sedan', 'sedan'][vt] || 'sedan', s: ['never'], t: '—', num: '-', g: 0, isNew: true, p: [XS[4] + 50, YS[2] + 30] });
+        bg.remove(); base(); toast(app, B.saved);
+        const r = app.querySelector('.a-row.new'); if (r) r.scrollIntoView({ block: 'nearest' });
+      });
+      check(); f.num.focus({ preventScroll: true });
+    }
+    base();
+  }
+
+  // ================= 4. Как добавить датчик =================
+  function demoSensor(el) {
+    const t = T(), S = t.sen, S2 = t.s2;
+    const app = frame(el, { cap: S.cap, steps: S.steps, html: '' });
+    const sensors = S2.rows.map((r) => ({ n: r[0], d: r[1], k: r[2], f: r[3], u: r[4], g: r[5] }));
+    const target = OBJ[0], objs = cloneObjs(), view = { x: 640, y: 420, z: .8 };
+    function base() {
+      app.innerHTML = shell(0, onlinePanel(objs, { ctx: true, ln: 1 }) + mapHtml());
+      const mp = mapCtl(app.querySelector('.a-map'), view); drawVehicles(mp, objs, -1);
+      app.querySelectorAll('.a-row').forEach((r) => {
+        r.addEventListener('contextmenu', (e) => { e.preventDefault(); menu(r, e); });
+        r.addEventListener('click', (e) => { if (e.target.closest('[data-more]')) menu(r, e); });
+      });
+      badges(app);
+    }
+    function menu(row, e) {
+      app.querySelectorAll('.a-menu').forEach((m) => m.remove());
+      app.querySelectorAll('.a-row').forEach((r) => r.classList.toggle('sel', r === row));
+      const icons = ['play', 'eye', 'map', 'edit', 'clip', 'list', 'cam', 'hist', 'trash'];
+      const m = document.createElement('div'); m.className = 'a-menu';
+      m.innerHTML = S.menu.map((s, i) => `<button type="button" data-k="${i}" ${i === 4 ? 'data-n="2"' : ''}>${ic(icons[i])}${esc(s)}</button>`).join('');
+      const a = app.getBoundingClientRect();
+      m.style.left = clamp(e.clientX - a.left, 4, a.width - 200) + 'px'; m.style.top = clamp(e.clientY - a.top, 4, a.height - 250) + 'px';
+      app.appendChild(m); badges(app);
+      m.querySelector('[data-k="4"]').onclick = () => { m.remove(); list(); };
+      setTimeout(() => document.addEventListener('click', function off(ev) { if (!m.contains(ev.target)) { m.remove(); document.removeEventListener('click', off); } }), 0);
+    }
+    function modalBg(html, cls) {
+      app.querySelectorAll('.a-modal-bg').forEach((x) => x.remove());
+      const bg = document.createElement('div'); bg.className = 'a-modal-bg';
+      bg.innerHTML = `<div class="a-modal ${cls || ''}">${html}</div>`;
+      app.appendChild(bg); bg.querySelectorAll('[data-x]').forEach((x) => (x.onclick = () => bg.remove()));
+      return bg;
+    }
+    function list(fresh) {
+      const sideIc = ['therm', 'tool', 'layers', 'tag'];
+      const bg = modalBg(`<div class="a-mh"><span>${esc(S.sensorsOf)} ${esc(target.n)}</span><small class="a-agent">AgentID: <u>175408</u></small><span class="a-ico">${ic('dl')}</span><span class="a-ico">${ic('up')}</span><button type="button" class="a-ico" data-x aria-label="×">${ic('x')}</button></div>
+        <div class="a-side" style="flex:1;min-height:0"><nav>${S2.side.map((s, i) => `<span class="${i ? '' : 'on'}">${ic(sideIc[i])}${esc(s)}</span>`).join('')}</nav>
+        <div class="a-mb flush"><div class="a-sh"><h5>${esc(S2.side[0])}</h5><span class="a-sel">${esc(S2.tpl)}${ic('chev')}</span><span class="a-ico dim">${ic('up')}</span><span class="a-ico dim">${ic('save')}</span><span class="a-ico dim">${ic('x')}</span><span class="a-sp"></span><button type="button" class="a-ico" data-add data-n="3" aria-label="${esc(S.add)}" title="${esc(S.add)}">${ic('plus')}</button><span class="a-ico">${ic('refresh')}</span></div>
+        <div class="a-list"><table class="a-tbl"><thead><tr>${S2.cols.map((c) => `<th>${esc(c)}</th>`).join('')}<th></th></tr></thead><tbody>${sensors.map((s, i) => `<tr${fresh && i === sensors.length - 1 ? ' class="sel"' : ''}><td>${esc(s.n)}</td><td>${esc(s.d)}</td><td>${esc(S2.kinds[s.k])}</td><td>${esc(s.f)}</td><td>${esc(s.u)}</td><td>${esc(s.g)}</td><td class="tr">${ic('trash')}</td></tr>`).join('')}</tbody></table></div></div></div>`, 'wide');
+      bg.querySelector('[data-add]').onclick = edit; badges(app);
+    }
+    function edit() {
+      const bg = modalBg(`<div class="a-mh"><span>${esc(S2.edit)} ${esc(target.n)}</span><button type="button" class="a-ico" data-x aria-label="×">${ic('x')}</button></div>
+        <form class="a-mb" novalidate id="sf"><div class="a-grid g2">
+          <div class="a-field err" data-n="4"><label>${esc(S.type)}</label><select name="p"><option value=""></option>${S2.purposes.map((p, i) => `<option value="${i}">${esc(p[0])}</option>`).join('')}</select></div>
+          <div class="a-field"><label>${esc(S2.kind)}</label><select name="k" disabled><option></option>${S2.kinds.map((k, i) => `<option value="${i}">✓ ${esc(k)}</option>`).join('')}</select></div>
+        </div><div class="a-more" hidden><div class="a-grid g2" data-n="5">
+          <div class="a-field err"><input name="n" placeholder="${esc(S.name)}" aria-label="${esc(S.name)}" autocomplete="off"></div>
+          <div class="a-field err"><select name="f" aria-label="${esc(S.field)}"><option value="">${esc(S.field)}</option><option>din1</option><option>io_239</option><option>pwr_ext</option><option>can_fuel</option><option>temp_1</option><option>can_engine_hours</option></select></div>
+          <div class="a-field"><input name="d" placeholder="${esc(S2.desc)}" aria-label="${esc(S2.desc)}"></div>
+          <div class="a-row2"><div class="a-field" style="flex:1"><input name="u" placeholder="${esc(S2.unit)}" aria-label="${esc(S2.unit)}"></div><div class="a-field" style="flex:1.3"><select aria-label="${esc(S2.group)}"><option>${esc(S2.group)}</option></select></div></div>
+          <div class="a-row2"><div class="a-field" style="flex:1"><label>${esc(S2.formula)}</label><input placeholder="x"></div><button type="button" class="a-btn" style="align-self:flex-end">${esc(S2.test)}</button></div>
+          <div class="a-field"><label>${esc(S2.tags)}</label><select><option></option></select></div>
+        </div><div class="a-grid g4" style="margin-top:8px">
+          <div class="a-field"><label>${esc(S.min)}</label><input type="number" value="1"></div><div class="a-field"><label>${esc(S.max)}</label><input type="number" value="1"></div>
+          <div class="a-field"><label>${esc(S2.onName)}</label><input value="${esc(S.on)}"></div><div class="a-field"><label>${esc(S2.offName)}</label><input value="${esc(S.off)}"></div>
+        </div><div class="a-checks"><label class="a-chk"><input type="checkbox" checked>${esc(S.events)}</label><label class="a-chk"><input type="checkbox" checked>${esc(S.history)}</label><label class="a-chk"><input type="checkbox" checked>${esc(S2.filter)}</label><label class="a-chk"><input type="checkbox" name="eh">${esc(S2.eh)}</label><label class="a-chk"><input type="checkbox" checked>${esc(S2.tips)}</label></div></div></form>
+        <div class="a-mf"><span class="warn"></span><button type="button" class="a-btn" data-clear>${esc(S2.clear)}</button><button type="button" class="a-btn" data-save data-n="6" disabled>${ic('save')}${esc(S.save)}</button></div>`, 'mid');
+      const f = bg.querySelector('#sf'), save = bg.querySelector('[data-save]'), warn = bg.querySelector('.warn'), more = bg.querySelector('.a-more');
+      const check = () => {
+        const p = f.p.value !== '', n = !!f.n.value.trim(), fl = !!f.f.value;
+        f.p.closest('.a-field').classList.toggle('err', !p);
+        f.n.closest('.a-field').classList.toggle('err', !n); f.f.closest('.a-field').classList.toggle('err', !fl);
+        save.disabled = !(p && n && fl); warn.classList.toggle('ok', p && n && fl);
+        warn.innerHTML = !p ? warnHtml(S.type, t.obj.required) : !n ? warnHtml(S.name, t.obj.required) : !fl ? warnHtml(S.field, t.obj.required) : `${ic('ok')}<span>${esc(S.ok)}</span>`;
+      };
+      f.p.addEventListener('change', () => {
+        const pr = S2.purposes[+f.p.value];
+        more.hidden = !pr; if (pr) { f.k.value = pr[1]; if (!f.n.value) f.n.value = ''; f.n.placeholder = pr[0]; f.u.value = pr[2]; f.eh.checked = f.p.value === '4'; badges(app); }
+        check();
+      });
+      f.addEventListener('input', check); f.addEventListener('change', check);
+      f.addEventListener('submit', (e) => e.preventDefault());
+      bg.querySelector('[data-clear]').onclick = () => { f.reset(); more.hidden = true; check(); };
+      save.onclick = () => { const pr = S2.purposes[+f.p.value]; sensors.push({ n: f.n.value.trim(), d: f.d.value.trim() || pr[0], k: pr[1], f: f.f.value, u: f.u.value, g: '' }); list(true); };
+      check(); badges(app);
+    }
+    base();
+  }
+
+  // ================= 5. Как посмотреть историю =================
+  function demoHistory(el) {
+    const t = T(), H = t.his, H2 = t.h2;
+    const app = frame(el, { cls: 'tall a-hist', cap: H.cap, steps: H.steps, html: '' });
+    // рейсы идут по улицам карты
+    const TR = [
+      { d: '27.03.2025', a: '08:19', b: '08:34', dur: '00:15', km: 3.37, v: 33, c: '#1e9e4a', p: [[XS[2], YS[6]], [XS[2], YS[4]], [XS[5], YS[4]], [XS[5], YS[3]], [XS[7], YS[3]]] },
+      { d: '27.03.2025', a: '12:29', b: '13:04', dur: '00:35', km: 4.08, v: 28, c: '#1a73e8', p: [[XS[7], YS[3]], [XS[7], YS[1]], [XS[4], YS[1]], [XS[4], YS[2]], [XS[2], YS[2]]] },
+      { d: '28.03.2025', a: '07:42', b: '08:35', dur: '00:53', km: 10.8, v: 61, c: '#d81b60', p: [[XS[2], YS[2]], [XS[1], YS[2]], [XS[1], YS[5]], [XS[4], YS[5]], [XS[4], YS[7]], [XS[7], YS[7]]] },
+      { d: '28.03.2025', a: '08:51', b: '10:42', dur: '01:51', km: 13.9, v: 76, c: '#ef6c00', p: [[XS[7], YS[7]], [XS[8], YS[7]], [XS[8], YS[3]], [XS[10], YS[3]], [XS[10], YS[5]]] },
+      { d: '31.03.2025', a: '10:10', b: '10:54', dur: '00:44', km: 6.2, v: 36, c: '#6d4c41', p: [[XS[10], YS[5]], [XS[10], YS[6]], [XS[8], YS[6]], [XS[6], YS[6]], [XS[6], YS[4]]] },
+    ];
+    const ADDR = ['Sadovaya St, 50', 'Gagarin St, 18A', 'Moskovskoye Hwy, 4', 'Michurin St, 21', 'Lenin Ave, 125', 'Galaktionovskaya St, 9'];
+    const objs = cloneObjs(); const selObj = new Set();
+    let phase = 0; const on = new Set(); let playing = false, pos = 0, rate = 1, timer = null, mp = null;
+    const view = { x: 640, y: 440, z: .7 };
+    function search() {
+      app.innerHTML = shell(1, `<div class="a-panel"><div class="a-ph"><h4>${esc(H2.title)}</h4><span class="a-lnk">${ic('fwd')}${esc(H2.lastRep)}</span><span class="a-ico">${ic('refresh')}</span></div>
+        <div class="a-dates"><div class="a-dt" data-n="2"><div class="a-field"><label>${esc(t.rep.from)}</label><span class="a-date"><input value="27.03.2025 00:00" aria-label="${esc(t.rep.from)}">${ic('cal')}</span></div><div class="a-field"><label>${esc(t.rep.to)}</label><span class="a-date"><input value="04.04.2025 00:00" aria-label="${esc(t.rep.to)}">${ic('cal')}</span></div></div>
+          <button type="button" class="a-btn" data-find data-n="3">${ic('search')}${esc(H.search)}</button></div>
+        <div class="a-checks row"><label class="a-chk"><input type="checkbox" checked>${esc(H2.wd)}</label><label class="a-chk"><input type="checkbox" checked>${esc(H2.we)}</label><label class="a-chk"><input type="checkbox" checked>${esc(H2.stops)}</label></div>
+        ${filterRow(false)}<div class="a-th short"><span class="c3">${esc(t.objects)}</span><span>${esc(t.tagsCol)}</span></div>
+        <div class="a-list" data-n="1">${objTree(objs, { short: true, sel: selObj })}</div></div>` + mapHtml());
+      mp = mapCtl(app.querySelector('.a-map'), view); drawVehicles(mp, objs, -1);
+      app.querySelectorAll('.a-row').forEach((r) => (r.onclick = () => { const i = +r.dataset.i; selObj.has(i) ? selObj.delete(i) : selObj.add(i); r.classList.toggle('sel', selObj.has(i)); r.querySelector('.a-cb').classList.toggle('on', selObj.has(i)); }));
+      app.querySelector('[data-find]').onclick = () => { if (!selObj.size) return toast(app, H2.needObj); phase = 1; on.clear(); on.add(0); pos = 0; trips(); };
+      badges(app);
+    }
+    function trips() {
+      const name = OBJ[[...selObj][0]].n;
+      app.innerHTML = shell(1, `<div class="a-panel a-hp"><div class="a-ph"><button type="button" class="a-ico" data-back aria-label="←">${ic('back')}</button><h4>${esc(H.trips)}</h4></div>
+        <div class="a-list a-trips" data-n="4"><table class="a-tbl"><thead><tr><th><span class="a-cb"></span></th><th>${esc(H.date)}</th><th>${esc(H.start)}</th><th>${esc(H.stop)}</th><th>${esc(H2.dur)}</th><th class="r">${esc(H2.dist)}</th><th class="r">${esc(H2.vmax)}</th></tr></thead>
+        <tbody><tr class="g"><td colspan="7">${ic('chev')}<span class="a-cb"></span> ${esc(name)} (${esc(H2.recs(TR.length))})</td></tr>${TR.map((r, i) => `<tr class="click${on.has(i) ? ' sel' : ''}" data-r="${i}"><td><span class="a-cb${on.has(i) ? ' on' : ''}"></span></td><td>${r.d}</td><td>${r.a}</td><td>${r.b}</td><td>${r.dur}</td><td class="r">${r.km.toFixed(2)}</td><td class="r">${r.v}</td></tr>`).join('')}</tbody></table></div>
+        <div class="a-player" data-n="5"><button type="button" class="a-ico" data-play aria-label="Play">${ic(playing ? 'pause' : 'play')}</button><span class="a-ico">${ic('rew')}</span><input type="range" min="0" max="1000" value="${Math.round(pos * 1000)}" aria-label="${esc(H.steps[4])}"><span class="a-ico">${ic('ff')}</span><button type="button" class="a-rate" data-rate>X${rate}</button></div>
+        <div class="a-etabs"><span class="on">${esc(H.events)}</span><span>${esc(H2.media)}</span></div>
+        <div class="a-list a-evs"><table class="a-tbl"><thead><tr>${H2.evCols.map((c) => `<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>${on.size ? [...on].sort().flatMap((ti) => H.ev.map((e, k) => `<tr><td>${esc(name)}</td><td>${TR[ti].d.slice(0, 5)} ${['08:19', '08:27', '08:31', '08:34'][k]}</td><td>${esc(e)}</td><td>Samara, ${esc(ADDR[(ti + k) % ADDR.length])}</td></tr>`)).join('') : `<tr><td colspan="4" class="mut">${esc(H.pick)}</td></tr>`}</tbody></table></div>
+        </div><div class="a-hright">${mapHtml()}<div class="a-chart" data-n="6"><div class="a-leg"><i></i>${esc(name)} (${esc(H.speed)})</div><svg viewBox="0 0 300 60" preserveAspectRatio="none" data-chart></svg></div></div>`);
+      mp = mapCtl(app.querySelector('.a-map'), view);
+      app.querySelector('[data-back]').onclick = () => { playing = false; clearInterval(timer); phase = 0; search(); };
+      app.querySelectorAll('[data-r]').forEach((r) => (r.onclick = () => { const i = +r.dataset.r; on.has(i) ? on.delete(i) : on.add(i); pos = 0; fit(); trips(); }));
+      app.querySelector('[data-play]').onclick = () => { if (!on.size) return toast(app, H.pick); playing = !playing; if (pos >= 1) pos = 0; trips(); loop(); };
+      app.querySelector('[data-rate]').onclick = () => { rate = rate === 8 ? 1 : rate * 2; app.querySelector('[data-rate]').textContent = 'X' + rate; };
+      app.querySelector('input[type=range]').oninput = (e) => { pos = e.target.value / 1000; draw(); };
+      draw(); badges(app);
+    }
+    function fit() {
+      const pts = [...on].flatMap((i) => TR[i].p); if (!pts.length) return;
+      const xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]);
+      view.x = (Math.min(...xs) + Math.max(...xs)) / 2; view.y = (Math.min(...ys) + Math.max(...ys)) / 2;
+    }
+    function draw() {
+      if (!mp) return;
+      const ch = app.querySelector('[data-chart]');
+      let s = '';
+      [...on].forEach((i) => {
+        const r = TR[i], pts = r.p.map((q) => q.join(',')).join(' ');
+        s += `<polyline points="${pts}" fill="none" stroke="#fff" stroke-width="7" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke" opacity=".85"/><polyline points="${pts}" fill="none" stroke="${r.c}" stroke-width="4" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>`;
+        // стрелки направления на каждом отрезке
+        for (let k = 1; k < r.p.length; k++) { const a = r.p[k - 1], b = r.p[k], mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2, ang = Math.atan2(b[1] - a[1], b[0] - a[0]) * 180 / Math.PI; s += `<path d="M-5 -4L4 0L-5 4z" fill="${r.c}" stroke="#fff" stroke-width=".8" transform="translate(${mx} ${my}) rotate(${ang}) scale(${1.3 / view.z})"/>`; }
+        const st = r.p[0], en = r.p[r.p.length - 1], sc = 1 / view.z;
+        s += `<g transform="translate(${st[0]} ${st[1]}) scale(${sc})"><circle r="6" fill="#1e9e4a" stroke="#fff" stroke-width="2"/></g><g transform="translate(${en[0]} ${en[1]}) scale(${sc})"><circle r="6" fill="#e53935" stroke="#fff" stroke-width="2"/></g>`;
+      });
+      mp.ov.innerHTML = s;
+      const first = [...on].sort()[0];
+      mp.mk.innerHTML = '';
+      if (first !== undefined) {
+        const [x, y, h] = along(TR[first].p, pos);
+        const o = OBJ[[...selObj][0]] || OBJ[0];
+        mp.mk.innerHTML = `<span class="a-veh mv" style="--c:${TR[first].c}"><span class="dir" style="transform:rotate(${h}deg)"></span><span class="dot">${veh(o.k, '#fff')}</span><span class="lb">${esc(o.n)}</span></span>`;
+        mp.place(mp.mk.firstElementChild, x, y);
+      }
+      if (ch) {
+        let c = '<line x1="0" y1="59" x2="300" y2="59" stroke="var(--a-line)"/>';
+        if (first !== undefined) {
+          const pts = Array.from({ length: 61 }, (_, i) => { const v = Math.max(0, Math.sin(i / 4 + first) * 22 + Math.sin(i / 1.7) * 9 + 30 - (i < 3 || i > 57 ? 30 : 0)); return [i * 5, 58 - Math.min(50, v * 50 / TR[first].v * 1.2)]; });
+          c += `<polygon points="0,59 ${pts.map((q) => q.join(',')).join(' ')} 300,59" fill="#1a73e8" opacity=".12"/><polyline points="${pts.map((q) => q.join(',')).join(' ')}" fill="none" stroke="#1a73e8" stroke-width="1.5" vector-effect="non-scaling-stroke"/>`;
+          c += `<line x1="${pos * 300}" y1="0" x2="${pos * 300}" y2="60" stroke="var(--a-text)" stroke-width="1" vector-effect="non-scaling-stroke"/>`;
+        }
+        ch.innerHTML = c;
+      }
+      const rg = app.querySelector('input[type=range]'); if (rg) rg.value = Math.round(pos * 1000);
+    }
+    function loop() {
+      clearInterval(timer);
+      if (!playing) return;
+      timer = setInterval(() => {
+        if (!alive(app)) return clearInterval(timer);
+        pos = Math.min(1, pos + 0.006 * rate); draw();
+        if (pos >= 1) { playing = false; clearInterval(timer); trips(); }
+      }, 50);
+    }
+    selObj.add(0); search();
+  }
+
+  // ================= 6. Как построить отчёт =================
+  function demoReport(el) {
+    const t = T(), R = t.rep, R2 = t.r2;
+    const app = frame(el, { cls: 'tall', cap: R.cap, steps: R.steps, html: '' });
+    const st = { split: 0, group: 0, type: '', from: '2025-03-27', to: '2025-04-04', sel: new Set() };
+    const objs = cloneObjs(), view = { x: 640, y: 440, z: .75 };
+    let res = false;
+    const fmt = (d) => d.split('-').reverse().join('.');
+    function render() {
+      app.innerHTML = shell(2, `<div class="a-panel a-rp"><div class="a-ph"><h4>${esc(R.title)}</h4><span class="a-ico">${ic('edit')}</span><span class="a-ico">${ic('refresh')}</span></div>
+        <div class="a-grid g3 a-rpf">
+          <div class="a-field" data-n="4"><label>${esc(R.split)}</label><select name="split">${R.splits.map((s, i) => `<option value="${i}"${i === st.split ? ' selected' : ''}>${esc(s)}</option>`).join('')}</select></div>
+          <div class="a-field" data-n="2"><label>${esc(R.from)}</label><span class="a-date"><input name="from" value="${fmt(st.from)} 00:00">${ic('cal')}</span></div>
+          <div class="a-field"><label>${esc(R.to)}</label><span class="a-date"><input name="to" value="${fmt(st.to)} 00:00">${ic('cal')}</span></div>
+          <div class="a-field" data-n="5"><label>${esc(R.group)}</label><select name="group">${R.groups.map((s, i) => `<option value="${i}"${i === st.group ? ' selected' : ''}>${esc(s)}</option>`).join('')}</select></div>
+          <div class="a-field" data-n="6"><label>${esc(R.sgroups)}</label><select><option>${esc(R.sgroupsAll)}</option></select></div>
+          <div class="a-field" data-n="3"><label>${esc(R.type)}</label><select name="type"><option value=""></option>${R.types.map((s, i) => `<option value="${i}"${i === st.type ? ' selected' : ''}>${esc(s)}</option>`).join('')}</select></div>
+        </div>
+        <div class="a-bline"><span class="warn" data-need></span><button type="button" class="a-btn" data-build data-n="7">${ic('play')}${esc(R.build)}</button></div>
+        ${filterRow(false)}<div class="a-th short"><span class="c3">${esc(t.objects)}</span><span>${esc(t.tagsCol)}</span></div>
+        <div class="a-list" data-n="1">${objTree(objs, { short: true, sel: st.sel })}</div></div>
+        <div class="a-rright"><div class="a-mapcard"><div class="a-ct">${esc(R2.map)}</div>${mapHtml()}</div><div class="a-res"></div></div>`);
+      const mp = mapCtl(app.querySelector('.a-map'), view);
+      const marks = () => drawVehicles(mp, objs.map((o, i) => st.sel.has(i) ? o : { ...o, p: [-999, -999] }), -1);
+      marks();
+      const sync = () => {
+        const ok = st.sel.size && st.type !== '';
+        app.querySelector('[data-build]').disabled = !ok;
+        app.querySelector('[data-need]').textContent = ok ? '' : R.need;
+      };
+      app.querySelectorAll('.a-row').forEach((r) => (r.onclick = () => { const i = +r.dataset.i; st.sel.has(i) ? st.sel.delete(i) : st.sel.add(i); r.classList.toggle('sel', st.sel.has(i)); r.querySelector('.a-cb').classList.toggle('on', st.sel.has(i)); if (st.sel.has(i)) mp.center(...objs[i].p); marks(); sync(); }));
+      app.querySelectorAll('select[name], input[name]').forEach((x) => (x.onchange = () => { if (x.name === 'from' || x.name === 'to') { const m = x.value.match(/(\d{2})\.(\d{2})\.(\d{4})/); if (m) st[x.name] = `${m[3]}-${m[2]}-${m[1]}`; } else st[x.name] = x.value === '' ? '' : +x.value; sync(); }));
+      app.querySelector('[data-build]').onclick = () => { res = true; result(); };
+      sync(); if (res) result(); badges(app);
+    }
+    function result() {
+      const cols = R.cols[st.type], ty = st.type;
+      const list = [...st.sel].map((i) => OBJ[i]);
+      const d0 = new Date(st.from), d1 = new Date(st.to);
+      const days = Math.max(1, Math.min(9, Math.round((d1 - d0) / 864e5) + 1));
+      const periods = st.split === 2 ? [`${fmt(st.from)} — ${fmt(st.to)}`] : st.split === 1 ? Array.from({ length: Math.ceil(days / 7) }, (_, k) => R.week(k + 1)) : Array.from({ length: days }, (_, k) => new Date(d0.getTime() + k * 864e5).toLocaleDateString(R.locale));
+      const rnd = (a, b, s) => { const x = Math.sin(s) * 10000; return a + (x - Math.floor(x)) * (b - a); };
+      const hm = (a, b) => `${a} ${R.h} ${b} ${R.min}`;
+      const val = (ci, s) => ty === 1 ? [Math.round(rnd(1, 9, s)), hm(Math.round(rnd(1, 9, s + 1)), Math.round(rnd(0, 59, s + 2))), `${Math.round(rnd(20, 180, s + 3))} ${R.min}`][ci]
+        : ty === 3 ? [rnd(8, 40, s + ci).toFixed(1), rnd(0, 60, s + ci + 1).toFixed(1), (rnd(0, 1, s) > .85 ? rnd(5, 20, s).toFixed(1) : '0.0')][ci]
+          : ty === 2 ? [Math.round(rnd(2, 12, s)), rnd(20, 240, s + 1).toFixed(1), Math.round(rnd(30, 70, s + 2)) + ' ' + R.kmh][ci]
+            : [rnd(20, 260, s).toFixed(1), hm(Math.round(rnd(1, 7, s + 1)), Math.round(rnd(0, 59, s + 2))), Math.round(rnd(60, 140, s + 3)) + ' ' + R.kmh][ci];
+      const rows = [];
+      if (st.group === 0) periods.forEach((p, pi) => list.forEach((o, oi) => rows.push([p, o.n, ...cols.map((_, ci) => val(ci, pi * 7 + oi * 31 + 1))])));
+      else list.forEach((o, oi) => periods.forEach((p, pi) => rows.push([o.n, p, ...cols.map((_, ci) => val(ci, pi * 7 + oi * 31 + 1))])));
+      const head = ['№', ...(st.group === 0 ? [R.period, t.objects] : [t.objects, R.period])];
+      const dec = R.locale === 'ru-RU' || R.locale === 'uk-UA' || R.locale === 'es-ES';
+      const box = app.querySelector('.a-res'); app.classList.add('has-res');
+      box.innerHTML = `<div class="a-rtab"><span class="on">${esc(R.types[ty])}<button type="button" class="a-x" data-back aria-label="${esc(R.back)}">${ic('x')}</button></span></div>
+        <div class="a-rhead"><b>${esc(R.types[ty])} ${esc(R2.of(fmt(st.from), fmt(st.to)))}</b><span>${esc(R2.object)}: <span class="a-pillo">${esc(list.map((o) => o.n).join(', '))}</span></span></div>
+        <div class="a-list"><table class="a-tbl"><thead><tr>${[...head, ...cols].map((h) => `<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.map((r, i) => `<tr><td>${i + 1}</td>${r.map((c) => `<td>${esc(dec ? String(c).replace('.', ',') : String(c))}</td>`).join('')}</tr>`).join('')}</tbody></table></div>
+        <div class="a-rfoot"><button type="button" class="a-btn" data-dl>${ic('gear')}${esc(R2.settings)}</button><span class="a-sp"></span><button type="button" class="a-btn sq" data-dl aria-label="XLS">${ic('file')}</button><button type="button" class="a-btn sq" data-dl aria-label="PDF">${ic('file')}</button><button type="button" class="a-btn sq" data-dl aria-label="CSV">${ic('file')}</button><button type="button" class="a-btn sq" data-dl aria-label="Print">${ic('print')}</button></div>`;
+      box.querySelector('[data-back]').onclick = () => { res = false; app.classList.remove('has-res'); box.innerHTML = ''; };
+      box.querySelectorAll('[data-dl]').forEach((b) => (b.onclick = () => toast(app, R.noDl)));
+    }
+    render();
+  }
+
+  // ================= автопоказ: курсор сам проходит сценарий =================
+  const AUTO_I18N = { ru: ['Смотреть показ', 'Остановить показ'], en: ['Watch demo', 'Stop demo'], uk: ['Дивитися показ', 'Зупинити показ'], ar: ['مشاهدة العرض', 'إيقاف العرض'], es: ['Ver demostración', 'Detener demostración'] };
+  const CURSOR = '<svg viewBox="0 0 20 24" aria-hidden="true"><path d="M2 1.5v18.2l4.6-4.4 3 6.8 3.2-1.4-3-6.6h6.4z" fill="#1f2733" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>';
+  // сценарии: какие элементы нажать, что ввести и выбрать
+  const SCRIPTS = {
+    login: () => [['wait', 700], ['type', '[name=l]', 'ilya'], ['type', '[name=p]', 'pilot2025'], ['click', '[type=submit]'], ['wait', 3200]],
+    object: () => [['wait', 700], ['click', '[data-add]'], ['wait', 500], ['type', '[name=num]', 'А777АА77'], ['type', '[name=id]', '864123056789012'], ['select', '[name=dev]', 1], ['wait', 500], ['click', '[type=submit]'], ['wait', 3000]],
+    sensor: () => [['wait', 700], ['ctx', '.a-row[data-i="0"]'], ['wait', 700], ['click', '.a-menu [data-k="4"]'], ['wait', 900], ['click', '.a-modal [data-add]'], ['wait', 500], ['select', '[name=p]', 2],
+      ['type', '[name=n]', T().s2.purposes[1][0]], ['select', '[name=f]', 4], ['wait', 500], ['click', '[data-save]'], ['wait', 3000]],
+  };
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+  function startAuto(el, name, f) {
+    if (reduced() || !SCRIPTS[name]) return;
+    let run = 0, stopped = false, seen = false;
+    const ui = () => {
+      const cap = el.querySelector('.demo-cap'), app = el.querySelector('.app');
+      if (!cap || cap.querySelector('.a-auto')) return;
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'a-auto';
+      const L = AUTO_I18N[lang()];
+      const set = () => { b.innerHTML = (stopped ? '▶ ' : '■ ') + esc(stopped ? L[0] : L[1]); };
+      b.onclick = () => { if (stopped) { stopped = false; set(); play(true); } else stop(); };
+      cap.insertBefore(b, cap.querySelector('.hint')); set();
+      // настоящий клик по экрану останавливает показ
+      app.addEventListener('pointerdown', (e) => { if (e.isTrusted && !stopped) stop(); }, true);
+      app.addEventListener('keydown', (e) => { if (e.isTrusted && !stopped) stop(); }, true);
+      b._set = set;
+    };
+    function stop() { stopped = true; run++; el.querySelectorAll('.a-cursor').forEach((c) => c.remove()); const b = el.querySelector('.a-auto'); if (b) b._set(); }
+    async function play(fresh) {
+      const my = ++run;
+      if (fresh) { f(el); ui(); }
+      const app = el.querySelector('.app'); if (!app) return;
+      const cur = document.createElement('div'); cur.className = 'a-cursor'; cur.innerHTML = CURSOR + '<i></i>'; app.appendChild(cur);
+      let cx = app.clientWidth * .6, cy = app.clientHeight * .7; cur.style.transform = `translate(${cx}px,${cy}px)`;
+      const live = () => { if (my !== run || !document.body.contains(app)) throw 0; };
+      const find = (sel) => { const n = app.querySelector(sel); if (!n) throw 0; return n; };
+      const move = async (n) => {
+        n.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+        const a = app.getBoundingClientRect(), r = n.getBoundingClientRect();
+        cx = r.left - a.left + Math.min(r.width / 2, 40); cy = r.top - a.top + r.height / 2;
+        if (!cur.isConnected) app.appendChild(cur);
+        cur.style.transform = `translate(${cx}px,${cy}px)`; await sleep(650); live();
+      };
+      const tap = async () => { cur.classList.remove('tap'); void cur.offsetWidth; cur.classList.add('tap'); await sleep(180); live(); };
+      try {
+        for (const [op, sel, val] of SCRIPTS[name]()) {
+          live();
+          if (op === 'wait') { await sleep(sel); continue; }
+          const n = find(sel); await move(n); await tap(); live();
+          if (op === 'click') n.click();
+          else if (op === 'ctx') { const r = n.getBoundingClientRect(); n.dispatchEvent(new MouseEvent('contextmenu', { bubbles: true, cancelable: true, clientX: r.left + 60, clientY: r.top + r.height / 2 })); }
+          else if (op === 'select') { n.focus({ preventScroll: true }); await sleep(250); live(); n.selectedIndex = val; n.dispatchEvent(new Event('change', { bubbles: true })); }
+          else if (op === 'type') {
+            n.focus({ preventScroll: true }); n.value = ''; n.dispatchEvent(new Event('input', { bubbles: true }));
+            for (const ch of val) { await sleep(70); live(); n.value += ch; n.dispatchEvent(new Event('input', { bubbles: true })); }
+          }
+          await sleep(350);
+        }
+        // повтор, пока экран на виду
+        live(); cur.remove();
+        await new Promise((r) => { const io = new IntersectionObserver((es) => { if (es.some((x) => x.isIntersecting)) { io.disconnect(); r(); } }, { threshold: .4 }); io.observe(el); });
+        live(); play(true);
+      } catch (e) { if (e !== 0) console.error(e); if (cur.isConnected) cur.remove(); }
+    }
+    ui();
+    const io = new IntersectionObserver((es) => { if (!seen && es.some((x) => x.isIntersecting)) { seen = true; io.disconnect(); if (!stopped) play(false); } }, { threshold: .4 });
+    io.observe(el);
+  }
+
+  const DEMOS = { login: demoLogin, overview: demoOverview, object: demoObject, sensor: demoSensor, history: demoHistory, report: demoReport };
+  window.mountDemos = function (root) {
+    root.querySelectorAll('.demo[data-demo]').forEach((el) => { const f = DEMOS[el.dataset.demo]; if (f) try { f(el); startAuto(el, el.dataset.demo, f); } catch (e) { el.textContent = ''; console.error(e); } });
+  };
+  window.DEMO_I18N = DEMO_I18N;
+})();
+</script>
+<script>
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const root = document.documentElement;
+  const store = {
+    get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+  };
+
+  // ---------- настройки ----------
+  function applySkin(v) { if (v && v !== 'auto') root.dataset.skin = v; else delete root.dataset.skin; }
+  function applyContrast(v) { if (v && v !== 'normal') root.dataset.contrast = v; else delete root.dataset.contrast; }
+  function applyFont(v) { if (v && v !== 's') root.dataset.font = v; else delete root.dataset.font; }
+  let skin = store.get('pilot-skin') || 'auto';
+  if (!['auto', 'light', 'dark'].includes(skin)) skin = 'auto';
+  const contrast = store.get('pilot-contrast') || 'normal', font = store.get('pilot-font') || 's';
+  applySkin(skin); applyContrast(contrast); applyFont(font);
+  $('skin-' + skin).checked = true; $('contrast-' + contrast).checked = true; $('font-' + font).checked = true;
+  $('settings').addEventListener('change', (e) => {
+    if (e.target.name === 'skin') { applySkin(e.target.value); store.set('pilot-skin', e.target.value); }
+    if (e.target.name === 'contrast') { applyContrast(e.target.value); store.set('pilot-contrast', e.target.value); }
+    if (e.target.name === 'font') { applyFont(e.target.value); store.set('pilot-font', e.target.value); }
+  });
+
+  let lastFocus = null;
+  function openDlg(d) { lastFocus = document.activeElement; d.hidden = false; const f = d.querySelector('input:checked, input, button'); if (f) f.focus(); }
+  function closeDlg(d) { d.hidden = true; if (lastFocus && lastFocus.focus) lastFocus.focus(); }
+  document.querySelectorAll('.dialog').forEach((d) => d.addEventListener('click', (e) => {
+    if (e.target === d || e.target.closest('[data-close]') || d.id === 'lightbox') closeDlg(d);
+  }));
+  $('settingsBtn').onclick = () => openDlg($('settings'));
+  $('searchBtn').onclick = () => { openDlg($('search')); $('searchInput').select(); };
+  $('menuBtn').onclick = () => document.body.classList.toggle('nav-open');
+
+  // ---------- язык ----------
+  const LANGS = Object.keys(window.UI_I18N);
+  let LANG = store.get('pilot-lang');
+  if (!LANGS.includes(LANG)) LANG = 'ru';
+  const U = () => window.UI_I18N[LANG];
+  function applyStatic() {
+    root.lang = LANG; root.dir = LANG === 'ar' ? 'rtl' : 'ltr';
+    window.DOC_LANG = LANG;
+    document.querySelectorAll('[data-i]').forEach((e) => { e.textContent = U()[e.dataset.i]; });
+    document.querySelectorAll('[data-i-ph]').forEach((e) => { e.placeholder = U()[e.dataset.iPh]; });
+    document.querySelectorAll('[data-i-al]').forEach((e) => e.setAttribute('aria-label', U()[e.dataset.iAl]));
+    document.querySelectorAll('[data-i-ti]').forEach((e) => { e.title = U()[e.dataset.iTi]; });
+    $('chips').innerHTML = U().popular.map((q) => `<button type="button" class="chip">${esc(q)}</button>`).join('');
+  }
+  // на узком экране в списке языков только коды, чтобы шапка помещалась
+  const narrow = matchMedia('(max-width:820px)');
+  function langOptions() { $('langSel').innerHTML = LANGS.map((l) => `<option value="${l}"${l === LANG ? ' selected' : ''}>${narrow.matches ? l.toUpperCase() : window.UI_I18N[l].name}</option>`).join(''); }
+  langOptions(); narrow.addEventListener('change', langOptions);
+  $('langSel').onchange = (e) => { LANG = e.target.value; store.set('pilot-lang', LANG); loadLang(); };
+
+  // ---------- данные ----------
+  let NAV = null, LN = null, SEARCH = null;
+  const chunkCache = {}, imgCache = {};
+  const loadJSON = (u) => fetch(u).then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); });
+  const chunk = (k) => { const u = `data/${LANG}/a${k}.json`; return chunkCache[u] || (chunkCache[u] = loadJSON(u)); };
+  const imgChunk = (k) => imgCache[k] || (imgCache[k] = loadJSON(`data/i${k}.json`));
+  // картинки общие для всех языков и подгружаются пачками
+  function fillImgs(el) {
+    el.querySelectorAll('img[data-img]').forEach((img) => {
+      const id = img.dataset.img, k = NAV.imgk[id];
+      if (k !== undefined) imgChunk(k).then((c) => { img.src = c[id]; }).catch(() => {});
+    });
+  }
+  const title = (key) => (LN && LN.t[key]) || key;
+  const tagName = (i) => U().tags[NAV.tags[i]] || NAV.tags[i];
+
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const chev = '<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 2.5 8 6l-3.5 3.5"/></svg>';
+
+  function countPages(n) { return (n.s ? 1 : 0) + (n.c || []).reduce((s, c) => s + countPages(c), 0); }
+  function firstSlug(n) { return n.s || (n.c || []).map(firstSlug).find(Boolean); }
+
+  function buildNav(nodes) {
+    return nodes.map((n) => {
+      const has = n.c && n.c.length;
+      const link = n.s ? `<a href="#${n.s}" data-slug="${n.s}">${esc(title(n.s))}</a>` : `<a href="#${firstSlug(n) || ''}">${esc(title(n.k) || n.t)}</a>`;
+      return `<li${n.s ? ` data-li="${n.s}"` : ''}><div class="row"><button type="button" class="tw${has ? '' : ' none'}" aria-label="${esc(U().expand)}" tabindex="${has ? 0 : -1}">${chev}</button>${link}</div>${has ? `<ul>${buildNav(n.c)}</ul>` : ''}</li>`;
+    }).join('');
+  }
+  $('nav').addEventListener('click', (e) => {
+    const tw = e.target.closest('.tw');
+    if (tw) tw.closest('li').classList.toggle('open');
+    if (e.target.closest('a')) document.body.classList.remove('nav-open');
+  });
+
+  // ---------- поиск ----------
+  const STOP = new Set(['как', 'что', 'где', 'для', 'это', 'при', 'или', 'почему', 'чем', 'мне', 'нужно', 'можно', 'если', 'над', 'под', 'the', 'how', 'to', 'and', 'for', 'what', 'як', 'що', 'для', 'de', 'la', 'el', 'en', 'cómo', 'como', 'un', 'una', 'los', 'las', 'كيف', 'في', 'من']);
+  const norm = (s) => s.toLowerCase().replace(/ё/g, 'е');
+  const stem = (w) => (w.length > 5 ? w.slice(0, Math.max(4, w.length - 2)) : w);
+  let INDEX = [];
+  function prepareIndex() {
+    INDEX = SEARCH.map(([s, x]) => { const t = title(s); return { s, t, c: NAV.meta[s].c.map(title).join(' › '), x, tl: norm(t), xl: norm(x) }; });
+  }
+  function terms(q) { return norm(q).split(/[^\p{L}\p{N}]+/u).filter((w) => w.length > 1 && !STOP.has(w)).map(stem); }
+  function find(q, only) {
+    const ts = terms(q); if (!ts.length) return { ts, res: [] };
+    const res = [];
+    for (const d of INDEX) {
+      if (only && !only(d.s)) continue;
+      let score = 0, hits = 0;
+      for (const t of ts) {
+        const a = d.tl.includes(t), b = d.xl.includes(t);
+        if (a || b) hits++;
+        if (a) score += 12;
+        if (b) score += Math.min(6, d.xl.split(t).length - 1);
+      }
+      if (hits === ts.length || (ts.length > 2 && hits >= ts.length - 1)) res.push({ d, score: score + hits * 4 });
+    }
+    return { ts, res: res.sort((a, b) => b.score - a.score).slice(0, 25) };
+  }
+  const reEsc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  function hl(text, ts) {
+    let h = esc(text);
+    for (const t of ts) h = h.replace(new RegExp('(' + reEsc(t).replace(/е/g, '[её]') + '[\\p{L}]*)', 'giu'), '<mark>$1</mark>');
+    return h;
+  }
+  function snippet(d, ts) {
+    let pos = -1; for (const t of ts) { pos = d.xl.indexOf(t); if (pos >= 0) break; }
+    const st = Math.max(0, pos - 70);
+    return (st ? '…' : '') + d.x.slice(st, st + 190) + (d.x.length > st + 190 ? '…' : '');
+  }
+  function renderResults(list, q) {
+    if (!q.trim()) { list.innerHTML = ''; return; }
+    if (!INDEX.length) { list.innerHTML = `<li class="empty">${esc(U().loadingSearch)}</li>`; return; }
+    const { ts, res } = find(q, list.id === 'homeResults' && selTags.size ? hasTags : null);
+    if (!res.length) { list.innerHTML = `<li class="empty">${esc(U().nothing)}</li>`; return; }
+    list.innerHTML = res.map(({ d }, i) => `<li><a href="#${d.s}"${i ? '' : ' class="sel"'}><div class="c">${esc(d.c || U().docs)}</div><div class="t">${hl(d.t, ts)}</div><div class="x">${hl(snippet(d, ts), ts)}</div></a></li>`).join('');
+  }
+  function keyNav(input, list, onGo) {
+    input.addEventListener('keydown', (e) => {
+      const items = [...list.querySelectorAll('a')]; if (!items.length) return;
+      let i = items.findIndex((a) => a.classList.contains('sel'));
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault(); if (i >= 0) items[i].classList.remove('sel');
+        i = (i + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length;
+        items[i].classList.add('sel'); items[i].scrollIntoView({ block: 'nearest' });
+      }
+      if (e.key === 'Enter' && i >= 0) { e.preventDefault(); location.hash = items[i].getAttribute('href').slice(1); onGo && onGo(); }
+    });
+  }
+  $('searchInput').addEventListener('input', () => renderResults($('searchResults'), $('searchInput').value));
+  keyNav($('searchInput'), $('searchResults'), () => closeDlg($('search')));
+  $('searchResults').addEventListener('click', (e) => { if (e.target.closest('a')) $('search').hidden = true; });
+  // ---------- теги ----------
+  const selTags = new Set();
+  const tagIdx = (slug) => NAV.tags.indexOf(slug);
+  const hasTags = (s) => [...selTags].every((i) => (NAV.meta[s].g || []).includes(i));
+  function renderTags() {
+    if (!NAV) return;
+    // показываем только темы, которые встречаются вместе с уже выбранными
+    const avail = NAV.tags.map((_, i) => NAV.order.filter((s) => hasTags(s) && (NAV.meta[s].g || []).includes(i)).length);
+    $('tags').innerHTML = NAV.tags.map((slug, i) => (avail[i] || selTags.has(i)) ? `<button type="button" class="tag" data-tag="${i}" aria-pressed="${selTags.has(i)}">${esc(tagName(i))}<small>${avail[i]}</small></button>` : '').join('');
+    $('tagsClear').hidden = !selTags.size;
+  }
+  $('tags').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-tag]'); if (!b) return;
+    const i = +b.dataset.tag; selTags.has(i) ? selTags.delete(i) : selTags.add(i);
+    renderTags(); homeQuery();
+    const hits = $('homeResults').querySelectorAll('a');
+    if (selTags.size && !$('homeInput').value.trim() && hits.length === 1) location.hash = hits[0].getAttribute('href');
+  });
+  $('tagsClear').onclick = () => { selTags.clear(); renderTags(); homeQuery(); };
+  function tagResults(list) {
+    const res = NAV.order.filter(hasTags);
+    if (!res.length) { list.innerHTML = `<li class="empty">${esc(U().noTagged)}</li>`; return; }
+    list.innerHTML = res.map((s, i) => { const m = NAV.meta[s]; return `<li><a href="#${s}"${i ? '' : ' class="sel"'}><div class="c">${esc(m.c.map(title).join(' › ') || U().docs)}</div><div class="t">${esc(title(s))}</div><div class="x">${m.g.map((g) => esc(tagName(g))).join(' · ')}</div></a></li>`; }).join('');
+  }
+  function homeQuery() {
+    const q = $('homeInput').value;
+    if (!q.trim() && selTags.size && NAV) tagResults($('homeResults'));
+    else renderResults($('homeResults'), q);
+    $('home').classList.toggle('has-query', !!q.trim() || selTags.size > 0);
+    $('home').classList.toggle('has-tags', selTags.size > 0);
+  }
+  $('homeInput').addEventListener('input', homeQuery);
+  $('homeForm').addEventListener('submit', (e) => { e.preventDefault(); const a = $('homeResults').querySelector('a.sel'); if (a) location.hash = a.getAttribute('href').slice(1); });
+  keyNav($('homeInput'), $('homeResults'));
+
+  // ---------- маршрутизация ----------
+  let current = null;
+  async function route() {
+    const slug = decodeURIComponent(location.hash.slice(1));
+    if (!NAV) return;
+    if (slug && slug.startsWith('tag-') && tagIdx(slug.slice(4)) >= 0) { selTags.clear(); selTags.add(tagIdx(slug.slice(4))); $('homeInput').value = ''; renderTags(); showHome(); homeQuery(); return; }
+    if (!slug || !NAV.meta[slug]) return showHome();
+    document.body.classList.remove('is-home');
+    $('home').hidden = true; $('doc').hidden = false;
+    if (current === slug) return;
+    current = slug;
+    const m = NAV.meta[slug];
+    document.title = title(slug) + ' — PILOT';
+    $('title').textContent = title(slug);
+    $('artTags').innerHTML = (m.g || []).map((g) => `<a class="tag" href="#tag-${NAV.tags[g]}">${esc(tagName(g))}</a>`).join('');
+    $('fallback').textContent = LN.fb.includes(slug) ? U().fallback : '';
+    $('crumbs').innerHTML = [`<a href="#">${esc(U().docs)}</a>`, ...m.c.map((k) => esc(title(k)))].join('<span aria-hidden="true">›</span>');
+    $('body').innerHTML = `<p class="loading">${esc(U().loading)}</p>`;
+    $('toc').innerHTML = '';
+    markNav(slug);
+    window.scrollTo(0, 0);
+    let html;
+    try { html = (await chunk(LN.k[slug]))[slug]; } catch (e) { html = `<p>${esc(U().loadFail)}</p>`; }
+    if (current !== slug) return;
+    $('body').innerHTML = html || `<p class="loading">${esc(U().empty)}</p>`;
+    fillImgs($('body'));
+    $('body').querySelectorAll('table').forEach((t) => { if (!t.parentElement.classList.contains('tbl')) { const w = document.createElement('div'); w.className = 'tbl'; t.replaceWith(w); w.appendChild(t); } });
+    if (window.mountDemos) window.mountDemos($('body'));
+    let i = 0;
+    const hs = [...$('body').querySelectorAll('h2, h3')];
+    hs.forEach((h) => { h.id = 'h' + (++i); });
+    const h2 = hs.filter((h) => h.tagName === 'H2');
+    const list = h2.length >= 2 ? hs : [];
+    $('toc').innerHTML = list.length ? `<b>${esc(U().onPage)}</b>` + list.map((h) => `<a class="${h.tagName.toLowerCase()}" href="#${slug}" data-to="${h.id}">${esc(h.textContent)}</a>`).join('') : '';
+    const idx = NAV.order.indexOf(slug), prev = NAV.order[idx - 1], next = NAV.order[idx + 1];
+    $('pager').innerHTML = (prev ? `<a href="#${prev}"><small>${esc(U().prev)}</small>${esc(title(prev))}</a>` : '') +
+      (next ? `<a class="next" href="#${next}"><small>${esc(U().next)}</small>${esc(title(next))}</a>` : '');
+  }
+  function markNav(slug) {
+    $('nav').querySelectorAll('a.active').forEach((a) => { a.classList.remove('active'); a.removeAttribute('aria-current'); });
+    const a = $('nav').querySelector(`a[data-slug="${CSS.escape(slug)}"]`);
+    if (!a) return;
+    a.classList.add('active'); a.setAttribute('aria-current', 'page');
+    for (let li = a.closest('li'); li; li = li.parentElement.closest('li')) li.classList.add('open');
+    const sb = $('sidebar'), r = a.getBoundingClientRect(), s = sb.getBoundingClientRect();
+    if (r.top < s.top || r.bottom > s.bottom) sb.scrollTop += r.top - s.top - s.height / 3;
+  }
+  function showHome() {
+    current = null;
+    document.title = U().title;
+    document.body.classList.add('is-home');
+    $('doc').hidden = true; $('home').hidden = false;
+  }
+  // переходы по заголовкам внутри статьи без смены адреса
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a[data-to], a[data-anchor]');
+    if (a) {
+      e.preventDefault();
+      const el = a.dataset.to ? $(a.dataset.to) : document.getElementsByName(a.dataset.anchor)[0];
+      if (el) el.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    }
+    const img = e.target.closest('.body img');
+    if (img) { $('lightboxImg').src = img.src; $('lightboxImg').alt = img.alt; openDlg($('lightbox')); }
+  });
+  $('logo').addEventListener('click', (e) => { e.preventDefault(); location.hash = ''; showHome(); });
+  window.addEventListener('hashchange', route);
+
+  // поиск в шапке начинается ровно по левому краю текста статьи
+  const inner = document.querySelector('.article-inner');
+  function alignSearch() {
+    const btn = $('searchBtn'), ver = document.querySelector('.ver');
+    const rtl = root.dir === 'rtl';
+    btn.style.marginLeft = ''; btn.style.marginRight = '';
+    if ($('doc').hidden || innerWidth <= 820) return;
+    const ir = inner.getBoundingClientRect(), vr = ver.getBoundingClientRect();
+    const shift = rtl ? vr.left - ir.right - 12 : ir.left - vr.right - 12;
+    btn.style[rtl ? 'marginRight' : 'marginLeft'] = Math.max(12, shift) + 'px';
+  }
+  if (window.ResizeObserver) new ResizeObserver(alignSearch).observe(inner);
+  window.addEventListener('resize', alignSearch);
+  window.addEventListener('hashchange', () => requestAnimationFrame(alignSearch));
+
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      if (!$('home').hidden) $('homeInput').focus(); else { openDlg($('search')); $('searchInput').select(); }
+    }
+    if (e.key === 'Escape') { document.querySelectorAll('.dialog:not([hidden])').forEach(closeDlg); document.body.classList.remove('nav-open'); }
+  });
+
+  // ---------- старт ----------
+  document.body.classList.add('is-home');
+  $('chips').addEventListener('click', (e) => { const c = e.target.closest('.chip'); if (c) { $('homeInput').value = c.textContent; homeQuery(); $('homeInput').focus(); } });
+
+  // смена языка перерисовывает меню, главную и открытую статью
+  function loadLang() {
+    applyStatic();
+    const lang = LANG;
+    SEARCH = null; INDEX = [];
+    return Promise.all([NAV || loadJSON('data/nav.json'), loadJSON(`data/${lang}/nav.json`)]).then(([nav, ln]) => {
+      if (lang !== LANG) return;
+      NAV = nav; LN = ln;
+      $('nav').innerHTML = buildNav(nav.tree);
+      $('lead').textContent = U().lead(nav.order.length);
+      $('tiles').innerHTML = nav.tree.filter((t) => t.c && t.c.length).map((t) => `<a class="tile" href="#${t.s || firstSlug(t)}"><b>${esc(title(t.k))}</b><small>${esc(U().count(countPages(t)))}</small></a>`).join('');
+      renderTags();
+      current = null; route(); requestAnimationFrame(alignSearch);
+      return loadJSON(`data/${lang}/search.json`).then((s) => { if (lang !== LANG) return; SEARCH = s; prepareIndex(); homeQuery(); });
+    }).catch(() => { $('lead').textContent = U().failAll; });
+  }
+  loadLang();
+})();
+</script>

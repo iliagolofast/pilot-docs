@@ -1,0 +1,65 @@
+---
+title: "Расчёт маршрута и времени прибытия"
+source: raschyet_marshruta_i_vremeni_pribytiya.html
+---
+
+Этот API выстраивает маршрут между двумя точками и получает прогноз времени прибытия в зависимости от выбранного типа транспорта.
+
+## Как получить данные
+
+### Метод
+
+GET
+
+### Адрес запроса
+
+Для выполнения запроса используйте адрес: https://<server\_address>/api/api.php?
+
+### Параметры запроса
+
+-   cmd = route — команда для построения маршрута
+    
+-   mode — тип транспорта, один из:
+    
+-   bicycle — велосипед
+    
+-   bus — автобус
+    
+-   car — машина
+    
+-   pedestrian — пешеход
+    
+-   scooter — скутер
+    
+-   taxi — такси
+    
+-   truck — грузовой транспорт
+    
+-   origin — координаты точки отправления (lat,long)
+    
+-   destination — координаты точки прибытия (lat,long)
+    
+-   node — номер узла, на котором нужно выполнить команду
+    
+
+### Пример запроса
+
+<table><tbody><tr><td><span></span></td><td><div>https://&lt;server_address&gt;/api/api.php?cmd=route&amp;mode=bus&amp;origin=47.211908,39.613767&amp;destination=47.201699,39.668183&amp;node=1</div></td></tr></tbody></table>
+
+Ответ
+
+<table><tbody><tr><td><span></span></td><td><div>{</div><div>&nbsp; "code": 0,</div><div>&nbsp; "data": {</div><div>&nbsp; &nbsp; "routes": [</div><div>&nbsp; &nbsp; &nbsp; {</div><div>&nbsp; &nbsp; &nbsp; &nbsp; "id": "79de74af-5040-441a-ab7a-62d3d9f7a4b4",</div><div>&nbsp; &nbsp; &nbsp; &nbsp; "sections": [</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "id": "2cc5fff7-fd4f-43ac-bcda-00d662207c63",</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "type": "vehicle",</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "departure": {</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "time": "2023-02-22T09:40:07+03:00",</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "place": {</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "type": "place",</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "location": {</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "lat": 47.2119,</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "long": 39.61372</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "originalLocation": {</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "lat": 47.211908,</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "long": 39.613767</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "arrival": {</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "time": "2023-02-22T09:52:32+03:00",</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "place": {</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "type": "place",</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "location": {</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "lat": 47.2017113,</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "long": 39.668221</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "originalLocation": {</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "lat": 47.201699,</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "long": 39.668183</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "summary": {</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "duration": 745,</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "length": 5452,</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "baseDuration": 530</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "transport": {</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "mode": "bus"</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</div><div>&nbsp; &nbsp; &nbsp; &nbsp; ]</div><div>&nbsp; &nbsp; &nbsp; }</div><div>&nbsp; &nbsp; ]</div><div>&nbsp; }</div><div>}</div></td></tr></tbody></table>
+
+В ответ на API-запрос возвращается:
+
+-   code — код результата (0 = успех)
+    
+-   routes — список построенных маршрутов
+    
+-   sections — сегменты маршрута с данными:
+    
+-   departure / arrival — время и координаты начала и конца маршрута
+    
+-   summary — информация о длительности и длине маршрута
+    
+-   transport.mode — выбранный тип транспорта

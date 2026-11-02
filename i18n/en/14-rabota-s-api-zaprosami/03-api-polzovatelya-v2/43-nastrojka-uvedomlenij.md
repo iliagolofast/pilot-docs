@@ -1,0 +1,95 @@
+---
+title: "Notification settings"
+---
+
+This API is for creating, getting, editing and deleting notification configurations in PILOT. It is not an API for sending notifications, but for defining the conditions under which notifications will be triggered in the system in the future.
+
+## Methods
+
+POST, GET, PUT, DELETE
+
+### Request URL
+
+To get the data, use the URL:  https://<address>/api/ptm/notification.php
+
+<address\> — website address
+
+## POST 
+
+Creates a new notification configuration.
+
+The request body is required.
+
+### Request
+
+<table><tbody><tr><td><span></span></td><td><div>https://&lt;address&gt;/api/ptm/notification.php</div></td></tr></tbody></table>
+
+### Example request body
+
+<table><tbody><tr><td><span></span></td><td><div>{</div><div>&nbsp; "id": 0,</div><div>&nbsp; "agent_id": 123,</div><div>&nbsp; "type": "speed",</div><div>&nbsp; "geozones": [</div><div>&nbsp; &nbsp; {</div><div>&nbsp; &nbsp; &nbsp; "name": "Склад",</div><div>&nbsp; &nbsp; &nbsp; "zonetype": 1,</div><div>&nbsp; &nbsp; &nbsp; "points": [</div><div>&nbsp; &nbsp; &nbsp; &nbsp; [55.7558, 37.6173],</div><div>&nbsp; &nbsp; &nbsp; &nbsp; [55.7560, 37.6180],</div><div>&nbsp; &nbsp; &nbsp; &nbsp; [55.7565, 37.6170]</div><div>&nbsp; &nbsp; &nbsp; ]</div><div>&nbsp; &nbsp; }</div><div>&nbsp; ],</div><div>&nbsp; "name": "Превышение скорости в зоне склада",</div><div>&nbsp; "email": true,</div><div>&nbsp; "emails_list": [</div><div>&nbsp; &nbsp; "dispatcher@example.com",</div><div>&nbsp; &nbsp; "manager@example.com"</div><div>&nbsp; ],</div><div>&nbsp; "sms": true,</div><div>&nbsp; "phones_list": [</div><div>&nbsp; &nbsp; "+79001234567",</div><div>&nbsp; &nbsp; "+79007654321"</div><div>&nbsp; ],</div><div>&nbsp; "message_text": "Внимание! Превышение скорости в зоне склада.",</div><div>&nbsp; "webhook": true,</div><div>&nbsp; "webhook_url": "https://yourdomain.com/webhook-handler",</div><div>&nbsp; "ts": 1680000000,</div><div>&nbsp; "te": 1710000000,</div><div>&nbsp; "timezone": 3,</div><div>&nbsp; "zone_rule": "in",</div><div>&nbsp; "speed_rule": "&gt;",</div><div>&nbsp; "speed_value": 80,</div><div>&nbsp; "speed_time": 15,</div><div>&nbsp; "speed_time_units": "ss",</div><div>&nbsp; "ignition_rule": "on",</div><div>&nbsp; "geozones_rule": "in",</div><div>&nbsp; "break_duration": 0,</div><div>&nbsp; "break_time_units": "ss",</div><div>&nbsp; "tag_name": "грузовик",</div><div>&nbsp; "temperature_rule": "&gt;",</div><div>&nbsp; "temperature_value": 30,</div><div>&nbsp; "temperature_time": 0,</div><div>&nbsp; "disconnect_time": 0,</div><div>&nbsp; "disconnect_time_units": "ss",</div><div>&nbsp; "odometer_rule": "&gt;",</div><div>&nbsp; "odometer_value": 100000,</div><div>&nbsp; "odometer_period": "abs"</div><div>}</div><div>&nbsp;</div></td></tr></tbody></table>
+
+### Example response
+
+<table><tbody><tr><td><span></span></td><td><div>{</div><div>&nbsp; "success": true,</div><div>&nbsp; "msg": "Уведомление успешно создано",</div><div>&nbsp; "method": "POST",</div><div>&nbsp; "notification": {</div><div>&nbsp; &nbsp; "id": 123,</div><div>&nbsp; &nbsp; "agent_id": 123,</div><div>&nbsp; &nbsp; "type": "speed",</div><div>&nbsp; &nbsp; "geozones": [</div><div>&nbsp; &nbsp; &nbsp; {</div><div>&nbsp; &nbsp; &nbsp; &nbsp; "name": "Склад",</div><div>&nbsp; &nbsp; &nbsp; &nbsp; "zonetype": 1,</div><div>&nbsp; &nbsp; &nbsp; &nbsp; "points": [</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; [55.7558, 37.6173],</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; [55.7560, 37.6180],</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; [55.7565, 37.6170]</div><div>&nbsp; &nbsp; &nbsp; &nbsp; ]</div><div>&nbsp; &nbsp; &nbsp; }</div><div>&nbsp; &nbsp; ],</div><div>&nbsp; &nbsp; "name": "Превышение скорости в зоне склада",</div><div>&nbsp; &nbsp; "email": true,</div><div>&nbsp; &nbsp; "emails_list": [</div><div>&nbsp; &nbsp; &nbsp; "dispatcher@example.com",</div><div>&nbsp; &nbsp; &nbsp; "manager@example.com"</div><div>&nbsp; &nbsp; ],</div><div>&nbsp; &nbsp; "sms": true,</div><div>&nbsp; &nbsp; "phones_list": [</div><div>&nbsp; &nbsp; &nbsp; "+79001234567",</div><div>&nbsp; &nbsp; &nbsp; "+79007654321"</div><div>&nbsp; &nbsp; ],</div><div>&nbsp; &nbsp; "message_text": "Внимание! Превышение скорости в зоне склада.",</div><div>&nbsp; &nbsp; "webhook": true,</div><div>&nbsp; &nbsp; "webhook_url": "https://yourdomain.com/webhook-handler",</div><div>&nbsp; &nbsp; "ts": 1680000000,</div><div>&nbsp; &nbsp; "te": 1710000000,</div><div>&nbsp; &nbsp; "timezone": 3,</div><div>&nbsp; &nbsp; "zone_rule": "in",</div><div>&nbsp; &nbsp; "speed_rule": "&gt;",</div><div>&nbsp; &nbsp; "speed_value": 80,</div><div>&nbsp; &nbsp; "speed_time": 15,</div><div>&nbsp; &nbsp; "speed_time_units": "ss",</div><div>&nbsp; &nbsp; "ignition_rule": "on",</div><div>&nbsp; &nbsp; "geozones_rule": "in",</div><div>&nbsp; &nbsp; "break_duration": 0,</div><div>&nbsp; &nbsp; "break_time_units": "ss",</div><div>&nbsp; &nbsp; "tag_name": "грузовик",</div><div>&nbsp; &nbsp; "temperature_rule": "&gt;",</div><div>&nbsp; &nbsp; "temperature_value": 30,</div><div>&nbsp; &nbsp; "temperature_time": 0,</div><div>&nbsp; &nbsp; "disconnect_time": 0,</div><div>&nbsp; &nbsp; "disconnect_time_units": "ss",</div><div>&nbsp; &nbsp; "odometer_rule": "&gt;",</div><div>&nbsp; &nbsp; "odometer_value": 100000,</div><div>&nbsp; &nbsp; "odometer_period": "abs"</div><div>&nbsp; }</div><div>}</div><div>&nbsp;</div></td></tr></tbody></table>
+
+## GET
+
+Gets a notification configuration by ID.
+
+Request parameters:
+
+-   id (required) — notification ID
+    
+
+### Example request
+
+<table><tbody><tr><td><span></span></td><td><div>https://&lt;address&gt;/api/ptm/notification.php?id=123</div></td></tr></tbody></table>
+
+### Example response
+
+<table><tbody><tr><td><span></span></td><td><div>{</div><div>&nbsp; "success": true,</div><div>&nbsp; "msg": "Уведомление получено",</div><div>&nbsp; "method": "GET",</div><div>&nbsp; "notification": {</div><div>&nbsp; &nbsp; "id": 123,</div><div>&nbsp; &nbsp; "agent_id": 123,</div><div>&nbsp; &nbsp; "type": "speed",</div><div>&nbsp; &nbsp; "geozones": [</div><div>&nbsp; &nbsp; &nbsp; {</div><div>&nbsp; &nbsp; &nbsp; &nbsp; "name": "Склад",</div><div>&nbsp; &nbsp; &nbsp; &nbsp; "zonetype": 1,</div><div>&nbsp; &nbsp; &nbsp; &nbsp; "points": [</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; [55.7558, 37.6173],</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; [55.7560, 37.6180],</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; [55.7565, 37.6170]</div><div>&nbsp; &nbsp; &nbsp; &nbsp; ]</div><div>&nbsp; &nbsp; &nbsp; }</div><div>&nbsp; &nbsp; ],</div><div>&nbsp; &nbsp; "name": "Превышение скорости в зоне склада",</div><div>&nbsp; &nbsp; "email": true,</div><div>&nbsp; &nbsp; "emails_list": [</div><div>&nbsp; &nbsp; &nbsp; "dispatcher@example.com",</div><div>&nbsp; &nbsp; &nbsp; "manager@example.com"</div><div>&nbsp; &nbsp; ],</div><div>&nbsp; &nbsp; "sms": true,</div><div>&nbsp; &nbsp; "phones_list": [</div><div>&nbsp; &nbsp; &nbsp; "+79001234567",</div><div>&nbsp; &nbsp; &nbsp; "+79007654321"</div><div>&nbsp; &nbsp; ],</div><div>&nbsp; &nbsp; "message_text": "Внимание! Превышение скорости в зоне склада.",</div><div>&nbsp; &nbsp; "webhook": true,</div><div>&nbsp; &nbsp; "webhook_url": "https://yourdomain.com/webhook-handler",</div><div>&nbsp; &nbsp; "ts": 1680000000,</div><div>&nbsp; &nbsp; "te": 1710000000,</div><div>&nbsp; &nbsp; "timezone": 3,</div><div>&nbsp; &nbsp; "zone_rule": "in",</div><div>&nbsp; &nbsp; "speed_rule": "&gt;",</div><div>&nbsp; &nbsp; "speed_value": 80,</div><div>&nbsp; &nbsp; "speed_time": 15,</div><div>&nbsp; &nbsp; "speed_time_units": "ss",</div><div>&nbsp; &nbsp; "ignition_rule": "on",</div><div>&nbsp; &nbsp; "geozones_rule": "in",</div><div>&nbsp; &nbsp; "break_duration": 0,</div><div>&nbsp; &nbsp; "break_time_units": "ss",</div><div>&nbsp; &nbsp; "tag_name": "грузовик",</div><div>&nbsp; &nbsp; "temperature_rule": "&gt;",</div><div>&nbsp; &nbsp; "temperature_value": 30,</div><div>&nbsp; &nbsp; "temperature_time": 0,</div><div>&nbsp; &nbsp; "disconnect_time": 0,</div><div>&nbsp; &nbsp; "disconnect_time_units": "ss",</div><div>&nbsp; &nbsp; "odometer_rule": "&gt;",</div><div>&nbsp; &nbsp; "odometer_value": 100000,</div><div>&nbsp; &nbsp; "odometer_period": "abs"</div><div>&nbsp; }</div><div>}</div></td></tr></tbody></table>
+
+##  PUT 
+
+Updates an existing notification configuration.
+
+### Request
+
+<table><tbody><tr><td><span></span></td><td><div>https://&lt;address&gt;/api/ptm/notification.php</div></td></tr></tbody></table>
+
+### Example request body
+
+The same JSON format as for creation (POST), but with the current values and the required id.
+
+<table><tbody><tr><td><span></span></td><td><div>{</div><div>&nbsp; "id": 123,</div><div>&nbsp; "agent_id": 123,</div><div>&nbsp; "type": "speed",</div><div>&nbsp; "geozones": [</div><div>&nbsp; &nbsp; {</div><div>&nbsp; &nbsp; &nbsp; "name": "Склад",</div><div>&nbsp; &nbsp; &nbsp; "zonetype": 1,</div><div>&nbsp; &nbsp; &nbsp; "points": [</div><div>&nbsp; &nbsp; &nbsp; &nbsp; [55.7558, 37.6173],</div><div>&nbsp; &nbsp; &nbsp; &nbsp; [55.7560, 37.6180],</div><div>&nbsp; &nbsp; &nbsp; &nbsp; [55.7565, 37.6170]</div><div>&nbsp; &nbsp; &nbsp; ]</div><div>&nbsp; &nbsp; }</div><div>&nbsp; ],</div><div>&nbsp; "name": "Обновлённое уведомление",</div><div>&nbsp; "email": true,</div><div>&nbsp; "emails_list": ["alerts@example.com"],</div><div>&nbsp; "sms": false,</div><div>&nbsp; "phones_list": [],</div><div>&nbsp; "message_text": "Обновлённое сообщение о превышении скорости",</div><div>&nbsp; "webhook": false,</div><div>&nbsp; "webhook_url": "",</div><div>&nbsp; "ts": 1680000000,</div><div>&nbsp; "te": 1720000000,</div><div>&nbsp; "timezone": 3,</div><div>&nbsp; "zone_rule": "in",</div><div>&nbsp; "speed_rule": "&gt;",</div><div>&nbsp; "speed_value": 90,</div><div>&nbsp; "speed_time": 10,</div><div>&nbsp; "speed_time_units": "ss",</div><div>&nbsp; "ignition_rule": "off",</div><div>&nbsp; "geozones_rule": "in",</div><div>&nbsp; "break_duration": 0,</div><div>&nbsp; "break_time_units": "ss",</div><div>&nbsp; "tag_name": "фургон",</div><div>&nbsp; "temperature_rule": "&gt;",</div><div>&nbsp; "temperature_value": 35,</div><div>&nbsp; "temperature_time": 0,</div><div>&nbsp; "disconnect_time": 0,</div><div>&nbsp; "disconnect_time_units": "ss",</div><div>&nbsp; "odometer_rule": "&gt;",</div><div>&nbsp; "odometer_value": 120000,</div><div>&nbsp; "odometer_period": "abs"</div><div>}</div><div>&nbsp;</div></td></tr></tbody></table>
+
+### Example response
+
+<table><tbody><tr><td><span></span></td><td><div>{</div><div>&nbsp; "success": true,</div><div>&nbsp; "msg": "Уведомление успешно обновлено",</div><div>&nbsp; "method": "PUT",</div><div>&nbsp; "notification": {</div><div>&nbsp; &nbsp; "id": 123,</div><div>&nbsp; &nbsp; "agent_id": 123,</div><div>&nbsp; &nbsp; "type": "speed",</div><div>&nbsp; &nbsp; "geozones": [</div><div>&nbsp; &nbsp; &nbsp; {</div><div>&nbsp; &nbsp; &nbsp; &nbsp; "name": "Склад",</div><div>&nbsp; &nbsp; &nbsp; &nbsp; "zonetype": 1,</div><div>&nbsp; &nbsp; &nbsp; &nbsp; "points": [</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; [55.7558, 37.6173],</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; [55.7560, 37.6180],</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; [55.7565, 37.6170]</div><div>&nbsp; &nbsp; &nbsp; &nbsp; ]</div><div>&nbsp; &nbsp; &nbsp; }</div><div>&nbsp; &nbsp; ],</div><div>&nbsp; &nbsp; "name": "Обновлённое уведомление",</div><div>&nbsp; &nbsp; "email": true,</div><div>&nbsp; &nbsp; "emails_list": ["alerts@example.com"],</div><div>&nbsp; &nbsp; "sms": false,</div><div>&nbsp; &nbsp; "phones_list": [],</div><div>&nbsp; &nbsp; "message_text": "Обновлённое сообщение о превышении скорости",</div><div>&nbsp; &nbsp; "webhook": false,</div><div>&nbsp; &nbsp; "webhook_url": "",</div><div>&nbsp; &nbsp; "ts": 1680000000,</div><div>&nbsp; &nbsp; "te": 1720000000,</div><div>&nbsp; &nbsp; "timezone": 3,</div><div>&nbsp; &nbsp; "zone_rule": "in",</div><div>&nbsp; &nbsp; "speed_rule": "&gt;",</div><div>&nbsp; &nbsp; "speed_value": 90,</div><div>&nbsp; &nbsp; "speed_time": 10,</div><div>&nbsp; &nbsp; "speed_time_units": "ss",</div><div>&nbsp; &nbsp; "ignition_rule": "off",</div><div>&nbsp; &nbsp; "geozones_rule": "in",</div><div>&nbsp; &nbsp; "break_duration": 0,</div><div>&nbsp; &nbsp; "break_time_units": "ss",</div><div>&nbsp; &nbsp; "tag_name": "фургон",</div><div>&nbsp; &nbsp; "temperature_rule": "&gt;",</div><div>&nbsp; &nbsp; "temperature_value": 35,</div><div>&nbsp; &nbsp; "temperature_time": 0,</div><div>&nbsp; &nbsp; "disconnect_time": 0,</div><div>&nbsp; &nbsp; "disconnect_time_units": "ss",</div><div>&nbsp; &nbsp; "odometer_rule": "&gt;",</div><div>&nbsp; &nbsp; "odometer_value": 120000,</div><div>&nbsp; &nbsp; "odometer_period": "abs"</div><div>&nbsp; }</div><div>}</div><div>&nbsp;</div></td></tr></tbody></table>
+
+##  DELETE 
+
+Deletes one or more notifications.
+
+Request parameters:
+
+-   id (optional) — ID of a specific notification
+    
+-   agent\_id (optional) — if passed, all notifications for the specified agent are deleted
+    
+
+### Example request
+
+<table><tbody><tr><td><span></span></td><td><div>https://&lt;address&gt;/api/ptm/notification.php?id=123</div></td></tr></tbody></table>
+
+You can also delete all notifications by agent\_id:
+
+<table><tbody><tr><td><span></span></td><td><div>https://&lt;address&gt;/api/ptm/notification.php?agent_id=456</div></td></tr></tbody></table>
+
+### Response
+
+<table><tbody><tr><td><span></span></td><td><div>{</div><div>&nbsp; "count": 1 // number of deleted notifications</div><div>}</div></td></tr></tbody></table>
+
+### Notification configuration fields
+
+<table><colgroup><col> <col></colgroup><tbody><tr><td colspan="1" rowspan="1"><div><span>&nbsp; Field</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Description</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; id</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Notification ID</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; agent_id</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Agent identifier (device/vehicle)</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; type</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Notification type (speed, temperature, ignition, etc.)</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; geozones</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Array of geofences the notification applies to</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; name</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Notification name</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; email</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Enable sending by email</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; emails_list</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; List of email addresses</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; sms</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Enable SMS notifications</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; phones_list</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; List of phone numbers</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; webhook_url</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Webhook URL</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; webhook</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Enable sending by webhook</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; message_text</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Notification text</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; ts,&nbsp;te</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Time range of the notification validity (Unix timestamp)</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; timezone</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Time offset (for example, +3)</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; zone_rule</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Zone rule (in, out)</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; speed_rule</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Speed condition (&gt;, &lt;, =)</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; speed_value</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Speed value</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; speed_time</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Exceedance time</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; speed_time_units</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Time units (ss, mm, hh)</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; ignition_rule</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Ignition state (on, off)</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; geozones_rule</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Behavior in geofences (in, out)</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; temperature_rule</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Temperature condition (&gt;, &lt;)</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; temperature_value</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Temperature value</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; temperature_time</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Temperature exceedance time</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; disconnect_time</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Device disconnection time</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; disconnect_time_units</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Disconnection time units</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; odometer_rule</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Mileage condition</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; odometer_value</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Mileage</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; odometer_period</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Mileage counting type (abs, rel)</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; tag_name</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Object tag (for example, “truck”)</span></div></td></tr></tbody></table>

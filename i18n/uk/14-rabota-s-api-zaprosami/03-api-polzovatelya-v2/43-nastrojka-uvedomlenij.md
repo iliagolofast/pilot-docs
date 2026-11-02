@@ -1,0 +1,95 @@
+---
+title: "Налаштування сповіщень"
+---
+
+Цей API призначений для створення, отримання, редагування та видалення конфігурацій сповіщень у PILOT. Це не API для надсилання сповіщень, а для задання умов, за яких у майбутньому в системі спрацьовуватимуть сповіщення.
+
+## Методи
+
+POST, GET, PUT, DELETE
+
+### Адреса запиту
+
+Для отримання даних використовуйте адресу:  https://<address>/api/ptm/notification.php
+
+<address\> — адреса сайту
+
+## POST 
+
+Створює нову конфігурацію сповіщення.
+
+Тіло запиту обов’язкове.
+
+### Запит
+
+<table><tbody><tr><td><span></span></td><td><div>https://&lt;address&gt;/api/ptm/notification.php</div></td></tr></tbody></table>
+
+### Приклад тіла запиту
+
+<table><tbody><tr><td><span></span></td><td><div>{</div><div>&nbsp; "id": 0,</div><div>&nbsp; "agent_id": 123,</div><div>&nbsp; "type": "speed",</div><div>&nbsp; "geozones": [</div><div>&nbsp; &nbsp; {</div><div>&nbsp; &nbsp; &nbsp; "name": "Склад",</div><div>&nbsp; &nbsp; &nbsp; "zonetype": 1,</div><div>&nbsp; &nbsp; &nbsp; "points": [</div><div>&nbsp; &nbsp; &nbsp; &nbsp; [55.7558, 37.6173],</div><div>&nbsp; &nbsp; &nbsp; &nbsp; [55.7560, 37.6180],</div><div>&nbsp; &nbsp; &nbsp; &nbsp; [55.7565, 37.6170]</div><div>&nbsp; &nbsp; &nbsp; ]</div><div>&nbsp; &nbsp; }</div><div>&nbsp; ],</div><div>&nbsp; "name": "Превышение скорости в зоне склада",</div><div>&nbsp; "email": true,</div><div>&nbsp; "emails_list": [</div><div>&nbsp; &nbsp; "dispatcher@example.com",</div><div>&nbsp; &nbsp; "manager@example.com"</div><div>&nbsp; ],</div><div>&nbsp; "sms": true,</div><div>&nbsp; "phones_list": [</div><div>&nbsp; &nbsp; "+79001234567",</div><div>&nbsp; &nbsp; "+79007654321"</div><div>&nbsp; ],</div><div>&nbsp; "message_text": "Внимание! Превышение скорости в зоне склада.",</div><div>&nbsp; "webhook": true,</div><div>&nbsp; "webhook_url": "https://yourdomain.com/webhook-handler",</div><div>&nbsp; "ts": 1680000000,</div><div>&nbsp; "te": 1710000000,</div><div>&nbsp; "timezone": 3,</div><div>&nbsp; "zone_rule": "in",</div><div>&nbsp; "speed_rule": "&gt;",</div><div>&nbsp; "speed_value": 80,</div><div>&nbsp; "speed_time": 15,</div><div>&nbsp; "speed_time_units": "ss",</div><div>&nbsp; "ignition_rule": "on",</div><div>&nbsp; "geozones_rule": "in",</div><div>&nbsp; "break_duration": 0,</div><div>&nbsp; "break_time_units": "ss",</div><div>&nbsp; "tag_name": "грузовик",</div><div>&nbsp; "temperature_rule": "&gt;",</div><div>&nbsp; "temperature_value": 30,</div><div>&nbsp; "temperature_time": 0,</div><div>&nbsp; "disconnect_time": 0,</div><div>&nbsp; "disconnect_time_units": "ss",</div><div>&nbsp; "odometer_rule": "&gt;",</div><div>&nbsp; "odometer_value": 100000,</div><div>&nbsp; "odometer_period": "abs"</div><div>}</div><div>&nbsp;</div></td></tr></tbody></table>
+
+### Приклад відповіді
+
+<table><tbody><tr><td><span></span></td><td><div>{</div><div>&nbsp; "success": true,</div><div>&nbsp; "msg": "Уведомление успешно создано",</div><div>&nbsp; "method": "POST",</div><div>&nbsp; "notification": {</div><div>&nbsp; &nbsp; "id": 123,</div><div>&nbsp; &nbsp; "agent_id": 123,</div><div>&nbsp; &nbsp; "type": "speed",</div><div>&nbsp; &nbsp; "geozones": [</div><div>&nbsp; &nbsp; &nbsp; {</div><div>&nbsp; &nbsp; &nbsp; &nbsp; "name": "Склад",</div><div>&nbsp; &nbsp; &nbsp; &nbsp; "zonetype": 1,</div><div>&nbsp; &nbsp; &nbsp; &nbsp; "points": [</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; [55.7558, 37.6173],</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; [55.7560, 37.6180],</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; [55.7565, 37.6170]</div><div>&nbsp; &nbsp; &nbsp; &nbsp; ]</div><div>&nbsp; &nbsp; &nbsp; }</div><div>&nbsp; &nbsp; ],</div><div>&nbsp; &nbsp; "name": "Превышение скорости в зоне склада",</div><div>&nbsp; &nbsp; "email": true,</div><div>&nbsp; &nbsp; "emails_list": [</div><div>&nbsp; &nbsp; &nbsp; "dispatcher@example.com",</div><div>&nbsp; &nbsp; &nbsp; "manager@example.com"</div><div>&nbsp; &nbsp; ],</div><div>&nbsp; &nbsp; "sms": true,</div><div>&nbsp; &nbsp; "phones_list": [</div><div>&nbsp; &nbsp; &nbsp; "+79001234567",</div><div>&nbsp; &nbsp; &nbsp; "+79007654321"</div><div>&nbsp; &nbsp; ],</div><div>&nbsp; &nbsp; "message_text": "Внимание! Превышение скорости в зоне склада.",</div><div>&nbsp; &nbsp; "webhook": true,</div><div>&nbsp; &nbsp; "webhook_url": "https://yourdomain.com/webhook-handler",</div><div>&nbsp; &nbsp; "ts": 1680000000,</div><div>&nbsp; &nbsp; "te": 1710000000,</div><div>&nbsp; &nbsp; "timezone": 3,</div><div>&nbsp; &nbsp; "zone_rule": "in",</div><div>&nbsp; &nbsp; "speed_rule": "&gt;",</div><div>&nbsp; &nbsp; "speed_value": 80,</div><div>&nbsp; &nbsp; "speed_time": 15,</div><div>&nbsp; &nbsp; "speed_time_units": "ss",</div><div>&nbsp; &nbsp; "ignition_rule": "on",</div><div>&nbsp; &nbsp; "geozones_rule": "in",</div><div>&nbsp; &nbsp; "break_duration": 0,</div><div>&nbsp; &nbsp; "break_time_units": "ss",</div><div>&nbsp; &nbsp; "tag_name": "грузовик",</div><div>&nbsp; &nbsp; "temperature_rule": "&gt;",</div><div>&nbsp; &nbsp; "temperature_value": 30,</div><div>&nbsp; &nbsp; "temperature_time": 0,</div><div>&nbsp; &nbsp; "disconnect_time": 0,</div><div>&nbsp; &nbsp; "disconnect_time_units": "ss",</div><div>&nbsp; &nbsp; "odometer_rule": "&gt;",</div><div>&nbsp; &nbsp; "odometer_value": 100000,</div><div>&nbsp; &nbsp; "odometer_period": "abs"</div><div>&nbsp; }</div><div>}</div><div>&nbsp;</div></td></tr></tbody></table>
+
+## GET
+
+Отримує конфігурацію сповіщення за ID.
+
+Параметри запиту:
+
+-   id (обов’язковий) — ID сповіщення
+    
+
+### Приклад запиту
+
+<table><tbody><tr><td><span></span></td><td><div>https://&lt;address&gt;/api/ptm/notification.php?id=123</div></td></tr></tbody></table>
+
+### Приклад відповіді
+
+<table><tbody><tr><td><span></span></td><td><div>{</div><div>&nbsp; "success": true,</div><div>&nbsp; "msg": "Уведомление получено",</div><div>&nbsp; "method": "GET",</div><div>&nbsp; "notification": {</div><div>&nbsp; &nbsp; "id": 123,</div><div>&nbsp; &nbsp; "agent_id": 123,</div><div>&nbsp; &nbsp; "type": "speed",</div><div>&nbsp; &nbsp; "geozones": [</div><div>&nbsp; &nbsp; &nbsp; {</div><div>&nbsp; &nbsp; &nbsp; &nbsp; "name": "Склад",</div><div>&nbsp; &nbsp; &nbsp; &nbsp; "zonetype": 1,</div><div>&nbsp; &nbsp; &nbsp; &nbsp; "points": [</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; [55.7558, 37.6173],</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; [55.7560, 37.6180],</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; [55.7565, 37.6170]</div><div>&nbsp; &nbsp; &nbsp; &nbsp; ]</div><div>&nbsp; &nbsp; &nbsp; }</div><div>&nbsp; &nbsp; ],</div><div>&nbsp; &nbsp; "name": "Превышение скорости в зоне склада",</div><div>&nbsp; &nbsp; "email": true,</div><div>&nbsp; &nbsp; "emails_list": [</div><div>&nbsp; &nbsp; &nbsp; "dispatcher@example.com",</div><div>&nbsp; &nbsp; &nbsp; "manager@example.com"</div><div>&nbsp; &nbsp; ],</div><div>&nbsp; &nbsp; "sms": true,</div><div>&nbsp; &nbsp; "phones_list": [</div><div>&nbsp; &nbsp; &nbsp; "+79001234567",</div><div>&nbsp; &nbsp; &nbsp; "+79007654321"</div><div>&nbsp; &nbsp; ],</div><div>&nbsp; &nbsp; "message_text": "Внимание! Превышение скорости в зоне склада.",</div><div>&nbsp; &nbsp; "webhook": true,</div><div>&nbsp; &nbsp; "webhook_url": "https://yourdomain.com/webhook-handler",</div><div>&nbsp; &nbsp; "ts": 1680000000,</div><div>&nbsp; &nbsp; "te": 1710000000,</div><div>&nbsp; &nbsp; "timezone": 3,</div><div>&nbsp; &nbsp; "zone_rule": "in",</div><div>&nbsp; &nbsp; "speed_rule": "&gt;",</div><div>&nbsp; &nbsp; "speed_value": 80,</div><div>&nbsp; &nbsp; "speed_time": 15,</div><div>&nbsp; &nbsp; "speed_time_units": "ss",</div><div>&nbsp; &nbsp; "ignition_rule": "on",</div><div>&nbsp; &nbsp; "geozones_rule": "in",</div><div>&nbsp; &nbsp; "break_duration": 0,</div><div>&nbsp; &nbsp; "break_time_units": "ss",</div><div>&nbsp; &nbsp; "tag_name": "грузовик",</div><div>&nbsp; &nbsp; "temperature_rule": "&gt;",</div><div>&nbsp; &nbsp; "temperature_value": 30,</div><div>&nbsp; &nbsp; "temperature_time": 0,</div><div>&nbsp; &nbsp; "disconnect_time": 0,</div><div>&nbsp; &nbsp; "disconnect_time_units": "ss",</div><div>&nbsp; &nbsp; "odometer_rule": "&gt;",</div><div>&nbsp; &nbsp; "odometer_value": 100000,</div><div>&nbsp; &nbsp; "odometer_period": "abs"</div><div>&nbsp; }</div><div>}</div></td></tr></tbody></table>
+
+##  PUT 
+
+Оновлює наявну конфігурацію сповіщення.
+
+### Запит
+
+<table><tbody><tr><td><span></span></td><td><div>https://&lt;address&gt;/api/ptm/notification.php</div></td></tr></tbody></table>
+
+### Приклад тіла запиту
+
+Той самий JSON-формат, що й під час створення (POST), але з актуальними значеннями та потрібним id.
+
+<table><tbody><tr><td><span></span></td><td><div>{</div><div>&nbsp; "id": 123,</div><div>&nbsp; "agent_id": 123,</div><div>&nbsp; "type": "speed",</div><div>&nbsp; "geozones": [</div><div>&nbsp; &nbsp; {</div><div>&nbsp; &nbsp; &nbsp; "name": "Склад",</div><div>&nbsp; &nbsp; &nbsp; "zonetype": 1,</div><div>&nbsp; &nbsp; &nbsp; "points": [</div><div>&nbsp; &nbsp; &nbsp; &nbsp; [55.7558, 37.6173],</div><div>&nbsp; &nbsp; &nbsp; &nbsp; [55.7560, 37.6180],</div><div>&nbsp; &nbsp; &nbsp; &nbsp; [55.7565, 37.6170]</div><div>&nbsp; &nbsp; &nbsp; ]</div><div>&nbsp; &nbsp; }</div><div>&nbsp; ],</div><div>&nbsp; "name": "Обновлённое уведомление",</div><div>&nbsp; "email": true,</div><div>&nbsp; "emails_list": ["alerts@example.com"],</div><div>&nbsp; "sms": false,</div><div>&nbsp; "phones_list": [],</div><div>&nbsp; "message_text": "Обновлённое сообщение о превышении скорости",</div><div>&nbsp; "webhook": false,</div><div>&nbsp; "webhook_url": "",</div><div>&nbsp; "ts": 1680000000,</div><div>&nbsp; "te": 1720000000,</div><div>&nbsp; "timezone": 3,</div><div>&nbsp; "zone_rule": "in",</div><div>&nbsp; "speed_rule": "&gt;",</div><div>&nbsp; "speed_value": 90,</div><div>&nbsp; "speed_time": 10,</div><div>&nbsp; "speed_time_units": "ss",</div><div>&nbsp; "ignition_rule": "off",</div><div>&nbsp; "geozones_rule": "in",</div><div>&nbsp; "break_duration": 0,</div><div>&nbsp; "break_time_units": "ss",</div><div>&nbsp; "tag_name": "фургон",</div><div>&nbsp; "temperature_rule": "&gt;",</div><div>&nbsp; "temperature_value": 35,</div><div>&nbsp; "temperature_time": 0,</div><div>&nbsp; "disconnect_time": 0,</div><div>&nbsp; "disconnect_time_units": "ss",</div><div>&nbsp; "odometer_rule": "&gt;",</div><div>&nbsp; "odometer_value": 120000,</div><div>&nbsp; "odometer_period": "abs"</div><div>}</div><div>&nbsp;</div></td></tr></tbody></table>
+
+### Приклад відповіді
+
+<table><tbody><tr><td><span></span></td><td><div>{</div><div>&nbsp; "success": true,</div><div>&nbsp; "msg": "Уведомление успешно обновлено",</div><div>&nbsp; "method": "PUT",</div><div>&nbsp; "notification": {</div><div>&nbsp; &nbsp; "id": 123,</div><div>&nbsp; &nbsp; "agent_id": 123,</div><div>&nbsp; &nbsp; "type": "speed",</div><div>&nbsp; &nbsp; "geozones": [</div><div>&nbsp; &nbsp; &nbsp; {</div><div>&nbsp; &nbsp; &nbsp; &nbsp; "name": "Склад",</div><div>&nbsp; &nbsp; &nbsp; &nbsp; "zonetype": 1,</div><div>&nbsp; &nbsp; &nbsp; &nbsp; "points": [</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; [55.7558, 37.6173],</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; [55.7560, 37.6180],</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; [55.7565, 37.6170]</div><div>&nbsp; &nbsp; &nbsp; &nbsp; ]</div><div>&nbsp; &nbsp; &nbsp; }</div><div>&nbsp; &nbsp; ],</div><div>&nbsp; &nbsp; "name": "Обновлённое уведомление",</div><div>&nbsp; &nbsp; "email": true,</div><div>&nbsp; &nbsp; "emails_list": ["alerts@example.com"],</div><div>&nbsp; &nbsp; "sms": false,</div><div>&nbsp; &nbsp; "phones_list": [],</div><div>&nbsp; &nbsp; "message_text": "Обновлённое сообщение о превышении скорости",</div><div>&nbsp; &nbsp; "webhook": false,</div><div>&nbsp; &nbsp; "webhook_url": "",</div><div>&nbsp; &nbsp; "ts": 1680000000,</div><div>&nbsp; &nbsp; "te": 1720000000,</div><div>&nbsp; &nbsp; "timezone": 3,</div><div>&nbsp; &nbsp; "zone_rule": "in",</div><div>&nbsp; &nbsp; "speed_rule": "&gt;",</div><div>&nbsp; &nbsp; "speed_value": 90,</div><div>&nbsp; &nbsp; "speed_time": 10,</div><div>&nbsp; &nbsp; "speed_time_units": "ss",</div><div>&nbsp; &nbsp; "ignition_rule": "off",</div><div>&nbsp; &nbsp; "geozones_rule": "in",</div><div>&nbsp; &nbsp; "break_duration": 0,</div><div>&nbsp; &nbsp; "break_time_units": "ss",</div><div>&nbsp; &nbsp; "tag_name": "фургон",</div><div>&nbsp; &nbsp; "temperature_rule": "&gt;",</div><div>&nbsp; &nbsp; "temperature_value": 35,</div><div>&nbsp; &nbsp; "temperature_time": 0,</div><div>&nbsp; &nbsp; "disconnect_time": 0,</div><div>&nbsp; &nbsp; "disconnect_time_units": "ss",</div><div>&nbsp; &nbsp; "odometer_rule": "&gt;",</div><div>&nbsp; &nbsp; "odometer_value": 120000,</div><div>&nbsp; &nbsp; "odometer_period": "abs"</div><div>&nbsp; }</div><div>}</div><div>&nbsp;</div></td></tr></tbody></table>
+
+##  DELETE 
+
+Видаляє одне або кілька сповіщень.
+
+Параметри запиту :
+
+-   id (необов’язковий) — ID конкретного сповіщення
+    
+-   agent\_id (необов’язковий) — якщо передано, видаляються всі сповіщення для вказаного агента
+    
+
+### Приклад запиту
+
+<table><tbody><tr><td><span></span></td><td><div>https://&lt;address&gt;/api/ptm/notification.php?id=123</div></td></tr></tbody></table>
+
+Також можна видалити всі сповіщення за agent\_id:
+
+<table><tbody><tr><td><span></span></td><td><div>https://&lt;address&gt;/api/ptm/notification.php?agent_id=456</div></td></tr></tbody></table>
+
+### Відповідь
+
+<table><tbody><tr><td><span></span></td><td><div>{</div><div>&nbsp; "count": 1 // количество удалённых уведомлений</div><div>}</div></td></tr></tbody></table>
+
+### Опис полів конфігурації сповіщень
+
+<table><colgroup><col> <col></colgroup><tbody><tr><td colspan="1" rowspan="1"><div><span>&nbsp; Поле</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Опис</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; id</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; ID сповіщення</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; agent_id</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Ідентифікатор агента (пристрою/транспортного засобу)</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; type</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Тип сповіщення (speed,&nbsp;temperature,&nbsp;ignition тощо)</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; geozones</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Масив геозон, до яких застосовується сповіщення</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; name</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Назва сповіщення</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; email</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Увімкнути надсилання на email</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; emails_list</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Список email-адрес</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; sms</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Увімкнути SMS-сповіщення</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; phones_list</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Список номерів телефонів</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; webhook_url</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; URL для webhook</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; webhook</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Увімкнути надсилання webhook</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; message_text</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Текст сповіщення</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; ts,&nbsp;te</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Часові межі дії сповіщення (Unix timestamp)</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; timezone</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Зсув за часом (наприклад,&nbsp;+3)</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; zone_rule</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Правило зони (in,&nbsp;out)</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; speed_rule</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Умова швидкості (&gt;,&nbsp;&lt;,&nbsp;=)</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; speed_value</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Значення швидкості</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; speed_time</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Час перевищення</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; speed_time_units</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Одиниці часу (ss,&nbsp;mm,&nbsp;hh)</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; ignition_rule</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Стан запалювання (on,&nbsp;off)</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; geozones_rule</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Поведінка в геозонах (in,&nbsp;out)</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; temperature_rule</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Умова температури (&gt;,&nbsp;&lt;)</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; temperature_value</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Значення температури</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; temperature_time</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Час перевищення температури</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; disconnect_time</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Час відключення пристрою</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; disconnect_time_units</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Одиниці часу відключення</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; odometer_rule</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Умова за пробігом</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; odometer_value</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Пробіг</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; odometer_period</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Тип підрахунку пробігу (abs,&nbsp;rel)</span></div></td></tr><tr><td colspan="1" rowspan="1"><div><span>&nbsp; tag_name</span></div></td><td colspan="1" rowspan="1"><div><span>&nbsp; Тег об’єкта (наприклад, «грузовик»)</span></div></td></tr></tbody></table>
